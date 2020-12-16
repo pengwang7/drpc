@@ -4,9 +4,9 @@
 
 namespace drpc {
 
-static_assert(DRPC_NONE_EVENT == EV_NONE, "CHECK DRPC NONE EVENT.");
-static_assert(DRPC_READ_EVENT == EV_READ, "CHECK DRPC READ EVENT.");
-static_assert(DRPC_WRITE_EVENT == EV_WRITE, "CHECK DRPC WRITE EVENT.");
+static_assert(kNoneEvent == EV_NONE, "CHECK DRPC NONE EVENT.");
+static_assert(kReadEvent == EV_READ, "CHECK DRPC READ EVENT.");
+static_assert(kWriteEvent == EV_WRITE, "CHECK DRPC WRITE EVENT.");
 
 #define ASYNC_SOCKET_DESTROY(_obj, _destroy_fn) do { \
                 if ((_obj)) { \
@@ -16,7 +16,7 @@ static_assert(DRPC_WRITE_EVENT == EV_WRITE, "CHECK DRPC WRITE EVENT.");
                 } \
     } while (0)
 
-AsyncSocket::AsyncSocket(EventLoop* event_loop, int fd, unsigned short io_events) {
+AsyncSocket::AsyncSocket(EventLoop* event_loop, int fd, int io_events) {
     DASSERT(event_loop_ = event_loop, "AsyncSocket event loop is nil.");
     DASSERT(io_ = new(std::nothrow) ev_io, "AsyncSocket new ev_io failed.")
 
@@ -59,9 +59,12 @@ bool AsyncSocket::Detach() {
 }
 
 void AsyncSocket::Close() {
+    // Need check io_ is nullptr.
     if (!io_) {
         return;
     }
+
+    close(fd2());
 
     if (!Detach()) {
         DERROR("AsyncSocket detach failed.");
@@ -85,11 +88,15 @@ void AsyncSocket::ModifyIOEvents(bool readable, bool writable) {
     int old_events = events_;
 
     if (readable) {
-        events_ |= DRPC_READ_EVENT;
+        events_ |= kReadEvent;
+    } else {
+        events_ &= (~kReadEvent);
     }
 
     if (writable) {
-        events_ |= DRPC_WRITE_EVENT;
+        events_ |= kWriteEvent;
+    } else {
+        events_ &= (~kWriteEvent);
     }
 
     if (IsNone()) {
@@ -111,15 +118,15 @@ bool AsyncSocket::IsAttached() const {
 }
 
 bool AsyncSocket::IsNone() const {
-    return (events_ == DRPC_NONE_EVENT);
+    return (events_ == kNoneEvent);
 }
 
 bool AsyncSocket::IsReadable() const {
-    return (events_ & DRPC_READ_EVENT) != 0;
+    return (events_ & kReadEvent) != 0;
 }
 
 bool AsyncSocket::IsWritable() const {
-    return (events_ & DRPC_WRITE_EVENT) != 0;
+    return (events_ & kWriteEvent) != 0;
 }
 
 int AsyncSocket::fd2() const {
@@ -132,11 +139,11 @@ int AsyncSocket::fd2() const {
 }
 
 void AsyncSocket::IOEventHandle(int events) {
-    if ((events & DRPC_READ_EVENT) && read_cb_) {
+    if ((events & kReadEvent) && read_cb_) {
         read_cb_();
     }
 
-    if ((events & DRPC_WRITE_EVENT) && write_cb_) {
+    if ((events & kWriteEvent) && write_cb_) {
         write_cb_();
     }
 }

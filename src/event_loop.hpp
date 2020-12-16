@@ -38,6 +38,10 @@ public:
         return thread_id_;
     }
 
+    bool IsConsistent() const {
+        return thread_id_ == std::this_thread::get_id();
+    }
+
     // For test
     AsyncWatcher* async_watcher() {
         return async_watcher_.get();

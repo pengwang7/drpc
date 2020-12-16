@@ -84,8 +84,53 @@ void buffer_test() {
 
 }
 
+void    test_other() {
+    char full_path[256] = {0};
+    char config_path[128] = {0};
+    char config_name[128] = {0};
+
+    snprintf(full_path, sizeof(full_path), "http://www.baidu.com/abcderc/ww/./www/pengwang.tar.gz");
+    char* q = NULL;
+    char* p = strrchr(full_path, '/');
+    if (!p) {
+        return;
+    }
+
+    q = p;
+    q ++;
+    if (!q) {
+        return;
+    }
+
+    *p = '\0';
+
+    strncpy(config_path, full_path, sizeof(config_path));
+    size_t l = strlen(config_path);
+    snprintf(config_path + l, sizeof(config_path) - l, "/");
+    strncpy(config_name, q, sizeof(config_name));
+
+    drpc::DDEBUG("path:%s", config_path);
+    drpc::DDEBUG("name:%s", config_name);
+}
+
+void channel_refs() {
+    std::unique_ptr<drpc::EventLoop> event_loop;
+    event_loop.reset(new drpc::EventLoop());
+
+    drpc::AsyncSocket* socket = new drpc::AsyncSocket(event_loop.get(), 100, drpc::kReadEvent);
+
+    drpc::channel_ptr chan(new drpc::Channel(event_loop.get(), socket));
+    chan->Init();
+
+    drpc::DDEBUG("channel refs: %d.", chan.use_count());
+}
+
 int main() {
     drpc::Logger::Instance().Init();
+
+    channel_refs();
+
+    return 0;
 
     buffer_test();
 

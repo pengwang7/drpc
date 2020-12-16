@@ -6,11 +6,11 @@
 
 namespace drpc {
 
-#define DRPC_NONE_EVENT         (0x00)
-            
-#define DRPC_READ_EVENT         (0x01)
-            
-#define DRPC_WRITE_EVENT        (0x02)
+const int kNoneEvent = 0x00;
+
+const int kReadEvent = 0x01;
+
+const int kWriteEvent = 0x02;
 
 class EventLoop;
 
@@ -19,7 +19,7 @@ public:
     using AsyncSocketCallback = std::function<void()>;
 
 public:
-    AsyncSocket(EventLoop* event_loop, int fd, unsigned short io_events);
+    AsyncSocket(EventLoop* event_loop, int fd, int io_events);
 
     ~AsyncSocket();
 
@@ -58,7 +58,7 @@ private:
 
     struct ev_io* io_;
 
-    unsigned short events_;
+    int events_;
 
     bool attached_;
 

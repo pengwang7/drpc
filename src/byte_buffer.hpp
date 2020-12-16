@@ -19,12 +19,12 @@ public:
 
     void WriteUInt32(uint32_t val) {
         uint32_t net_x = htonl(val);
-
         WriteBytes(reinterpret_cast<const char*>(&net_x), sizeof(net_x));
     }
 
     void WriteUInt64(uint64_t val) {
-        //int64_t net_x = htonll(val);
+        int64_t net_x = htonll(val);
+        WriteBytes(reinterpret_cast<const char*>(&net_x), sizeof(net_x));
     }
 
     void WriteBytes(const char* val, size_t len) {
@@ -60,6 +60,8 @@ public:
 
         memcpy(&val, buffer_.begin(), sizeof(*val));
 
+        *val = ntohl(*val);
+
         return true;
     }
 
@@ -69,6 +71,8 @@ public:
         }
 
         memcpy(&val, buffer_.begin(), sizeof(*val));
+
+        *val = ntohll(*val);
 
         return true;
     }

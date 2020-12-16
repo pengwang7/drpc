@@ -15,12 +15,18 @@ CMakeFiles/drpc.dir/src/async_watcher.cpp.o: src/event_loop.hpp
 CMakeFiles/drpc.dir/src/async_watcher.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/async_watcher.cpp.o: src/utility.hpp
 
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/any_cast.hpp
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/async_cbs.hpp
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/async_socket.hpp
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/async_watcher.hpp
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/buffer.hpp
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/byte_buffer.hpp
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/channel.cpp
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/channel.hpp
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/concurrentqueue.h
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/event_loop.hpp
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/logger.hpp
+CMakeFiles/drpc.dir/src/channel.cpp.o: src/utility.hpp
 
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/async_watcher.hpp
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/concurrentqueue.h
@@ -30,6 +36,8 @@ CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/utility.hpp
 
 CMakeFiles/drpc.dir/test/test.cpp.o: test/test.cpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/any_cast.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/async_cbs.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/async_socket.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/async_watcher.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/buffer.hpp
@@ -38,4 +46,5 @@ CMakeFiles/drpc.dir/test/test.cpp.o: src/channel.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/concurrentqueue.h
 CMakeFiles/drpc.dir/test/test.cpp.o: src/event_loop.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/logger.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/utility.hpp
 

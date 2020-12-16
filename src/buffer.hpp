@@ -12,9 +12,9 @@
 #define __BUFFER_HPP__
 
 #include <sys/uio.h>
-#include <cstddef>
 
 #include "logger.hpp"
+#include "utility.hpp"
 
 namespace drpc {
 
@@ -83,7 +83,7 @@ public:
 
     using const_iterator = const T*;
 
-    explicit BufferT(size_t capacity)
+    explicit BufferT(size_t capacity = 1024)
         : capacity_(capacity),
           data_(capacity_ > 0 ?
           new T[capacity_] : nullptr) {
@@ -180,7 +180,7 @@ public:
     // The RecvData function read data from socket and add it to the end for
     // the buffer. An extra space is used to solve the problem of excessive
     // buffer initialization.
-    template <typename U,
+    template <typename U = T,
             typename std::enable_if<
                 internal::BufferCompat<T, U>::value>::type* = nullptr>
     ssize_t RecvData(int socket) {
@@ -198,7 +198,8 @@ public:
 
         ssize_t bytes_transferred = readv(socket, iove, iovs);
         if (bytes_transferred <= 0) {
-
+            // 0: Peer closed.
+            // ohter: Read error.
         } else if (static_cast<size_t>(bytes_transferred) <= WritableByteSize()) {
             write_index_ += bytes_transferred;
         } else {

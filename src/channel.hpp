@@ -1,8 +1,11 @@
 #ifndef __CHANNEL_HPP__
 #define __CHANNEL_HPP__
 
+#include "any_cast.hpp"
+#include "async_cbs.hpp"
 #include "async_socket.hpp"
-#include <memory>
+#include "byte_buffer.hpp"
+
 namespace drpc {
 
 class EventLoop;
@@ -13,35 +16,50 @@ public:
 
     ~Channel();
 
+    void Init();
+
     bool Attach();
 
-    void SendMessage(std::string message);
+    void SendMessage(std::string& message);
 
     void Close();
 
-    void SetNewCallback();
+    void SetNewChannelCallback(const NewChannelCallback& cb);
 
-    void SetReadMessageCallback();
+    void SetRecvMessageCallback(const RecvMessageCallback& cb);
 
-    void SetWriteCompleteCallback();
+    void SetSendCompleteCallback(const SendCompleteCallback& cb);
 
-    void SetTimeoutCallback();
+    void SetTimedoutCallback(const TimedoutCallback& cb);
 
-    void SetClosedCallback();
+    void SetCloseCallback(const CloseCallback& cb);
 
 private:
+    void InternalSendMessage(char* data, size_t len);
+
     void AsyncSocketReadHandle();
 
     void AsyncSocketWriteHandle();
-
-    void AsyncSocketCloseHandle();
-
-    void AsyncSocketErrorHandle();
 
 private:
     EventLoop* event_loop_;
 
     std::unique_ptr<AsyncSocket> async_socket_;
+
+    Buffer recv_buffer_;
+    Buffer send_buffer_;
+
+    any context_;
+
+    NewChannelCallback new_channel_cb_;
+
+    RecvMessageCallback recv_message_cb_;
+
+    SendCompleteCallback send_complete_cb_;
+
+    TimedoutCallback channel_timeout_cb_;
+
+    CloseCallback channel_closed_cb_;
 };
 
 } /* end namespace drpc */
