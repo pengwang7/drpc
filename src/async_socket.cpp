@@ -47,7 +47,7 @@ bool AsyncSocket::Attach() {
 }
 
 bool AsyncSocket::Detach() {
-    if (IsNone() || !attached_) {
+    if (!attached_) {
         return false;
     }
 
@@ -99,13 +99,21 @@ void AsyncSocket::ModifyIOEvents(bool readable, bool writable) {
         events_ &= (~kWriteEvent);
     }
 
-    if (IsNone()) {
+    if (IsNone() && attached_) {
         DASSERT(!Detach(), "AsyncSocket update none events failed.");
         return;
     }
 
+    // When the async_socket_ is already attach, must call Deatch
+    // before ev_io_modify and then call Attach.
     if (events_ != old_events) {
-        ev_io_modify(io_, events_);
+        if (attached_) {
+            DASSERT(!Detach(), "AsyncSocket detach failed.");
+            ev_io_modify(io_, events_);
+            DASSERT(!Attach(), "AsyncSocket attach failed.");
+        } else {
+            ev_io_modify(io_, events_);
+        }
     }
 }
 

@@ -128,13 +128,13 @@ void channel_refs() {
 int main() {
     drpc::Logger::Instance().Init();
 
-    channel_refs();
+    //channel_refs();
 
-    return 0;
+    //return 0;
 
-    buffer_test();
+    //buffer_test();
 
-    return 0;
+    //return 0;
 
     std::unique_ptr<drpc::EventLoop> event_loop;
     event_loop.reset(new drpc::EventLoop());

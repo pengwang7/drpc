@@ -27,6 +27,21 @@ void Channel::Init() {
 }
 
 bool Channel::Attach() {
+    DASSERT(event_loop_->IsConsistent(), "Channel error.");
+
+    async_socket_->ModifyIOEvents(true, false);
+    if (async_socket_->IsNone()) {
+        DERROR("Channel attach to event loop failed, events is none.");
+        return false;
+    }
+
+    if (!async_socket_->Attach()) {
+        DERROR("Channel attach to event loop failed.");
+        return false;
+    }
+
+    DASSERT(async_socket_->IsAttached(), "Channel attached flag not set.");
+
     return true;
 }
 
