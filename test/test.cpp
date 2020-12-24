@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#if 0
 #include "event_loop.hpp"
 #include "async_socket.hpp"
 #include "channel.hpp"
@@ -7,6 +7,7 @@
 #include "logger.hpp"
 #include "buffer.hpp"
 #include "byte_buffer.hpp"
+#include "scheduled.hpp"
 
 static int kStartFlag = 0;
 
@@ -125,9 +126,68 @@ void channel_refs() {
     drpc::DDEBUG("channel refs: %d.", chan.use_count());
 }
 
-int main() {
-    drpc::Logger::Instance().Init();
+void timeout_cb() {
+    drpc::DDEBUG("execute timeout_cb.");
+}
 
+void test_scheduled() {
+    std::unique_ptr<drpc::EventLoop> event_loop;
+    event_loop.reset(new drpc::EventLoop());
+    if (!event_loop) {
+        drpc::DERROR("The event_loop is nil.");
+        return;
+    }
+
+    drpc::EventLoop* t = new drpc::EventLoop();
+    if (!t) {
+        return;
+    }
+
+    drpc::EventLoop* t2 = (drpc::EventLoop*)calloc(1, sizeof(drpc::EventLoop));
+    if (!t2) {
+        return;
+    }
+
+    char* c = (char*)calloc(1, sizeof(char) * 100);
+    if (!c) {
+        return;
+    }
+    //memset(c, 0, sizeof(c) * 100);
+
+    drpc::scheduled_ptr sched;
+    {
+        sched = drpc::Scheduled::CreateScheduled(event_loop.get(), timeout_cb, 10);
+        if (!sched) {
+            drpc::DERROR("Create sched failed.");
+            return;
+        }
+
+        drpc::DDEBUG("The sched 111 use count: %d.", sched.use_count());
+    }
+
+    if (sched) {
+        drpc::DDEBUG("The sched 222 use count: %d.", sched.use_count());
+    } else {
+        drpc::DDEBUG("The sched 333 use count: %d.", sched.use_count());
+    }
+
+    sched->Run();
+
+    //event_loop->Run();
+}
+#endif
+#include <stdlib.h>
+int main() {
+    //drpc::Logger::Instance().Init();
+
+    char* test = (char*)calloc(1, 1000);
+    if (!test) {
+        return 0;
+    }
+
+    //test_scheduled();
+
+#if 0
     //channel_refs();
 
     //return 0;
@@ -158,7 +218,8 @@ int main() {
     drpc::DDEBUG("The event_loop will be stop.");
 
     t1.join();
+#endif
+    //drpc::Logger::Instance().Destroy();
 
-    drpc::Logger::Instance().Destroy();
     return 0;
 }

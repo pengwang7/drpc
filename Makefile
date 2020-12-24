@@ -123,114 +123,6 @@ drpc/fast:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/build
 .PHONY : drpc/fast
 
-src/async_socket.o: src/async_socket.cpp.o
-
-.PHONY : src/async_socket.o
-
-# target to build an object file
-src/async_socket.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.o
-.PHONY : src/async_socket.cpp.o
-
-src/async_socket.i: src/async_socket.cpp.i
-
-.PHONY : src/async_socket.i
-
-# target to preprocess a source file
-src/async_socket.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.i
-.PHONY : src/async_socket.cpp.i
-
-src/async_socket.s: src/async_socket.cpp.s
-
-.PHONY : src/async_socket.s
-
-# target to generate assembly for a file
-src/async_socket.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.s
-.PHONY : src/async_socket.cpp.s
-
-src/async_watcher.o: src/async_watcher.cpp.o
-
-.PHONY : src/async_watcher.o
-
-# target to build an object file
-src/async_watcher.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.o
-.PHONY : src/async_watcher.cpp.o
-
-src/async_watcher.i: src/async_watcher.cpp.i
-
-.PHONY : src/async_watcher.i
-
-# target to preprocess a source file
-src/async_watcher.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.i
-.PHONY : src/async_watcher.cpp.i
-
-src/async_watcher.s: src/async_watcher.cpp.s
-
-.PHONY : src/async_watcher.s
-
-# target to generate assembly for a file
-src/async_watcher.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.s
-.PHONY : src/async_watcher.cpp.s
-
-src/channel.o: src/channel.cpp.o
-
-.PHONY : src/channel.o
-
-# target to build an object file
-src/channel.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.o
-.PHONY : src/channel.cpp.o
-
-src/channel.i: src/channel.cpp.i
-
-.PHONY : src/channel.i
-
-# target to preprocess a source file
-src/channel.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.i
-.PHONY : src/channel.cpp.i
-
-src/channel.s: src/channel.cpp.s
-
-.PHONY : src/channel.s
-
-# target to generate assembly for a file
-src/channel.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.s
-.PHONY : src/channel.cpp.s
-
-src/event_loop.o: src/event_loop.cpp.o
-
-.PHONY : src/event_loop.o
-
-# target to build an object file
-src/event_loop.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.o
-.PHONY : src/event_loop.cpp.o
-
-src/event_loop.i: src/event_loop.cpp.i
-
-.PHONY : src/event_loop.i
-
-# target to preprocess a source file
-src/event_loop.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.i
-.PHONY : src/event_loop.cpp.i
-
-src/event_loop.s: src/event_loop.cpp.s
-
-.PHONY : src/event_loop.s
-
-# target to generate assembly for a file
-src/event_loop.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.s
-.PHONY : src/event_loop.cpp.s
-
 test/test.o: test/test.cpp.o
 
 .PHONY : test/test.o
@@ -267,18 +159,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... drpc"
-	@echo "... src/async_socket.o"
-	@echo "... src/async_socket.i"
-	@echo "... src/async_socket.s"
-	@echo "... src/async_watcher.o"
-	@echo "... src/async_watcher.i"
-	@echo "... src/async_watcher.s"
-	@echo "... src/channel.o"
-	@echo "... src/channel.i"
-	@echo "... src/channel.s"
-	@echo "... src/event_loop.o"
-	@echo "... src/event_loop.i"
-	@echo "... src/event_loop.s"
 	@echo "... test/test.o"
 	@echo "... test/test.i"
 	@echo "... test/test.s"

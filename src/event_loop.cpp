@@ -91,17 +91,17 @@ void EventLoop::SendToQueue(TaskFunctor&& task) {
 void EventLoop::DoInit() {
     // Create libev event loop used EPOLL engine.
     event_loop_ = ev_loop_new(EVBACKEND_EPOLL);
-    assert(event_loop_);
+    DASSERT(event_loop_, "EventLoop is nil.");
 
     // The queue for do other thread post task.
     pending_task_queue_ = new moodycamel::ConcurrentQueue<TaskFunctor>();
-    assert(pending_task_queue_);
+    DASSERT(pending_task_queue_, "ConcurrentQueue is nil.");
 
     // Message notification between different threads.
     async_watcher_.reset(new EventfdWatcher(this, std::bind(&EventLoop::DoPendingTasks, this)));
-    assert(async_watcher_);
+    DASSERT(async_watcher_, "AsyncWatcher is nil.");
 
-    DASSERT(async_watcher_->Init(), "The async watcher init failed");
+    DASSERT(async_watcher_->Init(), "The async watcher init failed.");
 }
 
 void EventLoop::DoPendingTasks() {

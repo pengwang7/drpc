@@ -90,10 +90,6 @@ private:
     int event_fd_;
 };
 
-class TimerEventWatcher : public AsyncWatcher {
-
-};
-
 } /* end namespace drpc */
 
 #endif /* __ASYNC_WATCHER_HPP__ */
