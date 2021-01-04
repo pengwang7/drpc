@@ -57,7 +57,9 @@ void Channel::SendMessage(std::string& message) {
 }
 
 void Channel::Close() {
-    auto fn = [self = shared_from_this()]() -> void {
+    // NOTE: lambda capture initializers only available with -std=c++14 or -std=gnu++14.
+    auto self = shared_from_this();
+    auto fn = [self]() -> void {
         DASSERT(self->event_loop_->IsConsistent(), "Channel error.");
 
         self->async_socket_->DisableAllIOEvents();

@@ -15,6 +15,9 @@ EventLoop::EventLoop() {
 EventLoop::~EventLoop() {
     DTRACE("The event loop destroy:%p.", this);
 
+    async_watcher_->Terminate();
+    async_watcher_->Cancel();
+
     delete pending_task_queue_;
 
     OBJECT_SAFE_DESTROY(event_loop_, ev_loop_destroy);
@@ -42,7 +45,7 @@ void EventLoop::Stop() {
             DoPendingTasks();
         }
 
-        // If ev_break is called on a different thread than EV_run, then the Event Loop does not exit.
+        // If ev_break is called on a different thread than ev_run, then the Event Loop does not exit.
         ev_break(event_loop_, EVBREAK_ALL);
 
         DDEBUG("The event loop is stopped:%p.", this);

@@ -151,3 +151,105 @@ gmake[1]: 离开目录“/home/pengwang/cloud_platform/project/github/drpc/CMake
 gmake: *** [cmTC_be2e1/fast] 错误 2
 
 
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_d49e3/fast 
+/usr/bin/gmake -f CMakeFiles/cmTC_d49e3.dir/build.make CMakeFiles/cmTC_d49e3.dir/build
+gmake[1]: Entering directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d49e3.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d49e3.dir/CheckSymbolExists.c.o   -c /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_d49e3
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d49e3.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_d49e3.dir/CheckSymbolExists.c.o  -o cmTC_d49e3 
+CMakeFiles/cmTC_d49e3.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_d49e3.dir/build.make:87: cmTC_d49e3] Error 1
+gmake[1]: Leaving directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:121: cmTC_d49e3/fast] Error 2
+
+File /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_e1f70/fast 
+/usr/bin/gmake -f CMakeFiles/cmTC_e1f70.dir/build.make CMakeFiles/cmTC_e1f70.dir/build
+gmake[1]: Entering directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e1f70.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_e1f70.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.14/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e1f70
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e1f70.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_e1f70.dir/CheckFunctionExists.c.o  -o cmTC_e1f70 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_e1f70.dir/build.make:87: cmTC_e1f70] Error 1
+gmake[1]: Leaving directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:121: cmTC_e1f70/fast] Error 2
+
+
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_08310/fast 
+/usr/bin/gmake -f CMakeFiles/cmTC_08310.dir/build.make CMakeFiles/cmTC_08310.dir/build
+gmake[1]: Entering directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_08310.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_08310.dir/CheckSymbolExists.c.o   -c /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_08310
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_08310.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_08310.dir/CheckSymbolExists.c.o  -o cmTC_08310 
+CMakeFiles/cmTC_08310.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_08310.dir/build.make:87: cmTC_08310] Error 1
+gmake[1]: Leaving directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:121: cmTC_08310/fast] Error 2
+
+File /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_20c48/fast 
+/usr/bin/gmake -f CMakeFiles/cmTC_20c48.dir/build.make CMakeFiles/cmTC_20c48.dir/build
+gmake[1]: Entering directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_20c48.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_20c48.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake-3.14/Modules/CheckFunctionExists.c
+Linking C executable cmTC_20c48
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_20c48.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_20c48.dir/CheckFunctionExists.c.o  -o cmTC_20c48 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+gmake[1]: *** [CMakeFiles/cmTC_20c48.dir/build.make:87: cmTC_20c48] Error 1
+gmake[1]: Leaving directory '/home/pengwang/workspace/github/drpc/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:121: cmTC_20c48/fast] Error 2
+
+

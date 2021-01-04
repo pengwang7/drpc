@@ -48,3 +48,114 @@
 [2020-12-24 18:02:04.333][thread 2983][trace]: (async_watcher.cpp:Notify:82) EventfdWatcher notify success.
 [2020-12-24 18:02:04.333][thread 2983][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x60080000be10.
 [2020-12-24 18:02:04.333][thread 2983][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:21:06.083][thread 851453][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x6040000000d0.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000001a0.
+[2020-12-28 20:21:06.084][thread 851453][debug]: (test.cpp:test_scheduled:134) The sched 111 use count: 2.
+[2020-12-28 20:21:06.084][thread 851453][debug]: (test.cpp:test_scheduled:138) The sched 222 use count: 2.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (scheduled.cpp:Run:48) Scheduled will be run.
+[2020-12-28 20:21:06.084][thread 851453][debug]: (event_loop.cpp:SendToQueue:77) Send to other thread.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:21:06.084][thread 851453][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x6040000000d0.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-28 20:21:45.303][thread 851561][debug]: (test.cpp:test_scheduled:123) The sched 111 use count: 2.
+[2020-12-28 20:21:45.303][thread 851561][debug]: (test.cpp:test_scheduled:127) The sched 222 use count: 2.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (scheduled.cpp:Run:48) Scheduled will be run.
+[2020-12-28 20:21:45.303][thread 851561][debug]: (event_loop.cpp:SendToQueue:77) Send to other thread.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:21:45.303][thread 851561][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:22:19.046][thread 851685][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-28 20:22:19.047][thread 851685][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 2.
+[2020-12-28 20:22:19.047][thread 851685][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 2.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (scheduled.cpp:Run:48) Scheduled will be run.
+[2020-12-28 20:22:19.047][thread 851685][debug]: (event_loop.cpp:SendToQueue:77) Send to other thread.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:22:19.047][thread 851685][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-28 20:23:23.457][thread 851862][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 2.
+[2020-12-28 20:23:23.457][thread 851862][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 2.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (scheduled.cpp:Run:48) Scheduled will be run.
+[2020-12-28 20:23:23.457][thread 851862][debug]: (event_loop.cpp:SendToQueue:77) Send to other thread.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:23:23.457][thread 851862][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:23:50.262][thread 851936][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:23:50.262][thread 851936][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:23:50.262][thread 851936][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:23:50.262][thread 851936][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:23:50.262][thread 851936][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:31:06.517][thread 853079][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-28 20:31:07.538][thread 853082][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-28 20:31:07.539][thread 853082][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-28 20:31:07.539][thread 853082][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-28 20:31:07.539][thread 853082][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:31:07.539][thread 853082][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-28 20:31:07.539][thread 853082][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-29 17:07:02.471][thread 1028796][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-29 17:07:02.472][thread 1028796][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 2.
+[2020-12-29 17:07:02.472][thread 1028796][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 2.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (scheduled.cpp:Run:48) Scheduled will be run.
+[2020-12-29 17:07:02.472][thread 1028796][debug]: (event_loop.cpp:SendToQueue:80) Send to other thread.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:07:02.472][thread 1028796][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-29 17:07:49.058][thread 1028917][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 2.
+[2020-12-29 17:07:49.058][thread 1028917][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 2.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:07:49.058][thread 1028917][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-29 17:08:53.294][thread 1029080][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 1.
+[2020-12-29 17:08:53.294][thread 1029080][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 1.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (scheduled.cpp:~Scheduled:24) Destroy Scheduled:0x60b0000000f0.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:08:53.294][thread 1029080][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-29 17:08:55.395][thread 1029092][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 1.
+[2020-12-29 17:08:55.395][thread 1029092][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 1.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (scheduled.cpp:~Scheduled:24) Destroy Scheduled:0x60b0000000f0.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:08:55.395][thread 1029092][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (event_loop.cpp:EventLoop:10) The event loop create:0x604000000050.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (async_watcher.cpp:AsyncWatcher:14) Create AsyncWatcher.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (scheduled.cpp:Scheduled:10) Create Scheduled:0x60b0000000f0.
+[2020-12-29 17:10:09.600][thread 1029344][debug]: (test.cpp:test_scheduled:118) The sched 111 use count: 1.
+[2020-12-29 17:10:09.600][thread 1029344][debug]: (test.cpp:test_scheduled:122) The sched 222 use count: 1.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (scheduled.cpp:~Scheduled:24) Destroy Scheduled:0x60b0000000f0.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (event_loop.cpp:~EventLoop:16) The event loop destroy:0x604000000050.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
+[2020-12-29 17:10:09.600][thread 1029344][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.

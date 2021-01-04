@@ -29,6 +29,8 @@
 
 namespace drpc {
 
+typedef double ev_tstamp;
+
 class EventLoop;
 
 class Scheduled {
@@ -37,9 +39,9 @@ class Scheduled {
 public:
     ~Scheduled();
 
-    static scheduled_ptr CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, uint64_t seconds, bool persist = true);
+    static scheduled_ptr CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist = true);
 
-    static scheduled_ptr CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, uint64_t seconds, bool persist = true);
+    static scheduled_ptr CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist = true);
 
     void Run();
 
@@ -48,7 +50,7 @@ public:
 private:
     // Scheduled managentment is done through by shared_ptr,
     // so we set the constructor to private.
-    Scheduled(EventLoop* event_loop, const ScheduledFunctor& cb, uint64_t seconds, bool persist);
+    Scheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist);
 
     void OnTrigger();
 
@@ -66,7 +68,7 @@ private:
     // Scheduled is persist or once.
     bool persist_;
 
-    uint64_t delay_seconds_;
+    ev_tstamp delay_seconds_;
 
     // Hold itself.
     scheduled_ptr self_;

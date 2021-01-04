@@ -6,7 +6,7 @@
 
 namespace drpc {
 
-Scheduled::Scheduled(EventLoop* event_loop, const ScheduledFunctor& cb, uint64_t seconds, bool persist) {
+Scheduled::Scheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist) {
     DTRACE("Create Scheduled:%p.", this);
 
     event_loop_ = event_loop;
@@ -26,7 +26,7 @@ Scheduled::~Scheduled() {
     delete timer_;
 }
 
-scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, uint64_t seconds, bool persist) {
+scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist) {
     scheduled_ptr sched(new Scheduled(event_loop, std::move(cb), seconds, persist));
     DASSERT(sched, "Create Scheduled error.");
 
@@ -35,7 +35,7 @@ scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, ScheduledFunctor
     return sched;
 }
 
-scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, uint64_t seconds, bool persist) {
+scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist) {
     scheduled_ptr sched(new Scheduled(event_loop, cb, seconds, persist));
     DASSERT(sched, "Create Scheduled error.");
 

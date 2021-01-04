@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/cmake/bin/cmake
+CMAKE_COMMAND = /usr/local/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/cmake/bin/cmake -E remove -f
+RM = /usr/local/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pengwang/cloud_platform/project/github/drpc
+CMAKE_SOURCE_DIR = /home/pengwang/workspace/github/drpc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pengwang/cloud_platform/project/github/drpc
+CMAKE_BINARY_DIR = /home/pengwang/workspace/github/drpc
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/pengwang/cloud_platform/project/github/drpc
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/cmake/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/local/cmake/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/cloud_platform/project/github/drpc/CMakeFiles /home/pengwang/cloud_platform/project/github/drpc/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc/CMakeFiles /home/pengwang/workspace/github/drpc/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/cloud_platform/project/github/drpc/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,6 +123,141 @@ drpc/fast:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/build
 .PHONY : drpc/fast
 
+src/async_socket.o: src/async_socket.cpp.o
+
+.PHONY : src/async_socket.o
+
+# target to build an object file
+src/async_socket.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.o
+.PHONY : src/async_socket.cpp.o
+
+src/async_socket.i: src/async_socket.cpp.i
+
+.PHONY : src/async_socket.i
+
+# target to preprocess a source file
+src/async_socket.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.i
+.PHONY : src/async_socket.cpp.i
+
+src/async_socket.s: src/async_socket.cpp.s
+
+.PHONY : src/async_socket.s
+
+# target to generate assembly for a file
+src/async_socket.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.s
+.PHONY : src/async_socket.cpp.s
+
+src/async_watcher.o: src/async_watcher.cpp.o
+
+.PHONY : src/async_watcher.o
+
+# target to build an object file
+src/async_watcher.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.o
+.PHONY : src/async_watcher.cpp.o
+
+src/async_watcher.i: src/async_watcher.cpp.i
+
+.PHONY : src/async_watcher.i
+
+# target to preprocess a source file
+src/async_watcher.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.i
+.PHONY : src/async_watcher.cpp.i
+
+src/async_watcher.s: src/async_watcher.cpp.s
+
+.PHONY : src/async_watcher.s
+
+# target to generate assembly for a file
+src/async_watcher.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.s
+.PHONY : src/async_watcher.cpp.s
+
+src/channel.o: src/channel.cpp.o
+
+.PHONY : src/channel.o
+
+# target to build an object file
+src/channel.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.o
+.PHONY : src/channel.cpp.o
+
+src/channel.i: src/channel.cpp.i
+
+.PHONY : src/channel.i
+
+# target to preprocess a source file
+src/channel.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.i
+.PHONY : src/channel.cpp.i
+
+src/channel.s: src/channel.cpp.s
+
+.PHONY : src/channel.s
+
+# target to generate assembly for a file
+src/channel.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.s
+.PHONY : src/channel.cpp.s
+
+src/event_loop.o: src/event_loop.cpp.o
+
+.PHONY : src/event_loop.o
+
+# target to build an object file
+src/event_loop.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.o
+.PHONY : src/event_loop.cpp.o
+
+src/event_loop.i: src/event_loop.cpp.i
+
+.PHONY : src/event_loop.i
+
+# target to preprocess a source file
+src/event_loop.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.i
+.PHONY : src/event_loop.cpp.i
+
+src/event_loop.s: src/event_loop.cpp.s
+
+.PHONY : src/event_loop.s
+
+# target to generate assembly for a file
+src/event_loop.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.s
+.PHONY : src/event_loop.cpp.s
+
+src/scheduled.o: src/scheduled.cpp.o
+
+.PHONY : src/scheduled.o
+
+# target to build an object file
+src/scheduled.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.o
+.PHONY : src/scheduled.cpp.o
+
+src/scheduled.i: src/scheduled.cpp.i
+
+.PHONY : src/scheduled.i
+
+# target to preprocess a source file
+src/scheduled.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.i
+.PHONY : src/scheduled.cpp.i
+
+src/scheduled.s: src/scheduled.cpp.s
+
+.PHONY : src/scheduled.s
+
+# target to generate assembly for a file
+src/scheduled.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.s
+.PHONY : src/scheduled.cpp.s
+
 test/test.o: test/test.cpp.o
 
 .PHONY : test/test.o
@@ -157,8 +292,23 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... drpc"
+	@echo "... edit_cache"
+	@echo "... src/async_socket.o"
+	@echo "... src/async_socket.i"
+	@echo "... src/async_socket.s"
+	@echo "... src/async_watcher.o"
+	@echo "... src/async_watcher.i"
+	@echo "... src/async_watcher.s"
+	@echo "... src/channel.o"
+	@echo "... src/channel.i"
+	@echo "... src/channel.s"
+	@echo "... src/event_loop.o"
+	@echo "... src/event_loop.i"
+	@echo "... src/event_loop.s"
+	@echo "... src/scheduled.o"
+	@echo "... src/scheduled.i"
+	@echo "... src/scheduled.s"
 	@echo "... test/test.o"
 	@echo "... test/test.i"
 	@echo "... test/test.s"

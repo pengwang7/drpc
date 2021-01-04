@@ -1,22 +1,76 @@
 cmake_minimum_required(VERSION 3.9.6)
 
-project(drpc)
+project(drpc C CXX)
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fsanitize=address -fno-omit-frame-pointer -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -fsanitize=address -fno-omit-frame-pointer")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -fstrict-aliasing -fno-omit-frame-pointer -g -march=native -pipe")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -rdynamic -Wall -Wextra -Werror -Wno-unused-parameter -Woverloaded-virtual -Wpointer-arith")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wshadow -Wwrite-strings -Wno-invalid-offsetof ")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -lcurl")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -g")
-#SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address -g")
+set(CMAKE_BUILD_TYPE "Release")
 
-set(BUTIL_SOURCES
-    ${PROJECT_SOURCE_DIR}/test/test.cpp
+#-Woverloaded-virtual
+set(CXX_FLAGS
+    -g
+    -DCHECK_PTHREAD_RETURN_VALUE
+    -D_FILE_OFFSET_BITS=64
+    -Wall
+    -Wextra
+    -Werror
+    -Wconversion
+    -Wno-unused-parameter
+    -Wpointer-arith
+    -Wwrite-strings
+    -march=native
+    -fno-omit-frame-pointer
+    -std=c++11
+    -rdynamic
+    -lpthread
+    -ldl
+    -lm
+    -lev
+    -fsanitize=address
+)
+string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
+
+set(CMAKE_CXX_FLAGS_DEBUG "-O0")
+set(CMAKE_CXX_FLAGS_RELEASE "-O0 -DNDEBUG") 
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+
+include_directories(${PROJECT_SOURCE_DIR}/src)
+
+string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+
+message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
+
+add_executable(drpc 
+    src/async_socket.cpp
+    src/async_watcher.cpp
+    src/event_loop.cpp
+    src/scheduled.cpp
+    src/channel.cpp
+    test/test.cpp
 )
 
-add_executable(${PROJECT_NAME} ${BUTIL_SOURCES})
+#target_link_libraries(drpc -fsanitize=address)
 
-target_link_libraries(drpc -fsanitize=address)
-#target_link_libraries(dict /home/pengwang/cloud_platform/target/3rd/gflags/libgflags.so)
-#target_link_libraries(curl /home/pengwang/cloud_platform/target/3rd/glog/libglog.a)
+#find_package(Libev)
+#if (LIBEV_FOUND)
+#    message(STATUS "found libev")
+#    target_include_directories(drpc PRIVATE ${LIBEV_INCLUDE})
+#    message(STATUS "===libev =" ${LIBEV_INCLUDE})
+#    #target_link_libraries(drpc ${LIBEV_LIBRARY})
+#    target_link_libraries(drpc "/usr/local/lib/libev.so")
+#else(LIBEV_FOUND)
+#    message(FATAL_ERROR "not found libev")
+#endif()
+
+find_package(Protobuf)
+if(PROTOBUF_FOUND)
+    message(STATUS "found protobuf")
+else(PROTOBUF_FOUND)
+    message(FATAL_ERROR "not found protobuf") 
+endif()
+
+if(NOT TARGET spdlog)
+    find_package(spdlog REQUIRED)
+    message(STATUS "found spdlog")
+    target_link_libraries(drpc PRIVATE spdlog::spdlog_header_only)
+endif()

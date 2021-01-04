@@ -1,5 +1,3 @@
-#include <stdio.h>
-#if 0
 #include "event_loop.hpp"
 #include "async_socket.hpp"
 #include "channel.hpp"
@@ -85,35 +83,6 @@ void buffer_test() {
 
 }
 
-void    test_other() {
-    char full_path[256] = {0};
-    char config_path[128] = {0};
-    char config_name[128] = {0};
-
-    snprintf(full_path, sizeof(full_path), "http://www.baidu.com/abcderc/ww/./www/pengwang.tar.gz");
-    char* q = NULL;
-    char* p = strrchr(full_path, '/');
-    if (!p) {
-        return;
-    }
-
-    q = p;
-    q ++;
-    if (!q) {
-        return;
-    }
-
-    *p = '\0';
-
-    strncpy(config_path, full_path, sizeof(config_path));
-    size_t l = strlen(config_path);
-    snprintf(config_path + l, sizeof(config_path) - l, "/");
-    strncpy(config_name, q, sizeof(config_name));
-
-    drpc::DDEBUG("path:%s", config_path);
-    drpc::DDEBUG("name:%s", config_name);
-}
-
 void channel_refs() {
     std::unique_ptr<drpc::EventLoop> event_loop;
     event_loop.reset(new drpc::EventLoop());
@@ -138,22 +107,6 @@ void test_scheduled() {
         return;
     }
 
-    drpc::EventLoop* t = new drpc::EventLoop();
-    if (!t) {
-        return;
-    }
-
-    drpc::EventLoop* t2 = (drpc::EventLoop*)calloc(1, sizeof(drpc::EventLoop));
-    if (!t2) {
-        return;
-    }
-
-    char* c = (char*)calloc(1, sizeof(char) * 100);
-    if (!c) {
-        return;
-    }
-    //memset(c, 0, sizeof(c) * 100);
-
     drpc::scheduled_ptr sched;
     {
         sched = drpc::Scheduled::CreateScheduled(event_loop.get(), timeout_cb, 10);
@@ -173,19 +126,15 @@ void test_scheduled() {
 
     sched->Run();
 
+    sched.reset();
+
     //event_loop->Run();
 }
-#endif
-#include <stdlib.h>
+
 int main() {
-    //drpc::Logger::Instance().Init();
+    drpc::Logger::Instance().Init();
 
-    char* test = (char*)calloc(1, 1000);
-    if (!test) {
-        return 0;
-    }
-
-    //test_scheduled();
+    test_scheduled();
 
 #if 0
     //channel_refs();
@@ -219,7 +168,7 @@ int main() {
 
     t1.join();
 #endif
-    //drpc::Logger::Instance().Destroy();
+    drpc::Logger::Instance().Destroy();
 
     return 0;
 }
