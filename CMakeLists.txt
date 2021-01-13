@@ -40,27 +40,29 @@ string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
 
-add_executable(drpc 
+add_executable(drpc
+    src/socket.cpp
+    src/ip_address.cpp
+    src/listener.cpp
     src/async_socket.cpp
     src/async_watcher.cpp
     src/event_loop.cpp
+    src/event_loop_group.cpp
     src/scheduled.cpp
     src/channel.cpp
     test/test.cpp
 )
 
-#target_link_libraries(drpc -fsanitize=address)
+target_link_libraries(drpc -fsanitize=address)
 
-#find_package(Libev)
-#if (LIBEV_FOUND)
-#    message(STATUS "found libev")
-#    target_include_directories(drpc PRIVATE ${LIBEV_INCLUDE})
-#    message(STATUS "===libev =" ${LIBEV_INCLUDE})
-#    #target_link_libraries(drpc ${LIBEV_LIBRARY})
-#    target_link_libraries(drpc "/usr/local/lib/libev.so")
-#else(LIBEV_FOUND)
-#    message(FATAL_ERROR "not found libev")
-#endif()
+find_package(Libev)
+if (LIBEV_FOUND)
+    message(STATUS "found libev")
+    target_include_directories(drpc PRIVATE ${LIBEV_INCLUDE})
+    target_link_libraries(drpc ${LIBEV_LIBRARY})
+else(LIBEV_FOUND)
+    message(FATAL_ERROR "not found libev")
+endif()
 
 find_package(Protobuf)
 if(PROTOBUF_FOUND)
@@ -72,5 +74,5 @@ endif()
 if(NOT TARGET spdlog)
     find_package(spdlog REQUIRED)
     message(STATUS "found spdlog")
-    target_link_libraries(drpc PRIVATE spdlog::spdlog_header_only)
+    target_link_libraries(drpc spdlog::spdlog_header_only)
 endif()

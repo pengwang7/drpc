@@ -1,7 +1,11 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/drpc.dir/src/socket.cpp.o"
+  "CMakeFiles/drpc.dir/src/ip_address.cpp.o"
+  "CMakeFiles/drpc.dir/src/listener.cpp.o"
   "CMakeFiles/drpc.dir/src/async_socket.cpp.o"
   "CMakeFiles/drpc.dir/src/async_watcher.cpp.o"
   "CMakeFiles/drpc.dir/src/event_loop.cpp.o"
+  "CMakeFiles/drpc.dir/src/event_loop_group.cpp.o"
   "CMakeFiles/drpc.dir/src/scheduled.cpp.o"
   "CMakeFiles/drpc.dir/src/channel.cpp.o"
   "CMakeFiles/drpc.dir/test/test.cpp.o"

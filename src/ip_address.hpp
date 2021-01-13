@@ -13,7 +13,6 @@
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
 
 #include <string.h>
 
@@ -48,7 +47,7 @@ public:
 
     explicit IPAddress(uint32_t ip_in_host_byte_order) : family_(AF_INET) {
         memset(&u_, 0, sizeof(u_));
-        u_.ip4.s_addr = HostToNetwork32(ip_in_host_byte_order);
+        u_.ip4.s_addr = htonl(ip_in_host_byte_order);
     }
 
     IPAddress(const IPAddress& other) : family_(other.family_) {
@@ -68,7 +67,7 @@ public:
     bool operator<(const IPAddress& other) const;
     bool operator>(const IPAddress& other) const;
 
-    int family() const { return family_; }
+    uint16_t family() const { return family_; }
     in_addr ipv4_address() const;
     in6_addr ipv6_address() const;
 
@@ -77,12 +76,6 @@ public:
 
     // Wraps inet_ntop.
     std::string ToString() const;
-
-    bool IPFromString(const std::string& str, IPAddress* out);
-
-    // Returns an unmapped address from a possibly-mapped address.
-    // Returns the same address if this isn't a mapped address.
-    IPAddress Normalized() const;
 
     // Returns this address as an IPv6 address.
     // Maps v4 addresses (as ::ffff:a.b.c.d), returns v6 addresses unchanged.
@@ -95,10 +88,10 @@ public:
     int overhead() const;
 
     // Whether this is an unspecified IP address.
-    bool IsNil() const;
+    bool IPIsUnspec(const IPAddress& ip) const;
 
 private:
-    int family_;
+    uint16_t family_;
 
     union {
         in_addr ip4;
@@ -107,13 +100,15 @@ private:
 };
 
 bool IPFromString(const std::string& str, IPAddress* out);
-bool IPIsAny(const IPAddress& ip);
-bool IPIsLoopback(const IPAddress& ip);
-bool IPIsLinkLocal(const IPAddress& ip);
-bool IPIsV4Mapped(const IPAddress& ip);
 
-IPAddress GetLoopbackIP(int family);
-IPAddress GetAnyIP(int family);
+//TODO:
+//bool IPIsAny(const IPAddress& ip);
+//bool IPIsLoopback(const IPAddress& ip);
+//bool IPIsLinkLocal(const IPAddress& ip);
+//bool IPIsV4Mapped(const IPAddress& ip);
+//
+//IPAddress GetLoopbackIP(int family);
+//IPAddress GetAnyIP(int family);
 
 } /* end namespace drpc */
 

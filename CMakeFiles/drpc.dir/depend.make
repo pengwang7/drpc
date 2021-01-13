@@ -35,6 +35,28 @@ CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/event_loop.hpp
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/utility.hpp
 
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/async_watcher.hpp
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/concurrentqueue.h
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop.hpp
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop_group.cpp
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop_group.hpp
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/logger.hpp
+
+CMakeFiles/drpc.dir/src/ip_address.cpp.o: src/ip_address.cpp
+CMakeFiles/drpc.dir/src/ip_address.cpp.o: src/ip_address.hpp
+
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/async_socket.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/async_watcher.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/concurrentqueue.h
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/event_loop.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/ip_address.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/listener.cpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/listener.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/logger.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/server_options.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/socket.hpp
+CMakeFiles/drpc.dir/src/listener.cpp.o: src/utility.hpp
+
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/async_cbs.hpp
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/async_watcher.hpp
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/buffer.hpp
@@ -44,6 +66,11 @@ CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/scheduled.cpp
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/scheduled.hpp
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/utility.hpp
+
+CMakeFiles/drpc.dir/src/socket.cpp.o: src/ip_address.hpp
+CMakeFiles/drpc.dir/src/socket.cpp.o: src/logger.hpp
+CMakeFiles/drpc.dir/src/socket.cpp.o: src/socket.cpp
+CMakeFiles/drpc.dir/src/socket.cpp.o: src/socket.hpp
 
 CMakeFiles/drpc.dir/test/test.cpp.o: test/test.cpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/any_cast.hpp
@@ -55,7 +82,12 @@ CMakeFiles/drpc.dir/test/test.cpp.o: src/byte_buffer.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/channel.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/concurrentqueue.h
 CMakeFiles/drpc.dir/test/test.cpp.o: src/event_loop.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/event_loop_group.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/ip_address.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/listener.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/scheduled.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/server_options.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/socket.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/utility.hpp
 

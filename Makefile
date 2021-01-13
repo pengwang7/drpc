@@ -231,6 +231,87 @@ src/event_loop.cpp.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.s
 .PHONY : src/event_loop.cpp.s
 
+src/event_loop_group.o: src/event_loop_group.cpp.o
+
+.PHONY : src/event_loop_group.o
+
+# target to build an object file
+src/event_loop_group.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.o
+.PHONY : src/event_loop_group.cpp.o
+
+src/event_loop_group.i: src/event_loop_group.cpp.i
+
+.PHONY : src/event_loop_group.i
+
+# target to preprocess a source file
+src/event_loop_group.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.i
+.PHONY : src/event_loop_group.cpp.i
+
+src/event_loop_group.s: src/event_loop_group.cpp.s
+
+.PHONY : src/event_loop_group.s
+
+# target to generate assembly for a file
+src/event_loop_group.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.s
+.PHONY : src/event_loop_group.cpp.s
+
+src/ip_address.o: src/ip_address.cpp.o
+
+.PHONY : src/ip_address.o
+
+# target to build an object file
+src/ip_address.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.o
+.PHONY : src/ip_address.cpp.o
+
+src/ip_address.i: src/ip_address.cpp.i
+
+.PHONY : src/ip_address.i
+
+# target to preprocess a source file
+src/ip_address.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.i
+.PHONY : src/ip_address.cpp.i
+
+src/ip_address.s: src/ip_address.cpp.s
+
+.PHONY : src/ip_address.s
+
+# target to generate assembly for a file
+src/ip_address.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.s
+.PHONY : src/ip_address.cpp.s
+
+src/listener.o: src/listener.cpp.o
+
+.PHONY : src/listener.o
+
+# target to build an object file
+src/listener.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.o
+.PHONY : src/listener.cpp.o
+
+src/listener.i: src/listener.cpp.i
+
+.PHONY : src/listener.i
+
+# target to preprocess a source file
+src/listener.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.i
+.PHONY : src/listener.cpp.i
+
+src/listener.s: src/listener.cpp.s
+
+.PHONY : src/listener.s
+
+# target to generate assembly for a file
+src/listener.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.s
+.PHONY : src/listener.cpp.s
+
 src/scheduled.o: src/scheduled.cpp.o
 
 .PHONY : src/scheduled.o
@@ -257,6 +338,33 @@ src/scheduled.s: src/scheduled.cpp.s
 src/scheduled.cpp.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.s
 .PHONY : src/scheduled.cpp.s
+
+src/socket.o: src/socket.cpp.o
+
+.PHONY : src/socket.o
+
+# target to build an object file
+src/socket.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.o
+.PHONY : src/socket.cpp.o
+
+src/socket.i: src/socket.cpp.i
+
+.PHONY : src/socket.i
+
+# target to preprocess a source file
+src/socket.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.i
+.PHONY : src/socket.cpp.i
+
+src/socket.s: src/socket.cpp.s
+
+.PHONY : src/socket.s
+
+# target to generate assembly for a file
+src/socket.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.s
+.PHONY : src/socket.cpp.s
 
 test/test.o: test/test.cpp.o
 
@@ -306,9 +414,21 @@ help:
 	@echo "... src/event_loop.o"
 	@echo "... src/event_loop.i"
 	@echo "... src/event_loop.s"
+	@echo "... src/event_loop_group.o"
+	@echo "... src/event_loop_group.i"
+	@echo "... src/event_loop_group.s"
+	@echo "... src/ip_address.o"
+	@echo "... src/ip_address.i"
+	@echo "... src/ip_address.s"
+	@echo "... src/listener.o"
+	@echo "... src/listener.i"
+	@echo "... src/listener.s"
 	@echo "... src/scheduled.o"
 	@echo "... src/scheduled.i"
 	@echo "... src/scheduled.s"
+	@echo "... src/socket.o"
+	@echo "... src/socket.i"
+	@echo "... src/socket.s"
 	@echo "... test/test.o"
 	@echo "... test/test.i"
 	@echo "... test/test.s"

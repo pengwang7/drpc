@@ -26,6 +26,8 @@
 #define __LOGGER_HPP__
 
 #include <string>
+
+#include <errno.h>
 #include <string.h>
 
 #include "spdlog/spdlog.h"

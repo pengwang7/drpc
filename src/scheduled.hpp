@@ -48,7 +48,7 @@ public:
     void Cancel();
 
 private:
-    // Scheduled managentment is done through by shared_ptr,
+    // Scheduled managent by shared_ptr,
     // so we set the constructor to private.
     Scheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist);
 

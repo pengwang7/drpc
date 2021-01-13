@@ -1,3 +1,6 @@
+#include "socket.hpp"
+#include "ip_address.hpp"
+#include "listener.hpp"
 #include "event_loop.hpp"
 #include "async_socket.hpp"
 #include "channel.hpp"
@@ -6,6 +9,7 @@
 #include "buffer.hpp"
 #include "byte_buffer.hpp"
 #include "scheduled.hpp"
+#include "event_loop_group.hpp"
 
 static int kStartFlag = 0;
 
@@ -131,10 +135,39 @@ void test_scheduled() {
     //event_loop->Run();
 }
 
+void test_event_loop_group() {
+    drpc::DTRACE("test_event_loop_group begin.");
+
+    std::unique_ptr<drpc::EventLoopGroup> group(new drpc::EventLoopGroup(8, "test_group"));
+    if (!group) {
+        drpc::DERROR("The event loop group is nil.");
+        return;
+    }
+
+    group->Run();
+
+
+    sleep(12);
+
+    group->Wait();
+
+    group->Stop();
+
+    drpc::DTRACE("test_event_loop_group end.");
+}
+
+void test_listener() {
+
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
-    test_scheduled();
+//    test_scheduled();
+//
+    test_event_loop_group();
+
+    test_listener();
 
 #if 0
     //channel_refs();

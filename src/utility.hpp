@@ -30,6 +30,10 @@
 #include <unistd.h>
 #include <sys/eventfd.h>
 
+#include <memory>
+#include <functional>
+
+
 namespace drpc {
 
 #if EAGAIN == EWOULDBLOCK
