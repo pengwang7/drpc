@@ -301,3 +301,75 @@
 [2021-01-13 15:21:52.899][thread 1824251][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
 [2021-01-13 15:21:52.899][thread 1824251][trace]: (async_watcher.cpp:DoTerminateImpl:104) EventfdWatcher closed event fd.
 [2021-01-13 15:21:52.899][thread 1824251][trace]: (async_watcher.cpp:~AsyncWatcher:19) Destroy AsyncWatcher.
+[2021-01-13 19:22:43.947][thread 1857639][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:22:43.947][thread 1857639][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:22:43.947][thread 1857639][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:22:43.947][thread 1857639][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:22:43.947][thread 1857639][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:23:30.265][thread 1857758][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:23:30.265][thread 1857758][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:23:30.265][thread 1857758][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:23:30.266][thread 1857758][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:23:30.266][thread 1857758][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:25:24.128][thread 1858039][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:25:24.128][thread 1858039][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:25:24.129][thread 1858039][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:25:24.129][thread 1858039][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:25:24.129][thread 1858039][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:27:10.439][thread 1858356][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:27:10.440][thread 1858356][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:27:10.440][thread 1858356][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:27:10.440][thread 1858356][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (test.cpp:test_listener:187) test_listener end.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_socket.cpp:~AsyncSocket:56) Destroy async socket: 0x6080000000a0.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (event_loop.cpp:~EventLoop:40) The event loop destroy:0x604000000050.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:27:10.440][thread 1858356][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.
+[2021-01-13 19:30:44.559][thread 1858890][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:30:44.560][thread 1858890][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (test.cpp:test_listener:187) test_listener end.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_socket.cpp:~AsyncSocket:56) Destroy async socket: 0x6080000000a0.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (event_loop.cpp:~EventLoop:40) The event loop destroy:0x604000000050.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:30:44.560][thread 1858890][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.
+[2021-01-13 19:31:51.358][thread 1859068][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (test.cpp:test_listener:187) test_listener end.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_socket.cpp:~AsyncSocket:56) Destroy async socket: 0x6080000000a0.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (event_loop.cpp:~EventLoop:40) The event loop destroy:0x604000000050.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:31:51.359][thread 1859068][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.
+[2021-01-13 19:33:57.873][thread 1859386][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:33:57.873][thread 1859386][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:33:57.873][thread 1859386][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:33:57.873][thread 1859386][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:33:57.873][thread 1859386][debug]: (event_loop.cpp:SendToQueue:104) Send to other thread.
+[2021-01-13 19:33:57.873][thread 1859386][error]: (async_socket.cpp:Close:94) AsyncSocket detach failed.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (test.cpp:test_listener:187) test_listener end.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (async_socket.cpp:~AsyncSocket:56) Destroy async socket: 0x6080000000a0.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (event_loop.cpp:~EventLoop:40) The event loop destroy:0x604000000050.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:33:57.874][thread 1859386][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.
+[2021-01-13 19:42:23.680][thread 1860561][trace]: (test.cpp:test_listener:161) test_listener begin.
+[2021-01-13 19:42:23.680][thread 1860561][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-13 19:42:23.680][thread 1860561][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-13 19:42:23.680][thread 1860561][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x6080000000a0.
+[2021-01-13 19:42:23.680][thread 1860561][error]: (async_socket.cpp:Close:94) AsyncSocket detach failed.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (test.cpp:test_listener:187) test_listener end.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (async_socket.cpp:~AsyncSocket:56) Destroy async socket: 0x6080000000a0.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (event_loop.cpp:~EventLoop:44) The event loop destroy:0x604000000050.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
+[2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.

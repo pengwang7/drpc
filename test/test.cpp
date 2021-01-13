@@ -1,3 +1,4 @@
+#include "server_options.hpp"
 #include "socket.hpp"
 #include "ip_address.hpp"
 #include "listener.hpp"
@@ -157,7 +158,33 @@ void test_event_loop_group() {
 }
 
 void test_listener() {
+    drpc::DTRACE("test_listener begin.");
 
+    std::unique_ptr<drpc::EventLoop> event_loop;
+    event_loop.reset(new drpc::EventLoop());
+    if (!event_loop) {
+        drpc::DERROR("The event_loop is nil.");
+        return;
+    }
+
+    drpc::ServerOptions options;
+    options.address = "127.0.0.1";
+    options.port = 6689;
+    options.server_mode = drpc::ServerMode::OLPT_NORMAL;
+
+    std::unique_ptr<drpc::Listener> listener;
+    listener.reset(new drpc::Listener(event_loop.get(), &options));
+    if (!listener) {
+        drpc::DERROR("The listener is nil.");
+        return;
+    }
+
+    listener->Start();
+    listener->Stop();
+
+    //event_loop->Run();
+
+    drpc::DTRACE("test_listener end.");
 }
 
 int main() {
@@ -165,7 +192,7 @@ int main() {
 
 //    test_scheduled();
 //
-    test_event_loop_group();
+//    test_event_loop_group();
 
     test_listener();
 

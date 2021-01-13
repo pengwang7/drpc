@@ -33,7 +33,6 @@
 #include <memory>
 #include <functional>
 
-
 namespace drpc {
 
 #if EAGAIN == EWOULDBLOCK
