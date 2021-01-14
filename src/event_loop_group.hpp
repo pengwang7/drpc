@@ -25,7 +25,11 @@
 #ifndef __EVENT_LOOP_GROUP_HPP__
 #define __EVENT_LOOP_GROUP_HPP__
 
+#include <mutex>
+#include <atomic>
 #include <thread>
+#include <vector>
+#include <string>
 
 namespace drpc {
 

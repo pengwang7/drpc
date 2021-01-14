@@ -50,6 +50,7 @@ add_executable(drpc
     src/event_loop_group.cpp
     src/scheduled.cpp
     src/channel.cpp
+    src/server.cpp
     test/test.cpp
 )
 

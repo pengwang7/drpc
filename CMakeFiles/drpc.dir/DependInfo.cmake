@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pengwang/workspace/github/drpc/src/ip_address.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/ip_address.cpp.o"
   "/home/pengwang/workspace/github/drpc/src/listener.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/listener.cpp.o"
   "/home/pengwang/workspace/github/drpc/src/scheduled.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/scheduled.cpp.o"
+  "/home/pengwang/workspace/github/drpc/src/server.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/server.cpp.o"
   "/home/pengwang/workspace/github/drpc/src/socket.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/socket.cpp.o"
   "/home/pengwang/workspace/github/drpc/test/test.cpp" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/test/test.cpp.o"
   )

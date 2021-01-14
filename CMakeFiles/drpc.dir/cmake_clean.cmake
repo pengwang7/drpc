@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/drpc.dir/src/event_loop_group.cpp.o"
   "CMakeFiles/drpc.dir/src/scheduled.cpp.o"
   "CMakeFiles/drpc.dir/src/channel.cpp.o"
+  "CMakeFiles/drpc.dir/src/server.cpp.o"
   "CMakeFiles/drpc.dir/test/test.cpp.o"
   "bin/drpc.pdb"
   "bin/drpc"

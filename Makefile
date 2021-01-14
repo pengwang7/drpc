@@ -339,6 +339,33 @@ src/scheduled.cpp.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.s
 .PHONY : src/scheduled.cpp.s
 
+src/server.o: src/server.cpp.o
+
+.PHONY : src/server.o
+
+# target to build an object file
+src/server.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.o
+.PHONY : src/server.cpp.o
+
+src/server.i: src/server.cpp.i
+
+.PHONY : src/server.i
+
+# target to preprocess a source file
+src/server.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.i
+.PHONY : src/server.cpp.i
+
+src/server.s: src/server.cpp.s
+
+.PHONY : src/server.s
+
+# target to generate assembly for a file
+src/server.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.s
+.PHONY : src/server.cpp.s
+
 src/socket.o: src/socket.cpp.o
 
 .PHONY : src/socket.o
@@ -426,6 +453,9 @@ help:
 	@echo "... src/scheduled.o"
 	@echo "... src/scheduled.i"
 	@echo "... src/scheduled.s"
+	@echo "... src/server.o"
+	@echo "... src/server.i"
+	@echo "... src/server.s"
 	@echo "... src/socket.o"
 	@echo "... src/socket.i"
 	@echo "... src/socket.s"
