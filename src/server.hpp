@@ -59,10 +59,12 @@ public:
 
     ServerOptions* GetServerOptions();
 
+    //State* GetServerState();
+
 private:
     bool DoInit(ServerOptions* options);
 
-    void OnConnection();
+    void BuildChannel(int fd, std::string& peer_addr);
 
     void OnMessage();
 
@@ -72,6 +74,8 @@ private:
     std::unique_ptr<EventLoopGroup> group_;
 
     std::unique_ptr<Listener> listener_;
+
+    std::unique_ptr<EventLoop> listener_event_loop_;
 
     std::unordered_map<std::string, ::google::protobuf::Service*> service_map_;
 };

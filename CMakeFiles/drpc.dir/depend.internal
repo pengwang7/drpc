@@ -68,6 +68,9 @@ CMakeFiles/drpc.dir/src/scheduled.cpp.o
  /home/pengwang/workspace/github/drpc/src/scheduled.hpp
  /home/pengwang/workspace/github/drpc/src/utility.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o
+ /home/pengwang/workspace/github/drpc/src/async_watcher.hpp
+ /home/pengwang/workspace/github/drpc/src/concurrentqueue.h
+ /home/pengwang/workspace/github/drpc/src/event_loop.hpp
  /home/pengwang/workspace/github/drpc/src/event_loop_group.hpp
  /home/pengwang/workspace/github/drpc/src/listener.hpp
  /home/pengwang/workspace/github/drpc/src/logger.hpp
@@ -96,6 +99,7 @@ CMakeFiles/drpc.dir/test/test.cpp.o
  src/listener.hpp
  src/logger.hpp
  src/scheduled.hpp
+ src/server.hpp
  src/server_options.hpp
  src/socket.hpp
  src/utility.hpp

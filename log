@@ -373,3 +373,113 @@
 [2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
 [2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:DoTerminateImpl:128) EventfdWatcher closed event fd.
 [2021-01-13 19:42:23.681][thread 1860561][trace]: (async_watcher.cpp:~AsyncWatcher:43) Destroy AsyncWatcher.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (test.cpp:server_test:192) test_server begin.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (server.cpp:Server:9) Create Server: 0x608000000020.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000000d0.
+[2021-01-15 10:20:05.642][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.642][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.642][thread 2181766][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286893221632, event_loop name: 0x6040000000d0.
+[2021-01-15 10:20:05.647][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000150.
+[2021-01-15 10:20:05.647][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.648][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.648][thread 2181767][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286884828928, event_loop name: 0x604000000150.
+[2021-01-15 10:20:05.653][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000001d0.
+[2021-01-15 10:20:05.653][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.653][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.653][thread 2181768][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286876436224, event_loop name: 0x6040000001d0.
+[2021-01-15 10:20:05.658][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000250.
+[2021-01-15 10:20:05.658][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.658][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.658][thread 2181769][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286868043520, event_loop name: 0x604000000250.
+[2021-01-15 10:20:05.663][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000002d0.
+[2021-01-15 10:20:05.663][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.664][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.664][thread 2181770][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286859650816, event_loop name: 0x6040000002d0.
+[2021-01-15 10:20:05.669][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000350.
+[2021-01-15 10:20:05.669][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.669][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.669][thread 2181771][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286851258112, event_loop name: 0x604000000350.
+[2021-01-15 10:20:05.674][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000003d0.
+[2021-01-15 10:20:05.674][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.674][thread 2181764][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:20:05.674][thread 2181772][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286842865408, event_loop name: 0x6040000003d0.
+[2021-01-15 10:20:05.679][thread 2181764][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000450.
+[2021-01-15 10:20:05.679][thread 2181764][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:20:05.680][thread 2181773][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 140286834472704, event_loop name: 0x604000000450.
+[2021-01-15 10:20:05.680][thread 2181764][debug]: (event_loop_group.cpp:Run:61) Start group all thread success.
+[2021-01-15 10:20:05.680][thread 2181764][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x608000000520.
+[2021-01-15 10:20:05.680][thread 2181764][debug]: (test.cpp:server_test:201) Server start success.
+[2021-01-15 10:20:05.680][thread 2181764][trace]: (test.cpp:server_test:206) test_server end.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (test.cpp:server_test:192) test_server begin.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (server.cpp:Server:9) Create Server: 0x608000000020.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000000d0.
+[2021-01-15 10:56:32.539][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.540][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.540][thread 2186769][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858833041152, event_loop name: 0x6040000000d0.
+[2021-01-15 10:56:32.545][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000150.
+[2021-01-15 10:56:32.545][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.545][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.545][thread 2186770][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858824648448, event_loop name: 0x604000000150.
+[2021-01-15 10:56:32.550][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000001d0.
+[2021-01-15 10:56:32.550][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.550][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.550][thread 2186771][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858816255744, event_loop name: 0x6040000001d0.
+[2021-01-15 10:56:32.555][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000250.
+[2021-01-15 10:56:32.555][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.556][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.556][thread 2186772][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858807863040, event_loop name: 0x604000000250.
+[2021-01-15 10:56:32.561][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000002d0.
+[2021-01-15 10:56:32.561][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.561][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.561][thread 2186773][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858799470336, event_loop name: 0x6040000002d0.
+[2021-01-15 10:56:32.566][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000350.
+[2021-01-15 10:56:32.566][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.566][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.566][thread 2186774][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858791077632, event_loop name: 0x604000000350.
+[2021-01-15 10:56:32.571][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000003d0.
+[2021-01-15 10:56:32.572][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.572][thread 2186767][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 10:56:32.572][thread 2186775][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858782684928, event_loop name: 0x6040000003d0.
+[2021-01-15 10:56:32.577][thread 2186767][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000450.
+[2021-01-15 10:56:32.577][thread 2186767][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 10:56:32.577][thread 2186776][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139858774292224, event_loop name: 0x604000000450.
+[2021-01-15 10:56:32.577][thread 2186767][debug]: (event_loop_group.cpp:Run:61) Start group all thread success.
+[2021-01-15 10:56:32.577][thread 2186767][trace]: (async_socket.cpp:AsyncSocket:52) Create async socket: 0x608000000520.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (test.cpp:server_test:192) test_server begin.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (server.cpp:Server:9) Create Server: 0x608000000020.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000050.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000000d0.
+[2021-01-15 11:06:26.158][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.159][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.159][thread 2188151][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837510248192, event_loop name: 0x6040000000d0.
+[2021-01-15 11:06:26.164][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000150.
+[2021-01-15 11:06:26.164][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.164][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.164][thread 2188152][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837501855488, event_loop name: 0x604000000150.
+[2021-01-15 11:06:26.169][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000001d0.
+[2021-01-15 11:06:26.169][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.169][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.169][thread 2188153][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837493462784, event_loop name: 0x6040000001d0.
+[2021-01-15 11:06:26.174][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000250.
+[2021-01-15 11:06:26.174][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.174][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.174][thread 2188154][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837485070080, event_loop name: 0x604000000250.
+[2021-01-15 11:06:26.180][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000002d0.
+[2021-01-15 11:06:26.180][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.180][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.180][thread 2188155][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837476677376, event_loop name: 0x6040000002d0.
+[2021-01-15 11:06:26.185][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000350.
+[2021-01-15 11:06:26.185][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.185][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.185][thread 2188156][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837468284672, event_loop name: 0x604000000350.
+[2021-01-15 11:06:26.190][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x6040000003d0.
+[2021-01-15 11:06:26.190][thread 2188149][trace]: (async_watcher.cpp:AsyncWatcher:38) Create AsyncWatcher.
+[2021-01-15 11:06:26.191][thread 2188149][debug]: (event_loop_group.cpp:Run:54) The thread is not ready, wait 5000us.
+[2021-01-15 11:06:26.191][thread 2188157][debug]: (event_loop_group.cpp:Cycle:126) On cycle running thread id: 139837459891968, event_loop name: 0x6040000003d0.
+[2021-01-15 11:06:26.196][thread 2188149][trace]: (event_loop.cpp:EventLoop:34) The event loop create:0x604000000450.
+[2021-01-15 11:06:26.196][

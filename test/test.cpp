@@ -11,6 +11,7 @@
 #include "byte_buffer.hpp"
 #include "scheduled.hpp"
 #include "event_loop_group.hpp"
+#include "server.hpp"
 
 static int kStartFlag = 0;
 
@@ -187,6 +188,24 @@ void test_listener() {
     drpc::DTRACE("test_listener end.");
 }
 
+void server_test() {
+    drpc::DTRACE("test_server begin.");
+
+    drpc::ServerOptions options;
+    options.address = "127.0.0.1";
+    options.port = 6689;
+    options.server_mode = drpc::ServerMode::OLPT_NORMAL;
+
+    drpc::Server* server = new drpc::Server();
+    if (server->Start(&options)) {
+        drpc::DDEBUG("Server start success.");
+    } else {
+        drpc::DERROR("Server start failed.");
+    }
+
+    drpc::DTRACE("test_server end.");
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -194,8 +213,9 @@ int main() {
 //
 //    test_event_loop_group();
 
-    test_listener();
+//    test_listener();
 
+    server_test();
 #if 0
     //channel_refs();
 
