@@ -55,7 +55,7 @@ public:
 
     bool Stop();
 
-    bool AddService(::google::protobuf::Service* service);
+    bool AddService(google::protobuf::Service* service);
 
     ServerOptions* GetServerOptions();
 
@@ -66,9 +66,15 @@ private:
 
     void BuildChannel(int fd, std::string& peer_addr);
 
-    void OnMessage();
+    void OnNewChannel(const channel_ptr& chan);
+
+    void OnCloseChannel(const channel_ptr& chan);
+
+    void OnMessage(const channel_ptr& chan, Buffer& buffer);
 
 private:
+    using ChannelTable = std::unordered_map<std::string, channel_ptr>;
+
     ServerOptions* options_;
 
     std::unique_ptr<EventLoopGroup> group_;
@@ -77,7 +83,9 @@ private:
 
     std::unique_ptr<EventLoop> listener_event_loop_;
 
-    std::unordered_map<std::string, ::google::protobuf::Service*> service_map_;
+    std::unique_ptr<ChannelTable> chan_table_;
+
+    std::unordered_map<std::string, google::protobuf::Service*> service_map_;
 };
 
 } /* end namespace drpc */

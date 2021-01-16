@@ -209,6 +209,9 @@ LIBEV_INCLUDE:PATH=/usr/local/include
 //Path to a library.
 LIBEV_LIBRARY:FILEPATH=/usr/local/lib/libev.so
 
+//The directory containing a CMake configuration file for Libev.
+Libev_DIR:PATH=Libev_DIR-NOTFOUND
+
 //Path to a file.
 Protobuf_INCLUDE_DIR:PATH=/usr/local/include
 

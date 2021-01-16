@@ -161,6 +161,10 @@ bool AsyncSocket::IsWritable() const {
     return (events_ & kWriteEvent) != 0;
 }
 
+EventLoop* AsyncSocket::event_loop() const {
+    return event_loop_;
+}
+
 int AsyncSocket::fd2() const {
     if (!io_) {
         DERROR("AsyncSocket io watcher is nil.");

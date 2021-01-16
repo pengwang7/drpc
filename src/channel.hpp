@@ -36,9 +36,9 @@ class EventLoop;
 
 class Channel : public std::enable_shared_from_this<Channel> {
 public:
-    Channel(EventLoop* event_loop, AsyncSocket* socket);
+    Channel(AsyncSocket* ast);
 
-    ~Channel();
+    virtual ~Channel();
 
     void Init();
 
@@ -58,6 +58,12 @@ public:
 
     void SetCloseCallback(const CloseCallback& cb);
 
+    void SetAnyContext(const any& context);
+
+    any& GetAnyContext();
+
+    std::string csid() const;
+
 private:
     void InternalSendMessage(char* data, size_t len);
 
@@ -69,6 +75,8 @@ private:
     EventLoop* event_loop_;
 
     std::unique_ptr<AsyncSocket> async_socket_;
+
+    std::string csid_;
 
     Buffer recv_buffer_;
     Buffer send_buffer_;

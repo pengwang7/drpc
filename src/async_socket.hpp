@@ -70,6 +70,8 @@ public:
 
     bool IsWritable() const;
 
+    EventLoop* event_loop() const;
+
     int fd2() const;
 
 private:

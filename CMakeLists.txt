@@ -34,46 +34,59 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
+include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/src)
-
-string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
-
-message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
-
-add_executable(drpc
-    src/socket.cpp
-    src/ip_address.cpp
-    src/listener.cpp
-    src/async_socket.cpp
-    src/async_watcher.cpp
-    src/event_loop.cpp
-    src/event_loop_group.cpp
-    src/scheduled.cpp
-    src/channel.cpp
-    src/server.cpp
-    test/test.cpp
-)
-
-target_link_libraries(drpc -fsanitize=address)
 
 find_package(Libev)
 if (LIBEV_FOUND)
     message(STATUS "found libev")
-    target_include_directories(drpc PRIVATE ${LIBEV_INCLUDE})
-    target_link_libraries(drpc ${LIBEV_LIBRARY})
 else(LIBEV_FOUND)
     message(FATAL_ERROR "not found libev")
 endif()
 
 find_package(Protobuf)
 if(PROTOBUF_FOUND)
+    include(FindProtobuf)
     message(STATUS "found protobuf")
 else(PROTOBUF_FOUND)
-    message(FATAL_ERROR "not found protobuf") 
+    message(FATAL_ERROR "not found protobuf")
 endif()
 
 if(NOT TARGET spdlog)
     find_package(spdlog REQUIRED)
     message(STATUS "found spdlog")
-    target_link_libraries(drpc spdlog::spdlog_header_only)
 endif()
+
+string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+
+message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
+
+protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto)
+
+set(
+    BUTIL_SRC
+    ${PROJECT_SOURCE_DIR}/src/socket.cpp
+    ${PROJECT_SOURCE_DIR}/src/ip_address.cpp
+    ${PROJECT_SOURCE_DIR}/src/listener.cpp
+    ${PROJECT_SOURCE_DIR}/src/async_socket.cpp
+    ${PROJECT_SOURCE_DIR}/src/async_watcher.cpp
+    ${PROJECT_SOURCE_DIR}/src/event_loop.cpp
+    ${PROJECT_SOURCE_DIR}/src/event_loop_group.cpp
+    ${PROJECT_SOURCE_DIR}/src/scheduled.cpp
+    ${PROJECT_SOURCE_DIR}/src/channel.cpp
+    ${PROJECT_SOURCE_DIR}/src/rpc_channel.cpp
+    ${PROJECT_SOURCE_DIR}/src/server.cpp
+    ${PROJECT_SOURCE_DIR}/test/test.cpp
+)
+
+add_executable(drpc ${BUTIL_SRC} ${PROTO_SRC})
+
+set(
+    DYNAMIC_LIB
+    ${LIBEV_LIBRARY}
+    ${PROTOBUF_LIBRARIES}
+    spdlog::spdlog_header_only
+    -fsanitize=address
+)
+
+target_link_libraries(drpc ${DYNAMIC_LIB})

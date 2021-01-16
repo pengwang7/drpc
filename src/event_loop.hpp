@@ -88,6 +88,8 @@ private:
     moodycamel::ConcurrentQueue<TaskFunctor>* pending_task_queue_;
 
     std::atomic<bool> notified_;
+
+    std::size_t register_size_;
 };
 
 } /* end namespace drpc */

@@ -11,6 +11,7 @@
 #include "byte_buffer.hpp"
 #include "scheduled.hpp"
 #include "event_loop_group.hpp"
+#include "rpc_channel.hpp"
 #include "server.hpp"
 
 static int kStartFlag = 0;
@@ -95,7 +96,7 @@ void channel_refs() {
 
     drpc::AsyncSocket* socket = new drpc::AsyncSocket(event_loop.get(), 100, drpc::kReadEvent);
 
-    drpc::channel_ptr chan(new drpc::Channel(event_loop.get(), socket));
+    drpc::channel_ptr chan(new drpc::Channel(socket));
     chan->Init();
 
     drpc::DDEBUG("channel refs: %d.", chan.use_count());

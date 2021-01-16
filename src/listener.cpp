@@ -106,8 +106,6 @@ void Listener::AcceptHandle() {
         return;
     }
 
-    DTRACE("Listener accept socket: %d, peer adddress: %s.", sock, peer_addr);
-
     SetSocketOptions(sock, O_NONBLOCK);
     SetSocketOptions(sock, TCP_NODELAY);
     SetSocketOptions(sock, TCP_QUICKACK);

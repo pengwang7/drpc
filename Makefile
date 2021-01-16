@@ -123,6 +123,33 @@ drpc/fast:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/build
 .PHONY : drpc/fast
 
+rpc.pb.o: rpc.pb.cc.o
+
+.PHONY : rpc.pb.o
+
+# target to build an object file
+rpc.pb.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/rpc.pb.cc.o
+.PHONY : rpc.pb.cc.o
+
+rpc.pb.i: rpc.pb.cc.i
+
+.PHONY : rpc.pb.i
+
+# target to preprocess a source file
+rpc.pb.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/rpc.pb.cc.i
+.PHONY : rpc.pb.cc.i
+
+rpc.pb.s: rpc.pb.cc.s
+
+.PHONY : rpc.pb.s
+
+# target to generate assembly for a file
+rpc.pb.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/rpc.pb.cc.s
+.PHONY : rpc.pb.cc.s
+
 src/async_socket.o: src/async_socket.cpp.o
 
 .PHONY : src/async_socket.o
@@ -312,6 +339,33 @@ src/listener.cpp.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.s
 .PHONY : src/listener.cpp.s
 
+src/rpc_channel.o: src/rpc_channel.cpp.o
+
+.PHONY : src/rpc_channel.o
+
+# target to build an object file
+src/rpc_channel.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.o
+.PHONY : src/rpc_channel.cpp.o
+
+src/rpc_channel.i: src/rpc_channel.cpp.i
+
+.PHONY : src/rpc_channel.i
+
+# target to preprocess a source file
+src/rpc_channel.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.i
+.PHONY : src/rpc_channel.cpp.i
+
+src/rpc_channel.s: src/rpc_channel.cpp.s
+
+.PHONY : src/rpc_channel.s
+
+# target to generate assembly for a file
+src/rpc_channel.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.s
+.PHONY : src/rpc_channel.cpp.s
+
 src/scheduled.o: src/scheduled.cpp.o
 
 .PHONY : src/scheduled.o
@@ -429,6 +483,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... drpc"
 	@echo "... edit_cache"
+	@echo "... rpc.pb.o"
+	@echo "... rpc.pb.i"
+	@echo "... rpc.pb.s"
 	@echo "... src/async_socket.o"
 	@echo "... src/async_socket.i"
 	@echo "... src/async_socket.s"
@@ -450,6 +507,9 @@ help:
 	@echo "... src/listener.o"
 	@echo "... src/listener.i"
 	@echo "... src/listener.s"
+	@echo "... src/rpc_channel.o"
+	@echo "... src/rpc_channel.i"
+	@echo "... src/rpc_channel.s"
 	@echo "... src/scheduled.o"
 	@echo "... src/scheduled.i"
 	@echo "... src/scheduled.s"

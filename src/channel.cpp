@@ -28,13 +28,18 @@
 
 namespace drpc {
 
-Channel::Channel(EventLoop* event_loop, AsyncSocket* socket) {
-    DASSERT(event_loop_ = event_loop, "Channel constructor error.");
+Channel::Channel(AsyncSocket* ast) {
+    DASSERT(event_loop_ = ast->event_loop(), "Channel constructor error.");
 
-    async_socket_.reset(socket);
+    // The array size must be > 8.
+    char p[12] = {0};
+    snprintf(p, sizeof(p) - 1, "%p", this);
+    csid_ = std::string(p);
+
+    async_socket_.reset(ast);
     DASSERT(async_socket_, "Channel constructor error.");
 
-    DTRACE("Create channel: %p.", this);
+    DTRACE("Create channel success, csid: %s", csid_.c_str());
 }
 
 Channel::~Channel() {
@@ -65,6 +70,10 @@ bool Channel::Attach() {
     }
 
     DASSERT(async_socket_->IsAttached(), "Channel attached flag not set.");
+
+    if (new_channel_cb_) {
+        new_channel_cb_(shared_from_this());
+    }
 
     return true;
 }
@@ -115,6 +124,18 @@ void Channel::SetTimedoutCallback(const TimedoutCallback& cb) {
 
 void Channel::SetCloseCallback(const CloseCallback& cb) {
     channel_closed_cb_ = cb;
+}
+
+void Channel::SetAnyContext(const any& context) {
+    context_ = context;
+}
+
+any& Channel::GetAnyContext() {
+    return context_;
+}
+
+std::string Channel::csid() const {
+    return csid_;
 }
 
 void Channel::InternalSendMessage(char* data, size_t len) {
