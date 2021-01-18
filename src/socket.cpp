@@ -229,6 +229,13 @@ bool ListenSocket(int fd, int so_max_conn) {
         so_max_conn = 256;
     }
 
+    // The behavior of the backlog argument on TCP sockets changed with Linux 2.2.
+    // Now it specifies the queue length for completely established sockets waiting
+    // to be accepted, instead of the number of incomplete connection requests.
+    // The maximum length of the queue for incomplete sockets can be set
+    // using /proc/sys/net/ipv4/tcp_max_syn_backlog.
+    // When syncookies are enabled there is no logical maximum length and this setting
+    // is ignored.
     if (listen(fd, so_max_conn) < 0) {
         DERROR("ListenSocket failed: %s", strerror(errno));
         return false;

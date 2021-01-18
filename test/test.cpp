@@ -207,6 +207,47 @@ void server_test() {
     drpc::DTRACE("test_server end.");
 }
 
+#include "rpc.pb.h"
+
+void proto_message_test() {
+    drpc::DTRACE("proto_message_test begin.");
+
+//    message RpcMessage
+//    {
+//        MessageType type = 1;
+//        fixed64 id = 2;
+//    
+//        string service = 3;
+//        string method = 4;
+//        bytes request = 5;
+//    
+//        bytes response = 6;
+//    
+//        //optional ErrorCode error = 7;
+//    }
+
+    drpc::RpcMessage message;
+    message.set_id(101);
+    message.set_service("TestService");
+    message.set_method("GetExten");
+    message.set_request("exten: 1001, type: pjsip");
+
+    std::string result;
+
+    message.SerializeToString(&result);
+
+    drpc::DDEBUG("The proto message serialize to string: %s, size: %d", result.c_str(), result.size());
+
+
+    drpc::RpcMessage message2;
+    message2.ParseFromString(result);
+
+    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+                message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
+
+    drpc::DTRACE("proto_message_test end.");
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -215,8 +256,10 @@ int main() {
 //    test_event_loop_group();
 
 //    test_listener();
+//
+//    server_test();
 
-    server_test();
+      proto_message_test();
 #if 0
     //channel_refs();
 

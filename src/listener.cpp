@@ -59,7 +59,7 @@ bool Listener::Start() {
     }
 
     DASSERT(BindSocket(fd, ip, options_->port), "Start failed.");
-    DASSERT(ListenSocket(fd, 1024), "Start failed.");
+    DASSERT(ListenSocket(fd, 128), "Start failed.");
 
     listen_socket_.reset(new AsyncSocket(event_loop_, fd, kReadEvent));
     if (!listen_socket_) {

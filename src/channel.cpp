@@ -101,6 +101,10 @@ void Channel::Close() {
         if (self->channel_closed_cb_) {
             self->channel_closed_cb_(self);
         }
+
+        // Need to set context_ is nullptr, 
+        // Otherwise the reference count will not be freed.
+        self->context_ = nullptr;
     };
 
     event_loop_->SendToQueue(fn);

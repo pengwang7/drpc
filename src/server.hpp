@@ -61,6 +61,14 @@ public:
 
     //State* GetServerState();
 
+public:
+//    class ChannelManager {
+//    public:
+//        void Insert(const channel_ptr chan);
+//
+//        void Delete(const channel_ptr chan);
+//    };
+
 private:
     bool DoInit(ServerOptions* options);
 
@@ -69,6 +77,8 @@ private:
     void OnNewChannel(const channel_ptr& chan);
 
     void OnCloseChannel(const channel_ptr& chan);
+
+    void OnTimeoutChannel(const channel_ptr& chan);
 
     void OnMessage(const channel_ptr& chan, Buffer& buffer);
 

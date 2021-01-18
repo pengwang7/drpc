@@ -46,11 +46,11 @@ public:
 private:
     void SetMessageId(std::size_t msid);
 
-    void OnRpcRequest(const channel_ptr& chan, const ProtoMessage& message);
+    void OnRpcRequest(const ProtoMessage& message);
 
-    void OnRpcResponse(const channel_ptr& chan, const ProtoMessage& message);
+    void OnRpcResponse(const ProtoMessage& message);
     
-    void OnDone(const channel_ptr& chan, const ProtoMessage& message);
+    void OnDone(const ProtoMessage& message);
 
 private:
     typedef struct {
@@ -62,7 +62,7 @@ private:
 
     channel_ptr chan_;
 
-    const ::google::protobuf::Message* prototype_;
+    const google::protobuf::Message* prototype_;
 
     std::map<std::size_t, outstanding_call> outstandings_;
 

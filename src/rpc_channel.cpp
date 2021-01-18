@@ -25,22 +25,22 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
 }
 
 void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
-
+    //chan->Close();
 }
 
 void RpcChannel::SetMessageId(std::size_t msid) {
 
 }
 
-void RpcChannel::OnRpcRequest(const channel_ptr& chan, const ProtoMessage& message) {
+void RpcChannel::OnRpcRequest(const ProtoMessage& message) {
 
 }
 
-void RpcChannel::OnRpcResponse(const channel_ptr& chan, const ProtoMessage& message) {
+void RpcChannel::OnRpcResponse(const ProtoMessage& message) {
 
 }
 
-void RpcChannel::OnDone(const channel_ptr& chan, const ProtoMessage& message) {
+void RpcChannel::OnDone(const ProtoMessage& message) {
 
 }
 

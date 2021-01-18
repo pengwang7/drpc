@@ -125,8 +125,13 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
     }
 
     chan->Init();
+
     chan->SetNewChannelCallback(std::bind(&Server::OnNewChannel,
                 this, std::placeholders::_1));
+    chan->SetCloseCallback(std::bind(&Server::OnCloseChannel,
+                this, std::placeholders::_1));
+    chan->SetTimedoutCallback(std::bind(&Server::OnTimeoutChannel,
+            this, std::placeholders::_1));
 //    chan->SetRecvMessageCallback(std::bind(&Server::OnMessage,
 //                this, std::placeholders::_1, std::placeholders::_2));
 
@@ -136,13 +141,17 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
 void Server::OnNewChannel(const channel_ptr& chan) {
     DTRACE("OnNewChannel csid: %s.", chan->csid().c_str());
 
-//    std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan));
-//    chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
-//                rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));    
-//    chan->SetAnyContext(rpc_chan);
+    std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan));
+    chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
+                rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
+    chan->SetAnyContext(rpc_chan);
 }
 
 void Server::OnCloseChannel(const channel_ptr& chan) {
+
+}
+
+void Server::OnTimeoutChannel(const channel_ptr& chan) {
 
 }
 

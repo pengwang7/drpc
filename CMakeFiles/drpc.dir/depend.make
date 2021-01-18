@@ -106,6 +106,7 @@ CMakeFiles/drpc.dir/src/socket.cpp.o: src/socket.cpp
 CMakeFiles/drpc.dir/src/socket.cpp.o: src/socket.hpp
 
 CMakeFiles/drpc.dir/test/test.cpp.o: test/test.cpp
+CMakeFiles/drpc.dir/test/test.cpp.o: rpc.pb.h
 CMakeFiles/drpc.dir/test/test.cpp.o: src/any_cast.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/async_cbs.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/async_socket.hpp
