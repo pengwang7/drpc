@@ -294,11 +294,11 @@ public:
 
     T* begin() { return data() + read_index_; }
 
-    T* end() { return data() + size(); }
+    T* end() { return data() + write_index_; }
 
     const T* begin() const { return data() + read_index_; }
 
-    const T* end() const { return data() + size(); }
+    const T* end() const { return data() + write_index_; }
 
 private:
     void EnsureCapacityWithHeadroom(size_t capacity, bool extra_headroom) {

@@ -83,7 +83,7 @@ private:
     void OnMessage(const channel_ptr& chan, Buffer& buffer);
 
 private:
-    using ChannelTable = std::unordered_map<std::string, channel_ptr>;
+    using ChannelHashTable = std::unordered_map<std::string, channel_ptr>;
 
     ServerOptions* options_;
 
@@ -93,7 +93,7 @@ private:
 
     std::unique_ptr<EventLoop> listener_event_loop_;
 
-    std::unique_ptr<ChannelTable> chan_table_;
+    std::unique_ptr<ChannelHashTable> chan_table_;
 
     std::unordered_map<std::string, google::protobuf::Service*> service_map_;
 };

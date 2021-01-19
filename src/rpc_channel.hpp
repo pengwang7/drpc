@@ -27,11 +27,15 @@ class Service;
 
 namespace drpc {
 
-using ProtoMessage = std::shared_ptr<google::protobuf::Message>;
+class RpcMessage;
+
+using ProMessagePtr = std::shared_ptr<google::protobuf::Message>;
+using RpcMessagePtr = std::shared_ptr<RpcMessage>;
+using RpcServiceHashTable = std::unordered_map<std::string, google::protobuf::Service*>;
 
 class RpcChannel : public ::google::protobuf::RpcChannel {
 public:
-    RpcChannel(const channel_ptr& chan);
+    RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services);
 
     virtual ~RpcChannel();
 
@@ -44,13 +48,15 @@ public:
     void OnRpcMessage(const channel_ptr& chan, Buffer& buffer);
 
 private:
+    bool MessageTransform(Buffer& buffer, std::string& content);
+
     void SetMessageId(std::size_t msid);
 
-    void OnRpcRequest(const ProtoMessage& message);
+    void OnRpcRequest(const RpcMessagePtr& rpc_message);
 
-    void OnRpcResponse(const ProtoMessage& message);
+    void OnRpcResponse(const RpcMessagePtr& rpc_message);
     
-    void OnDone(const ProtoMessage& message);
+    void OnDone(const ProMessagePtr& message);
 
 private:
     typedef struct {
@@ -62,11 +68,11 @@ private:
 
     channel_ptr chan_;
 
-    const google::protobuf::Message* prototype_;
+    const google::protobuf::Message* default_;
 
     std::map<std::size_t, outstanding_call> outstandings_;
 
-    std::unordered_map<std::string, google::protobuf::Service*> service_map_;
+    std::unordered_map<std::string, google::protobuf::Service*>* service_map_;
 };
 
 } /* end namespace drpc */

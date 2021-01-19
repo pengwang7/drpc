@@ -68,7 +68,7 @@ public:
             return false;
         }
 
-        memcpy(&val, buffer_.begin(), sizeof(*val));
+        memcpy(val, buffer_.begin(), sizeof(*val));
 
         *val = ntohl(*val);
 
@@ -80,7 +80,7 @@ public:
             return false;
         }
 
-        memcpy(&val, buffer_.begin(), sizeof(*val));
+        memcpy(val, buffer_.begin(), sizeof(*val));
 
         *val = ntohll(*val);
 

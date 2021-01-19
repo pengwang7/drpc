@@ -77,6 +77,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/rpc_channel.cpp
     ${PROJECT_SOURCE_DIR}/src/server.cpp
     ${PROJECT_SOURCE_DIR}/test/test.cpp
+    #${PROJECT_SOURCE_DIR}/test/client.cpp
 )
 
 add_executable(drpc ${BUTIL_SRC} ${PROTO_SRC})

@@ -79,7 +79,7 @@ bool Server::DoInit(ServerOptions* options) {
         options_->threads = get_nprocs();
     }
 
-    chan_table_.reset(new ChannelTable);
+    chan_table_.reset(new ChannelHashTable);
     DASSERT(chan_table_, "Server init failed, channel table is nil.");
 
     group_.reset(new EventLoopGroup(options_->threads, "event-loop-group"));
@@ -141,7 +141,7 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
 void Server::OnNewChannel(const channel_ptr& chan) {
     DTRACE("OnNewChannel csid: %s.", chan->csid().c_str());
 
-    std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan));
+    std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan, &service_map_));
     chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
                 rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
     chan->SetAnyContext(rpc_chan);
