@@ -227,6 +227,7 @@ void proto_message_test() {
 //    }
 
     drpc::RpcMessage message;
+    message.set_type(drpc::REQUEST);
     message.set_id(101);
     message.set_service("TestService");
     message.set_method("GetExten");
@@ -256,10 +257,10 @@ int main() {
 //    test_event_loop_group();
 
 //    test_listener();
-//
-//    server_test();
 
-      proto_message_test();
+    server_test();
+
+//      proto_message_test();
 #if 0
     //channel_refs();
 

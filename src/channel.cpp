@@ -175,7 +175,7 @@ void Channel::InternalSendMessage(char* data, size_t len) {
 void Channel::AsyncSocketReadHandle() {
     DASSERT(event_loop_->IsConsistent(), "Channel error.");
 
-    DTRACE("Channel recv peer data.");
+    DTRACE("Channel will be recv peer data.");
 
     ssize_t bytes_transferred = recv_buffer_.RecvData(async_socket_->fd2());
     if (bytes_transferred <= 0) {

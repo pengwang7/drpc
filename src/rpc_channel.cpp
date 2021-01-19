@@ -7,7 +7,7 @@
 
 namespace drpc {
 
-RpcChannel::RpcChannel(const channel_ptr& chan) : chan_(chan) {
+RpcChannel::RpcChannel(const channel_ptr& chan) : msid_(0), chan_(chan) {
     DASSERT(chan_, "RpcChannel create failed.");
     DTRACE("Create RpcChannel: %p.", this);
 }
@@ -25,6 +25,7 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
 }
 
 void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
+    drpc::DTRACE("=====OnRpcMessage======%d", buffer.UnreadByteSize());
     //chan->Close();
 }
 

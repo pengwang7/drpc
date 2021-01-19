@@ -85,10 +85,11 @@ public:
 
     explicit BufferT(size_t capacity = 1024)
         : capacity_(capacity),
+          read_index_(0),
+          write_index_(0),
           data_(capacity_ > 0 ?
           new T[capacity_] : nullptr) {
         DASSERT(IsConsistent(), "BufferT error.");
-        read_index_ = write_index_ = 0;
     }
 
     BufferT(const BufferT&) = delete;

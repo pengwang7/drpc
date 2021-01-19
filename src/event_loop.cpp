@@ -33,6 +33,8 @@ namespace drpc {
 EventLoop::EventLoop() {
     DTRACE("The event loop create:%p.", this);
 
+    notified_.store(false);
+
     // The first time thread id is set, the really
     // thread id is set when Run will be called.
     // Here's a scenario had memory leak.

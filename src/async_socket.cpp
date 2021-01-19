@@ -91,7 +91,7 @@ void AsyncSocket::Close() {
     close(fd2());
 
     if (!Detach()) {
-        DERROR("AsyncSocket detach failed.");
+        DDEBUG("AsyncSocket already detach.");
     }
 
     ASYNC_SOCKET_DESTROY(io_, delete);
@@ -124,7 +124,6 @@ void AsyncSocket::ModifyIOEvents(bool readable, bool writable) {
     }
 
     if (IsNone() && attached_) {
-        DASSERT(!Detach(), "AsyncSocket update none events failed.");
         return;
     }
 
@@ -132,9 +131,9 @@ void AsyncSocket::ModifyIOEvents(bool readable, bool writable) {
     // before ev_io_modify and then call Attach.
     if (events_ != old_events) {
         if (attached_) {
-            DASSERT(!Detach(), "AsyncSocket detach failed.");
+            DASSERT(Detach(), "AsyncSocket detach failed.");
             ev_io_modify(io_, events_);
-            DASSERT(!Attach(), "AsyncSocket attach failed.");
+            DASSERT(Attach(), "AsyncSocket attach failed.");
         } else {
             ev_io_modify(io_, events_);
         }
