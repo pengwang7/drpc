@@ -53,18 +53,29 @@ void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
             rpc_message->id(), rpc_message->service().c_str(),
             rpc_message->method().c_str(), rpc_message->request().c_str());
 
+    bool ret = false;
+    std::string reason;
+
     switch (rpc_message->type()) {
     case REQUEST:
-        OnRpcRequest(rpc_message);
+        ret = OnRpcRequest(rpc_message, reason);
+        if (!ret) {
+            OnRpcError(reason);
+            return;
+        }
         break;
 
     case RESPONSE:
-        //OnRpcResponse();
+//        ret = OnRpcResponse();
+//        if (!ret) {
+//
+//        }
         break;
 
     default:
         DERROR("OnRpcMessage the message type is invalid.");
-    };
+        reason = "Invalid message type.";
+    };    
 }
 
 bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
@@ -98,34 +109,55 @@ bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
 }
 
 void RpcChannel::SetMessageId(std::size_t msid) {
-
+    msid_ = msid;
 }
 
-void RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message) {
+bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, std::string& reason) {
     auto it = service_map_->find(rpc_message->service());
     if (it != service_map_->end()) {
         google::protobuf::Service* service = it->second;
         if (!service) {
             DERROR("OnRpcRequest the service is nil.");
-            return;
+            reason = "Service not found.";
+            return false;
         }
+
+        SetMessageId(rpc_message->id());
 
         const google::protobuf::ServiceDescriptor* sdes = service->GetDescriptor();
         const google::protobuf::MethodDescriptor* method = sdes->FindMethodByName(rpc_message->method());
         if (!method) {
             DERROR("OnRpcRequest %s service not found %s method.",
                     rpc_message->service().c_str(), rpc_message->method().c_str());
+            reason = "Method not found.";
+            return false;
+        }
+
+        std::unique_ptr<google::protobuf::Message> request(service->GetRequestPrototype(method).New());
+        if (request->ParseFromString(rpc_message->request())) {
+            google::protobuf::Message* response = service->GetResponsePrototype(method).New();
+            service->CallMethod(method, NULL, request.get(), response,
+                                google::protobuf::NewCallback(this, &RpcChannel::Done, chan_, response));
+            reason = "Success";
+            return true;
         }
     } else {
         DERROR("OnRpcRequest %s service not found.", rpc_message->service().c_str());
+        reason = "Service not found.";
     }
+
+    return false;
 }
 
-void RpcChannel::OnRpcResponse(const RpcMessagePtr& rpc_message) {
+bool RpcChannel::OnRpcResponse(const RpcMessagePtr& rpc_message) {
+    return false;
+}
+
+void RpcChannel::OnRpcError(std::string& reason) {
 
 }
 
-void RpcChannel::OnDone(const ProMessagePtr& message) {
+void RpcChannel::Done(const channel_ptr chan, google::protobuf::Message* pro_message) {
 
 }
 

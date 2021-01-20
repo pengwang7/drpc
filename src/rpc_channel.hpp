@@ -52,11 +52,13 @@ private:
 
     void SetMessageId(std::size_t msid);
 
-    void OnRpcRequest(const RpcMessagePtr& rpc_message);
+    bool OnRpcRequest(const RpcMessagePtr& rpc_message, std::string& reason);
 
-    void OnRpcResponse(const RpcMessagePtr& rpc_message);
-    
-    void OnDone(const ProMessagePtr& message);
+    bool OnRpcResponse(const RpcMessagePtr& rpc_message);
+
+    void OnRpcError(std::string& reason);
+
+    void Done(const channel_ptr chan, google::protobuf::Message* pro_message);
 
 private:
     typedef struct {
