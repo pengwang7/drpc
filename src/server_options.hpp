@@ -44,8 +44,8 @@ public:
     // If empty, the address will be any address.
     std::string address;
 
-    // Defaults to 8 threads.
-    std::size_t threads = 8;
+    // Defaults to 'nprocs' threads.
+    std::size_t threads = 0;
 
     // Default used server mode.
     ServerMode server_mode = ServerMode::OLPT_NORMAL;

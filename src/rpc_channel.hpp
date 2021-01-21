@@ -58,7 +58,7 @@ private:
 
     void OnRpcError(std::string& reason);
 
-    void Done(const channel_ptr chan, google::protobuf::Message* pro_message);
+    void Done(google::protobuf::Message* pro_message);
 
 private:
     typedef struct {

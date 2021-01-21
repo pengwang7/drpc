@@ -15,6 +15,13 @@ RpcChannel::RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services)
 
 RpcChannel::~RpcChannel() {
     DTRACE("The RpcChannel destroy: %p, csid: %s, msid: %d.", this, chan_->csid().c_str(), msid_);
+
+    // When the RpcChannel for rpc client, need to used outstandings_.
+    for (auto it = outstandings_.begin(); it != outstandings_.end(); ++ it) {
+        outstanding_call out_call = it->second;
+        delete out_call.response;
+        delete out_call.done;
+    }
 }
 
 void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
@@ -22,7 +29,7 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                     const google::protobuf::Message* request,
                     google::protobuf::Message* response,
                     google::protobuf::Closure* done) {
-
+    // TODO: this function for rpc client.
 }
 
 void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
@@ -137,7 +144,7 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, std::string& rea
         if (request->ParseFromString(rpc_message->request())) {
             google::protobuf::Message* response = service->GetResponsePrototype(method).New();
             service->CallMethod(method, NULL, request.get(), response,
-                                google::protobuf::NewCallback(this, &RpcChannel::Done, chan_, response));
+                                google::protobuf::NewCallback(this, &RpcChannel::Done, response));
             reason = "Success";
             return true;
         }
@@ -157,8 +164,21 @@ void RpcChannel::OnRpcError(std::string& reason) {
 
 }
 
-void RpcChannel::Done(const channel_ptr chan, google::protobuf::Message* pro_message) {
+void RpcChannel::Done(google::protobuf::Message* pro_message) {
+    std::unique_ptr<google::protobuf::Message> message(pro_message);
 
+    RpcMessage rpc_message;
+    rpc_message.set_type(RESPONSE);
+    rpc_message.set_id(msid_);
+    rpc_message.set_response(message->SerializeAsString());
+
+    std::string data;
+    if (!rpc_message.SerializeToString(&data)) {
+        DERROR("Done the rpc_message serialize to string failed.");
+        return;
+    }
+
+    chan_->SendMessage(data);
 }
 
 } /* end namespace drpc */
