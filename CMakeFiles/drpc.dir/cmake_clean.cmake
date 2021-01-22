@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "rpc.pb.h"
   "rpc.pb.cc"
+  "service.pb.h"
+  "service.pb.cc"
   "CMakeFiles/drpc.dir/src/socket.cpp.o"
   "CMakeFiles/drpc.dir/src/ip_address.cpp.o"
   "CMakeFiles/drpc.dir/src/listener.cpp.o"
@@ -14,6 +16,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/drpc.dir/src/server.cpp.o"
   "CMakeFiles/drpc.dir/test/test.cpp.o"
   "CMakeFiles/drpc.dir/rpc.pb.cc.o"
+  "CMakeFiles/drpc.dir/service.pb.cc.o"
   "bin/drpc.pdb"
   "bin/drpc"
 )

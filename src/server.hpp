@@ -27,6 +27,7 @@
 
 #include <unordered_map>
 
+#include "closure_guard.hpp"
 #include "server_options.hpp"
 #include "event_loop_group.hpp"
 

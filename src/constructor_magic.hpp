@@ -23,7 +23,6 @@
 
 // A macro to disallow all the implicit constructors, namely the default
 // constructor, copy constructor and operator= functions.
-//
 // This should be used in the declarations for a class that wants to prevent
 // anyone from instantiating it. This is especially useful for classes
 // containing only static methods.

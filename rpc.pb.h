@@ -240,6 +240,7 @@ class RpcMessage PROTOBUF_FINAL :
     kResponseFieldNumber = 6,
     kIdFieldNumber = 2,
     kTypeFieldNumber = 1,
+    kErrorFieldNumber = 7,
   };
   // string service = 3;
   void clear_service();
@@ -323,6 +324,15 @@ class RpcMessage PROTOBUF_FINAL :
   void _internal_set_type(::drpc::MessageType value);
   public:
 
+  // .drpc.ErrorCode error = 7;
+  void clear_error();
+  ::drpc::ErrorCode error() const;
+  void set_error(::drpc::ErrorCode value);
+  private:
+  ::drpc::ErrorCode _internal_error() const;
+  void _internal_set_error(::drpc::ErrorCode value);
+  public:
+
   // @@protoc_insertion_point(class_scope:drpc.RpcMessage)
  private:
   class _Internal;
@@ -336,6 +346,7 @@ class RpcMessage PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_;
   ::PROTOBUF_NAMESPACE_ID::uint64 id_;
   int type_;
+  int error_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_rpc_2eproto;
 };
@@ -632,6 +643,26 @@ inline void RpcMessage::set_allocated_response(std::string* response) {
   response_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), response,
       GetArena());
   // @@protoc_insertion_point(field_set_allocated:drpc.RpcMessage.response)
+}
+
+// .drpc.ErrorCode error = 7;
+inline void RpcMessage::clear_error() {
+  error_ = 0;
+}
+inline ::drpc::ErrorCode RpcMessage::_internal_error() const {
+  return static_cast< ::drpc::ErrorCode >(error_);
+}
+inline ::drpc::ErrorCode RpcMessage::error() const {
+  // @@protoc_insertion_point(field_get:drpc.RpcMessage.error)
+  return _internal_error();
+}
+inline void RpcMessage::_internal_set_error(::drpc::ErrorCode value) {
+  
+  error_ = value;
+}
+inline void RpcMessage::set_error(::drpc::ErrorCode value) {
+  _internal_set_error(value);
+  // @@protoc_insertion_point(field_set:drpc.RpcMessage.error)
 }
 
 #ifdef __GNUC__

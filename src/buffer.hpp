@@ -224,7 +224,7 @@ public:
 
     // Resets the buffer to zero size without altering capacity. Works even if the
     // buffer has been moved from.
-    void Clear() {
+    void clear() {
         MaybeZeroCompleteBuffer();
         read_index_ = 0;
         write_index_ = 0;

@@ -31,5 +31,5 @@ message RpcMessage
 
     bytes response = 6;
 
-    //optional ErrorCode error = 7;
+    ErrorCode error = 7;
 }

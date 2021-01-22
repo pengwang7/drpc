@@ -65,9 +65,17 @@ rpc.pb.h: /usr/local/bin/protoc
 rpc.pb.cc: rpc.pb.h
 	@$(CMAKE_COMMAND) -E touch_nocreate rpc.pb.cc
 
+service.pb.h: proto/service.proto
+service.pb.h: /usr/local/bin/protoc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Running cpp protocol buffer compiler on proto/service.proto"
+	/usr/local/bin/protoc --cpp_out /home/pengwang/workspace/github/drpc -I /home/pengwang/workspace/github/drpc/proto /home/pengwang/workspace/github/drpc/proto/service.proto
+
+service.pb.cc: service.pb.h
+	@$(CMAKE_COMMAND) -E touch_nocreate service.pb.cc
+
 CMakeFiles/drpc.dir/src/socket.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/socket.cpp.o: src/socket.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/drpc.dir/src/socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/drpc.dir/src/socket.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/socket.cpp.o -c /home/pengwang/workspace/github/drpc/src/socket.cpp
 
 CMakeFiles/drpc.dir/src/socket.cpp.i: cmake_force
@@ -80,7 +88,7 @@ CMakeFiles/drpc.dir/src/socket.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/ip_address.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/ip_address.cpp.o: src/ip_address.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/drpc.dir/src/ip_address.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/drpc.dir/src/ip_address.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/ip_address.cpp.o -c /home/pengwang/workspace/github/drpc/src/ip_address.cpp
 
 CMakeFiles/drpc.dir/src/ip_address.cpp.i: cmake_force
@@ -93,7 +101,7 @@ CMakeFiles/drpc.dir/src/ip_address.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/listener.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/listener.cpp.o: src/listener.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/drpc.dir/src/listener.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/drpc.dir/src/listener.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/listener.cpp.o -c /home/pengwang/workspace/github/drpc/src/listener.cpp
 
 CMakeFiles/drpc.dir/src/listener.cpp.i: cmake_force
@@ -106,7 +114,7 @@ CMakeFiles/drpc.dir/src/listener.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/async_socket.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/async_socket.cpp.o: src/async_socket.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/drpc.dir/src/async_socket.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/drpc.dir/src/async_socket.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/async_socket.cpp.o -c /home/pengwang/workspace/github/drpc/src/async_socket.cpp
 
 CMakeFiles/drpc.dir/src/async_socket.cpp.i: cmake_force
@@ -119,7 +127,7 @@ CMakeFiles/drpc.dir/src/async_socket.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/async_watcher.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/async_watcher.cpp.o: src/async_watcher.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/drpc.dir/src/async_watcher.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/drpc.dir/src/async_watcher.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/async_watcher.cpp.o -c /home/pengwang/workspace/github/drpc/src/async_watcher.cpp
 
 CMakeFiles/drpc.dir/src/async_watcher.cpp.i: cmake_force
@@ -132,7 +140,7 @@ CMakeFiles/drpc.dir/src/async_watcher.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/event_loop.cpp.o: src/event_loop.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/drpc.dir/src/event_loop.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/drpc.dir/src/event_loop.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/event_loop.cpp.o -c /home/pengwang/workspace/github/drpc/src/event_loop.cpp
 
 CMakeFiles/drpc.dir/src/event_loop.cpp.i: cmake_force
@@ -145,7 +153,7 @@ CMakeFiles/drpc.dir/src/event_loop.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop_group.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/drpc.dir/src/event_loop_group.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/drpc.dir/src/event_loop_group.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/event_loop_group.cpp.o -c /home/pengwang/workspace/github/drpc/src/event_loop_group.cpp
 
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.i: cmake_force
@@ -158,7 +166,7 @@ CMakeFiles/drpc.dir/src/event_loop_group.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/scheduled.cpp.o: src/scheduled.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/drpc.dir/src/scheduled.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/drpc.dir/src/scheduled.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/scheduled.cpp.o -c /home/pengwang/workspace/github/drpc/src/scheduled.cpp
 
 CMakeFiles/drpc.dir/src/scheduled.cpp.i: cmake_force
@@ -171,7 +179,7 @@ CMakeFiles/drpc.dir/src/scheduled.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/channel.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/channel.cpp.o: src/channel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/drpc.dir/src/channel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/drpc.dir/src/channel.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/channel.cpp.o -c /home/pengwang/workspace/github/drpc/src/channel.cpp
 
 CMakeFiles/drpc.dir/src/channel.cpp.i: cmake_force
@@ -184,7 +192,7 @@ CMakeFiles/drpc.dir/src/channel.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/rpc_channel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/drpc.dir/src/rpc_channel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/drpc.dir/src/rpc_channel.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/rpc_channel.cpp.o -c /home/pengwang/workspace/github/drpc/src/rpc_channel.cpp
 
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.i: cmake_force
@@ -197,7 +205,7 @@ CMakeFiles/drpc.dir/src/rpc_channel.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/src/server.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/drpc.dir/src/server.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/drpc.dir/src/server.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/src/server.cpp.o -c /home/pengwang/workspace/github/drpc/src/server.cpp
 
 CMakeFiles/drpc.dir/src/server.cpp.i: cmake_force
@@ -210,7 +218,7 @@ CMakeFiles/drpc.dir/src/server.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/test/test.cpp.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/test/test.cpp.o: test/test.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/drpc.dir/test/test.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/drpc.dir/test/test.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/test/test.cpp.o -c /home/pengwang/workspace/github/drpc/test/test.cpp
 
 CMakeFiles/drpc.dir/test/test.cpp.i: cmake_force
@@ -223,7 +231,7 @@ CMakeFiles/drpc.dir/test/test.cpp.s: cmake_force
 
 CMakeFiles/drpc.dir/rpc.pb.cc.o: CMakeFiles/drpc.dir/flags.make
 CMakeFiles/drpc.dir/rpc.pb.cc.o: rpc.pb.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/drpc.dir/rpc.pb.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/drpc.dir/rpc.pb.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/rpc.pb.cc.o -c /home/pengwang/workspace/github/drpc/rpc.pb.cc
 
 CMakeFiles/drpc.dir/rpc.pb.cc.i: cmake_force
@@ -233,6 +241,19 @@ CMakeFiles/drpc.dir/rpc.pb.cc.i: cmake_force
 CMakeFiles/drpc.dir/rpc.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/drpc.dir/rpc.pb.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pengwang/workspace/github/drpc/rpc.pb.cc -o CMakeFiles/drpc.dir/rpc.pb.cc.s
+
+CMakeFiles/drpc.dir/service.pb.cc.o: CMakeFiles/drpc.dir/flags.make
+CMakeFiles/drpc.dir/service.pb.cc.o: service.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/drpc.dir/service.pb.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/drpc.dir/service.pb.cc.o -c /home/pengwang/workspace/github/drpc/service.pb.cc
+
+CMakeFiles/drpc.dir/service.pb.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/drpc.dir/service.pb.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pengwang/workspace/github/drpc/service.pb.cc > CMakeFiles/drpc.dir/service.pb.cc.i
+
+CMakeFiles/drpc.dir/service.pb.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/drpc.dir/service.pb.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pengwang/workspace/github/drpc/service.pb.cc -o CMakeFiles/drpc.dir/service.pb.cc.s
 
 # Object files for target drpc
 drpc_OBJECTS = \
@@ -248,7 +269,8 @@ drpc_OBJECTS = \
 "CMakeFiles/drpc.dir/src/rpc_channel.cpp.o" \
 "CMakeFiles/drpc.dir/src/server.cpp.o" \
 "CMakeFiles/drpc.dir/test/test.cpp.o" \
-"CMakeFiles/drpc.dir/rpc.pb.cc.o"
+"CMakeFiles/drpc.dir/rpc.pb.cc.o" \
+"CMakeFiles/drpc.dir/service.pb.cc.o"
 
 # External object files for target drpc
 drpc_EXTERNAL_OBJECTS =
@@ -266,11 +288,12 @@ bin/drpc: CMakeFiles/drpc.dir/src/rpc_channel.cpp.o
 bin/drpc: CMakeFiles/drpc.dir/src/server.cpp.o
 bin/drpc: CMakeFiles/drpc.dir/test/test.cpp.o
 bin/drpc: CMakeFiles/drpc.dir/rpc.pb.cc.o
+bin/drpc: CMakeFiles/drpc.dir/service.pb.cc.o
 bin/drpc: CMakeFiles/drpc.dir/build.make
 bin/drpc: /usr/local/lib/libev.so
 bin/drpc: /usr/local/lib/libprotobuf.so
 bin/drpc: CMakeFiles/drpc.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable bin/drpc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pengwang/workspace/github/drpc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable bin/drpc"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/drpc.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -284,6 +307,8 @@ CMakeFiles/drpc.dir/clean:
 
 CMakeFiles/drpc.dir/depend: rpc.pb.h
 CMakeFiles/drpc.dir/depend: rpc.pb.cc
+CMakeFiles/drpc.dir/depend: service.pb.h
+CMakeFiles/drpc.dir/depend: service.pb.cc
 	cd /home/pengwang/workspace/github/drpc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pengwang/workspace/github/drpc /home/pengwang/workspace/github/drpc /home/pengwang/workspace/github/drpc /home/pengwang/workspace/github/drpc /home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/drpc.dir/depend
 

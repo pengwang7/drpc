@@ -27,6 +27,7 @@ class Service;
 
 namespace drpc {
 
+enum ErrorCode : int;
 class RpcMessage;
 
 using ProMessagePtr = std::shared_ptr<google::protobuf::Message>;
@@ -52,11 +53,11 @@ private:
 
     void SetMessageId(std::size_t msid);
 
-    bool OnRpcRequest(const RpcMessagePtr& rpc_message, std::string& reason);
+    bool OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& ec);
 
     bool OnRpcResponse(const RpcMessagePtr& rpc_message);
 
-    void OnRpcError(std::string& reason);
+    void OnRpcError(enum ErrorCode& ec);
 
     void Done(google::protobuf::Message* pro_message);
 

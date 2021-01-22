@@ -61,7 +61,7 @@ string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
 
-protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto)
+protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto proto/service.proto)
 
 set(
     BUTIL_SRC

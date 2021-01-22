@@ -1,0 +1,17 @@
+syntax="proto3";
+
+package drpc;
+
+option cc_generic_services = true;
+
+message PublishRequest {
+    string message = 1;
+};
+
+message PublishResponse {
+    string message = 1;
+};
+
+service PublishService {
+    rpc Publish(PublishRequest) returns (PublishResponse);
+};

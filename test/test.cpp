@@ -13,8 +13,31 @@
 #include "event_loop_group.hpp"
 #include "rpc_channel.hpp"
 #include "server.hpp"
+//#include "rpc.pb.h"
+#include "service.pb.h"
 
 static int kStartFlag = 0;
+
+class PublishServiceImpl : public drpc::PublishService {
+public:
+    PublishServiceImpl() {}
+
+    virtual ~PublishServiceImpl() {}
+
+public:
+    virtual void Publish(::google::protobuf::RpcController* controller,
+                         const ::drpc::PublishRequest* request,
+                         ::drpc::PublishResponse* response,
+                         ::google::protobuf::Closure* done) {
+
+        // Sync model.
+        drpc::ClosureGuard(done);
+
+        drpc::DDEBUG("The message: %s", request->message().c_str());
+
+        response->set_message("200OK");
+    }
+};
 
 void thread_env(drpc::EventLoop* arg) {
     if (!arg) {
@@ -190,7 +213,10 @@ void test_listener() {
 }
 
 void server_test() {
-    drpc::DTRACE("test_server begin.");
+    PublishServiceImpl* publish_service = new PublishServiceImpl();
+    if (!publish_service) {
+        return;
+    }
 
     drpc::ServerOptions options;
     options.address = "127.0.0.1";
@@ -198,6 +224,9 @@ void server_test() {
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
     drpc::Server* server = new drpc::Server();
+
+    server->AddService(publish_service);
+
     if (server->Start(&options)) {
         drpc::DDEBUG("Server start success.");
     } else {

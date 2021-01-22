@@ -150,6 +150,33 @@ rpc.pb.cc.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/rpc.pb.cc.s
 .PHONY : rpc.pb.cc.s
 
+service.pb.o: service.pb.cc.o
+
+.PHONY : service.pb.o
+
+# target to build an object file
+service.pb.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/service.pb.cc.o
+.PHONY : service.pb.cc.o
+
+service.pb.i: service.pb.cc.i
+
+.PHONY : service.pb.i
+
+# target to preprocess a source file
+service.pb.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/service.pb.cc.i
+.PHONY : service.pb.cc.i
+
+service.pb.s: service.pb.cc.s
+
+.PHONY : service.pb.s
+
+# target to generate assembly for a file
+service.pb.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/service.pb.cc.s
+.PHONY : service.pb.cc.s
+
 src/async_socket.o: src/async_socket.cpp.o
 
 .PHONY : src/async_socket.o
@@ -486,6 +513,9 @@ help:
 	@echo "... rpc.pb.o"
 	@echo "... rpc.pb.i"
 	@echo "... rpc.pb.s"
+	@echo "... service.pb.o"
+	@echo "... service.pb.i"
+	@echo "... service.pb.s"
 	@echo "... src/async_socket.o"
 	@echo "... src/async_socket.i"
 	@echo "... src/async_socket.s"
