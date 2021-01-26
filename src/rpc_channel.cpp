@@ -95,25 +95,29 @@ bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
         return false;
     }
 
-    uint32_t hs = 0;
-    if (!io_reader->ReadUInt32(&hs)) {
+    if (!io_reader->ReadBytes(reinterpret_cast<char*>(&msg_hdr_), 1)) {
+        DWARNING("MessageTransform buffer unread bytes < 1.");
+        return false;
+    }
+
+    if (!io_reader->ReadUInt32(&msg_hdr_.length)) {
         DWARNING("MessageTransform buffer unread bytes < 4.");
         return false;
     }
 
-    if (buffer.UnreadByteSize() < hs + sizeof(hs)) {
+    if (buffer.UnreadByteSize() < msg_hdr_.length + sizeof(uint32_t)) {
         DDEBUG("MessageTransform data is not complete.");
         return false;
     }
 
-    io_reader->Consume(sizeof(hs));
+    io_reader->Consume(sizeof(msg_hdr_.length));
 
-    if (!io_reader->ReadString(&content, hs)) {
+    if (!io_reader->ReadString(&content, msg_hdr_.length)) {
         DERROR("MessageTransform buffer read failed.");
         return false;
     }
 
-    io_reader->Consume(hs);
+    io_reader->Consume(msg_hdr_.length);
 
     return true;
 }

@@ -161,7 +161,7 @@ void Channel::InternalSendMessage(char* data, size_t len) {
         } else if (EVUTIL_ERR_RW_RETRIABLE(errno)) {
             bytes_transferred = 0;
         } else {
-            shared_from_this()->Close();
+            Close();
         }
     }
 
@@ -179,7 +179,12 @@ void Channel::AsyncSocketReadHandle() {
 
     ssize_t bytes_transferred = recv_buffer_.RecvData(async_socket_->fd2());
     if (bytes_transferred <= 0) {
-        shared_from_this()->Close();
+        if (bytes_transferred == 0) {
+            DDEBUG("Peer socket is closed.");
+        } else {
+            DERROR("The buffer recv data failed: %s.", strerror(errno));
+        }
+        Close();
         return;
     }
 
@@ -202,7 +207,7 @@ void Channel::AsyncSocketWriteHandle() {
             if (send_complete_cb_) send_complete_cb_(shared_from_this());
         }
     } else if (!EVUTIL_ERR_RW_RETRIABLE(errno)) {
-        shared_from_this()->Close();
+        Close();
     }
 }
 

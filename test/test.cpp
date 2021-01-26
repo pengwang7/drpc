@@ -31,7 +31,7 @@ public:
                          ::google::protobuf::Closure* done) {
 
         // Sync model.
-        drpc::ClosureGuard(done);
+        drpc::ClosureGuard done_guard(done);
 
         drpc::DDEBUG("The message: %s", request->message().c_str());
 

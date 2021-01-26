@@ -5,6 +5,7 @@
 #include <google/protobuf/service.h>
 
 #include "async_cbs.hpp"
+#include "rpc_msg_hdr.hpp"
 
 namespace google {
 
@@ -40,6 +41,7 @@ public:
 
     virtual ~RpcChannel();
 
+    // Override.
     void CallMethod(const google::protobuf::MethodDescriptor* method,
                         google::protobuf::RpcController* controller,
                         const google::protobuf::Message* request,
@@ -70,6 +72,8 @@ private:
     std::size_t msid_;
 
     channel_ptr chan_;
+
+    rpc_msg_hdr msg_hdr_;
 
     const google::protobuf::Message* default_;
 

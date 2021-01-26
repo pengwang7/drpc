@@ -72,6 +72,7 @@ CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/channel.hpp
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/rpc_channel.cpp
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/rpc_channel.hpp
+CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/rpc_msg_hdr.hpp
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: src/utility.hpp
 CMakeFiles/drpc.dir/src/rpc_channel.cpp.o: rpc.pb.h
 
@@ -100,6 +101,7 @@ CMakeFiles/drpc.dir/src/server.cpp.o: src/event_loop_group.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/listener.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/rpc_channel.hpp
+CMakeFiles/drpc.dir/src/server.cpp.o: src/rpc_msg_hdr.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server.cpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server_options.hpp
@@ -129,6 +131,7 @@ CMakeFiles/drpc.dir/test/test.cpp.o: src/ip_address.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/listener.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/rpc_channel.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/rpc_msg_hdr.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/scheduled.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/server.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/server_options.hpp

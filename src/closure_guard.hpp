@@ -42,7 +42,7 @@ public:
 
     // Exchange closure with another guard.
     void swap(ClosureGuard& other) { std::swap(done_, other.done_); }
-    
+
 private:
     // Copying this object makes no sense.
     DISALLOW_COPY_AND_ASSIGN(ClosureGuard);

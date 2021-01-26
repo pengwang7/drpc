@@ -37,9 +37,9 @@ int main() {
     drpc::RpcMessage message;
     message.set_type(drpc::REQUEST);
     message.set_id(101);
-    message.set_service("TestService");
-    message.set_method("GetExten");
-    message.set_request("exten: 1001, type: pjsip");
+    message.set_service("PublishService");
+    message.set_method("Publish");
+    message.set_request("exten: 1001, status: idle");
 
     std::string result;
     message.SerializeToString(&result);
@@ -56,32 +56,25 @@ int main() {
         drpc::DDEBUG("Send message success.");
     } else {
         drpc::DERROR("Send message failed, %s", strerror(errno));
+        return -1;
     }
 
-    sleep(2);
+    drpc::RpcMessage message1;
 
-    close(fd);
+    memset(buf, 0, sizeof(buf));
+    ret = recv(fd, buf, sizeof(buf), 0);
+    if (ret <= 0) {
+        drpc::DERROR("Recv message failed, %s", strerror(errno));
+        return -1;
+    }
 
-//    drpc::RpcMessage message1;
-//
-//    char buf[512] = {0};
-//    ret = recv(fd, buf, sizeof(buf), 0);
-//    if (ret <= 0) {
-//        drpc::DERROR("Recv message failed, %s", strerror(errno));
-//    }
-//
-//    drpc::DDEBUG("Recv message success.");
+    drpc::DDEBUG("Recv message success.");
 
-//
-//    RpcMessage r1;
-//
-//    char buff[512] = {0};
-//    ret = recv(fd, buff, 512, 0);
-//    if (ret <= 0) {
-//     LOG(ERROR) << "Recv message failed: " << strerror(errno);
-//    }
-//
-//    r1.ParseFromArray(buff, ret);
+    message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
+
+    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
+                message1.id(), message1.service().c_str(), message1.method().c_str(),
+                message1.response().c_str(), message1.error());    
 
     drpc::DTRACE("Client test end.");
 
