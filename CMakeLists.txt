@@ -12,7 +12,7 @@ set(CXX_FLAGS
     -Wall
     -Wextra
     -Werror
-    #-Wconversion
+    -Wconversion
     -Wno-unused-parameter
     -Wpointer-arith
     -Wwrite-strings

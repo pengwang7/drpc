@@ -9,6 +9,7 @@ namespace drpc {
 
 RpcChannel::RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services)
     : msid_(0), chan_(chan), default_(&RpcMessage::default_instance()), service_map_(services) {
+    memset(&msg_hdr_, 0, sizeof(msg_hdr_));
     DASSERT(chan_, "RpcChannel create failed.");
     DTRACE("Create RpcChannel: %p.", this);
 }
@@ -88,6 +89,17 @@ error:
     DWARNING("OnRpcMessage met error: %d.", ec);
 }
 
+bool RpcChannel::ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader) {
+    if (!io_reader->ReadBytes(reinterpret_cast<char*>(&msg_hdr_), sizeof(msg_hdr_))) {
+        DWARNING("ReadRpcHeader buffer unread bytes < rpc_msg_hdr.");
+        return false;
+    }
+
+    msg_hdr_.length = ntohl(msg_hdr_.length);
+
+    return true;
+}
+
 bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
     std::unique_ptr<ByteBufferReader> io_reader(new ByteBufferReader(buffer));
     if (!io_reader) {
@@ -95,22 +107,19 @@ bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
         return false;
     }
 
-    if (!io_reader->ReadBytes(reinterpret_cast<char*>(&msg_hdr_), 1)) {
-        DWARNING("MessageTransform buffer unread bytes < 1.");
+    if (!ReadRpcHeader(buffer, io_reader.get())) {
         return false;
     }
 
-    if (!io_reader->ReadUInt32(&msg_hdr_.length)) {
-        DWARNING("MessageTransform buffer unread bytes < 4.");
-        return false;
-    }
+    DDEBUG("MessageTransform the message version: %d, type: %d, length:%d.",
+            msg_hdr_.version, msg_hdr_.type, msg_hdr_.length);
 
-    if (buffer.UnreadByteSize() < msg_hdr_.length + sizeof(uint32_t)) {
+    if (buffer.UnreadByteSize() < msg_hdr_.length + sizeof(msg_hdr_)) {
         DDEBUG("MessageTransform data is not complete.");
         return false;
     }
 
-    io_reader->Consume(sizeof(msg_hdr_.length));
+    io_reader->Consume(sizeof(msg_hdr_));
 
     if (!io_reader->ReadString(&content, msg_hdr_.length)) {
         DERROR("MessageTransform buffer read failed.");

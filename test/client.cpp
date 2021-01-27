@@ -14,6 +14,8 @@
 
 #include "rpc.pb.h"
 #include "logger.hpp"
+#include "service.pb.h"
+#include "rpc_msg_hdr.hpp"
 
 int main() {
     drpc::Logger::Instance().Init();
@@ -37,9 +39,13 @@ int main() {
     drpc::RpcMessage message;
     message.set_type(drpc::REQUEST);
     message.set_id(101);
-    message.set_service("PublishService");
+    message.set_service("drpc.PublishService");
     message.set_method("Publish");
-    message.set_request("exten: 1001, status: idle");
+
+
+    drpc::PublishRequest request;
+    request.set_message("exten: 1001, status: idle");
+    message.set_request(request.SerializeAsString());
 
     std::string result;
     message.SerializeToString(&result);
@@ -47,12 +53,22 @@ int main() {
     sleep(3);
 
     char buf[256] = {0};
-    uint32_t len = htonl(static_cast<uint32_t>(result.size()));
-    memcpy(buf, &len, sizeof(uint32_t));
-    memcpy(buf + 4, result.c_str(), result.size());
 
-    ret = send(fd, buf, result.size() + 4, 0);
-    if (ret == static_cast<ssize_t>(result.size() + 4)) {
+    drpc::rpc_msg_hdr msg_hdr;
+    memset(&msg_hdr, 0, sizeof(msg_hdr));
+    msg_hdr.version = 2;
+    msg_hdr.type = 1;
+
+    char c;
+    memcpy(&c, &msg_hdr, 1);
+
+    uint32_t len = htonl(static_cast<uint32_t>(result.size()));
+    memcpy(buf, &c, 1);
+    memcpy(buf + 1, &len, sizeof(uint32_t));
+    memcpy(buf + 1 + 4, result.c_str(), result.size());
+
+    ret = send(fd, buf, result.size() + 1 + 4, 0);
+    if (ret == static_cast<ssize_t>(result.size() + 4 + 1)) {
         drpc::DDEBUG("Send message success.");
     } else {
         drpc::DERROR("Send message failed, %s", strerror(errno));

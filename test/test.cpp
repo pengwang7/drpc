@@ -278,6 +278,29 @@ void proto_message_test() {
     drpc::DTRACE("proto_message_test end.");
 }
 
+void    test_rpc_msg_hdr() {
+    drpc::rpc_msg_hdr hdr;
+    memset(&hdr, 0, sizeof(hdr));
+    hdr.version = 3;
+    hdr.type = 1;
+    hdr.padding = 0;
+
+    printf("===hdr size:%lu\n", sizeof(hdr));
+    char c;
+    memcpy(&c, &hdr, 1);
+
+    printf("cc11===%0x\n", (c & 0x02));
+    printf("cc22===%0x\n", (c >> 2));
+
+    printf("c====%0X\n", c);
+
+    drpc::rpc_msg_hdr hdr2;
+    memset(&hdr2, 0, sizeof(hdr2));
+    memcpy(&hdr2, &c, 1);
+
+    printf("hdr2:%d, %d\n", hdr2.version, hdr2.type);
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -288,6 +311,8 @@ int main() {
 //    test_listener();
 
     server_test();
+
+//    test_rpc_msg_hdr();
 
 //      proto_message_test();
 

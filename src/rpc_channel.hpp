@@ -51,6 +51,8 @@ public:
     void OnRpcMessage(const channel_ptr& chan, Buffer& buffer);
 
 private:
+    bool ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader);
+
     bool MessageTransform(Buffer& buffer, std::string& content);
 
     void SetMessageId(std::size_t msid);
