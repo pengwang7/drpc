@@ -30,8 +30,14 @@
 
 namespace drpc {
 
-EventLoop::EventLoop() {
+EventLoop::EventLoop(std::size_t max_register_size) {
     DTRACE("The event loop create:%p.", this);
+
+    cur_register_size_ = 0;
+    max_register_size_ = max_register_size;
+    if (max_register_size_ == 0) {
+        DDEBUG("The event loop don't limit channel registration size.");
+    }
 
     notified_.store(false);
 
@@ -80,6 +86,8 @@ void EventLoop::Stop() {
             DoPendingTasks();
         }
 
+        sched_->Cancel();
+
         // If ev_break is called on a different thread than ev_run,
         // then the Event Loop does not exit.
         ev_break(event_loop_, EVBREAK_ALL);
@@ -88,6 +96,17 @@ void EventLoop::Stop() {
     };
 
     SendToQueue(stop_task);
+}
+
+void EventLoop::StartChannelTimeoutCheck(ev_tstamp seconds, const TaskFunctor& task) {
+    if (seconds <= 0) {
+        DWARNING("Check channel timeout failed.");
+        return;
+    }
+
+    sched_ = Scheduled::CreateScheduled(this, task, seconds, true);
+
+    sched_->Run();
 }
 
 void EventLoop::SendToQueue(const TaskFunctor& task) {

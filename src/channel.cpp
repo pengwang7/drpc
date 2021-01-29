@@ -64,6 +64,11 @@ bool Channel::Attach() {
         return false;
     }
 
+    if (!event_loop_->IncRegisterSize()) {
+        DWARNING("Channel attach to event loop failed, too many channels for this loop.");
+        return false;
+    }
+
     if (!async_socket_->Attach()) {
         DERROR("Channel attach to event loop failed.");
         return false;
@@ -97,6 +102,7 @@ void Channel::Close() {
 
         self->async_socket_->DisableAllIOEvents();
         self->async_socket_->Close();
+        self->event_loop_->DecRegisterSize();
 
         if (self->channel_closed_cb_) {
             self->channel_closed_cb_(self);

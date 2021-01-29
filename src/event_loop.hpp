@@ -31,6 +31,7 @@
 
 #include "concurrentqueue.h"
 #include "async_watcher.hpp"
+#include "scheduled.hpp"
 
 struct ev_loop;
 
@@ -41,13 +42,15 @@ public:
     using TaskFunctor = std::function<void()>;
 
 public:
-    EventLoop();
+    EventLoop(std::size_t max_register_size = 0);
 
     ~EventLoop();
 
     void Run();
 
     void Stop();
+
+    void StartChannelTimeoutCheck(ev_tstamp seconds, const TaskFunctor& task);
 
     void SendToQueue(const TaskFunctor& task);
 
@@ -64,6 +67,28 @@ public:
 
     bool IsConsistent() const {
         return thread_id_ == std::this_thread::get_id();
+    }
+
+    std::size_t GetCurrentRegisterSize() {
+        return cur_register_size_;
+    }
+
+    bool IncRegisterSize() {
+        if (cur_register_size_ < max_register_size_) {
+            ++ cur_register_size_;
+            return true;
+        }
+
+        return false;
+    }
+
+    bool DecRegisterSize() {
+        if (cur_register_size_ > 0) {
+            -- cur_register_size_;
+            return true;
+        }
+
+        return false;
     }
 
     // For test
@@ -83,13 +108,17 @@ private:
 
     std::unique_ptr<EventfdWatcher> async_watcher_;
 
+    scheduled_ptr sched_;
+
     std::thread::id thread_id_;
 
     moodycamel::ConcurrentQueue<TaskFunctor>* pending_task_queue_;
 
     std::atomic<bool> notified_;
 
-    std::size_t register_size_;
+    std::size_t max_register_size_;
+
+    std::size_t cur_register_size_;
 };
 
 } /* end namespace drpc */

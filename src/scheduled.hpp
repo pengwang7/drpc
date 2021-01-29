@@ -25,6 +25,7 @@
 #ifndef __SCHEDULED_HPP__
 #define __SCHEDULED_HPP__
 
+#include <ev.h>
 #include "async_cbs.hpp"
 
 namespace drpc {

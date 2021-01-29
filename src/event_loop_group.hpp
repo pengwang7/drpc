@@ -91,6 +91,8 @@ private:
 
     std::string group_name_;
 
+    std::mutex group_mutex_;
+
     std::atomic<std::size_t> group_cursor_;
 
     std::vector<std::shared_ptr<Thread>> thread_group_;

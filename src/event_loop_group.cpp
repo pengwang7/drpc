@@ -78,10 +78,21 @@ void EventLoopGroup::Wait() {
 }
 
 EventLoop* EventLoopGroup::event_loop() {
-    std::size_t temp_cursor = group_cursor_.fetch_add(1);
-    temp_cursor = temp_cursor % group_size_;
+    EventLoop* best_event_loop = nullptr;
+    std::size_t min = std::numeric_limits<std::size_t>::max();
 
-    return thread_group_[temp_cursor]->event_loop();
+    {
+        // Lock there ? Maybe.
+        // std::lock_guard<std::mutex> scoped_lock(group_mutex_);
+        for (std::size_t i = 0; i < group_size_; ++ i) {
+            if (thread_group_[i]->event_loop()->GetCurrentRegisterSize() < min) {
+                min = thread_group_[i]->event_loop()->GetCurrentRegisterSize();
+                best_event_loop = thread_group_[i]->event_loop();
+            }
+        }
+    }
+
+    return best_event_loop;
 }
 
 std::size_t EventLoopGroup::size() {
