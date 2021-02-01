@@ -50,7 +50,13 @@ public:
     // Default used server mode.
     ServerMode server_mode = ServerMode::OLPT_NORMAL;
 
-    // Socket heartbeat timeout. Defaults to 300 seconds.
+    // SSL
+    bool enable_ssl = false;
+
+    // Channel heartbeat. Defaults to enabled.
+    bool enable_check_timeout = true;
+
+    // Channel heartbeat timeout seconds. Defaults to 300.
     int timeout_content = 300;
 
     // Process open max file descriptor limit.

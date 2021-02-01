@@ -155,5 +155,6 @@ CMakeFiles/drpc.dir/test/test.cpp.o: src/scheduled.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/server.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/server_options.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/socket.hpp
+CMakeFiles/drpc.dir/test/test.cpp.o: src/timing_wheel.hpp
 CMakeFiles/drpc.dir/test/test.cpp.o: src/utility.hpp
 

@@ -10,6 +10,7 @@
 #include "buffer.hpp"
 #include "byte_buffer.hpp"
 #include "scheduled.hpp"
+#include "timing_wheel.hpp"
 #include "event_loop_group.hpp"
 #include "rpc_channel.hpp"
 #include "server.hpp"

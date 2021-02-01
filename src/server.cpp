@@ -51,6 +51,12 @@ bool Server::Start(ServerOptions* options) {
         return false;
     }
 
+    if (options_->enable_check_timeout) {
+        listener_event_loop_->StartChannelTimeoutCheck(1, [&]() {
+
+        });
+    }
+
     group_->Run();
 
     if (!listener_->Start()) {
