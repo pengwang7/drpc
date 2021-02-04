@@ -54,7 +54,7 @@ bool Server::Start(ServerOptions* options) {
 
     if (options_->enable_check_timeout) {
         listener_event_loop_->StartChannelTimeoutCheck(1, [&]() {
-
+            timing_wheel_->push_bucket(Bucket());
         });
     }
 
