@@ -57,7 +57,7 @@ public:
     bool enable_check_timeout = true;
 
     // Channel heartbeat timeout seconds. Defaults to 300.
-    int timeout_content = 300;
+    int timeout = 300;
 
     // Process open max file descriptor limit.
     size_t fd_limits = 819200;

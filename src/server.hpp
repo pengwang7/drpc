@@ -44,6 +44,7 @@ class Service;
 namespace drpc {
 
 class Listener;
+class TimingWheel;
 
 class Server {
 public:
@@ -93,6 +94,8 @@ private:
     std::unique_ptr<Listener> listener_;
 
     std::unique_ptr<EventLoop> listener_event_loop_;
+
+    std::unique_ptr<TimingWheel> timing_wheel_;
 
     std::unique_ptr<ChannelHashTable> chan_table_;
 

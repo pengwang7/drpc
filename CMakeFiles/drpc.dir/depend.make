@@ -124,6 +124,7 @@ CMakeFiles/drpc.dir/src/server.cpp.o: src/scheduled.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server.cpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/server_options.hpp
+CMakeFiles/drpc.dir/src/server.cpp.o: src/timing_wheel.hpp
 CMakeFiles/drpc.dir/src/server.cpp.o: src/utility.hpp
 
 CMakeFiles/drpc.dir/src/socket.cpp.o: src/ip_address.hpp

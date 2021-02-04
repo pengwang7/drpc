@@ -31,6 +31,7 @@
 #include "async_socket.hpp"
 #include "listener.hpp"
 #include "channel.hpp"
+#include "timing_wheel.hpp"
 #include "rpc_channel.hpp"
 #include "event_loop.hpp"
 #include "server.hpp"
@@ -132,6 +133,17 @@ bool Server::DoInit(ServerOptions* options) {
 
     listener_->SetNewConnCallback(std::bind(&Server::BuildChannel,
                 this, std::placeholders::_1, std::placeholders::_2));
+
+    if (options_->enable_check_timeout || options_->timeout <= 0) {
+        timing_wheel_.reset(new TimingWheel(options_->timeout, 1));
+        if (!timing_wheel_) {
+            DERROR("Server init failed, timing wheel is nil.");
+            return false;
+        }
+    } else {
+        DDEBUG("Server not enable channel timeout check.");
+    }
+
 
     return true;
 }
