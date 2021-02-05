@@ -65,6 +65,7 @@ public:
 
     virtual ~RpcChannel();
 
+public:
     // Override.
     void CallMethod(const google::protobuf::MethodDescriptor* method,
                         google::protobuf::RpcController* controller,
@@ -73,6 +74,12 @@ public:
                         google::protobuf::Closure* done);
 
     void OnRpcMessage(const channel_ptr& chan, Buffer& buffer);
+
+    void SetRefreshCallback(const RefreshCallback& cb);
+
+    void SetAnyContext(const any& context);
+
+    any& GetAnyContext();
 
 private:
     bool ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader);
@@ -85,6 +92,8 @@ private:
 
     bool OnRpcResponse(const RpcMessagePtr& rpc_message);
 
+    void OnRpcRefresh();
+
     void OnRpcError(enum ErrorCode& ec);
 
     void Done(google::protobuf::Message* pro_message);
@@ -95,11 +104,16 @@ private:
         google::protobuf::Closure* done;        
     } outstanding_call;
 
+    // TODO: Not used.
+    any context_;
+
     std::size_t msid_;
 
     channel_ptr chan_;
 
     rpc_msg_hdr msg_hdr_;
+
+    RefreshCallback refresh_cb_;
 
     const google::protobuf::Message* default_;
 

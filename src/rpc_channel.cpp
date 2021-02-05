@@ -113,6 +113,18 @@ error:
     DWARNING("OnRpcMessage met error: %d.", ec);
 }
 
+void RpcChannel::SetRefreshCallback(const RefreshCallback& cb) {
+    refresh_cb_ = cb;
+}
+
+void RpcChannel::SetAnyContext(const any& context) {
+    context_ = context;
+}
+
+any& RpcChannel::GetAnyContext() {
+    return context_;
+}
+
 bool RpcChannel::ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader) {
     if (!io_reader->ReadBytes(reinterpret_cast<char*>(&msg_hdr_), sizeof(msg_hdr_))) {
         DWARNING("ReadRpcHeader buffer unread bytes < rpc_msg_hdr.");
@@ -134,6 +146,8 @@ bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
     if (!ReadRpcHeader(buffer, io_reader.get())) {
         return false;
     }
+
+    OnRpcRefresh();
 
     DDEBUG("MessageTransform the message version: %d, type: %d, length:%d.",
             msg_hdr_.version, msg_hdr_.type, msg_hdr_.length);
@@ -198,6 +212,11 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
 
 bool RpcChannel::OnRpcResponse(const RpcMessagePtr& rpc_message) {
     return false;
+}
+
+void RpcChannel::OnRpcRefresh() {
+    DDEBUG("OnRpcRefresh the channel csid: %s", chan_->csid().c_str());
+    refresh_cb_(chan_);
 }
 
 void RpcChannel::OnRpcError(enum ErrorCode& ec) {

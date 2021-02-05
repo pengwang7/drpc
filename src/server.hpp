@@ -78,6 +78,8 @@ private:
 
     void OnNewChannel(const channel_ptr& chan);
 
+    void OnRefreshChannel(const channel_ptr& chan);
+
     void OnCloseChannel(const channel_ptr& chan);
 
     void OnTimeoutChannel(const channel_ptr& chan);
@@ -88,6 +90,8 @@ private:
     using ChannelHashTable = std::unordered_map<std::string, channel_ptr>;
 
     ServerOptions* options_;
+
+    std::mutex mutex_;
 
     std::unique_ptr<EventLoopGroup> group_;
 

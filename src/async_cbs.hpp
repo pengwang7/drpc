@@ -45,6 +45,8 @@ using RecvMessageCallback = std::function<void(const channel_ptr& chan, Buffer& 
 
 using SendCompleteCallback = std::function<void(const channel_ptr& chan)>;
 
+using RefreshCallback = std::function<void(const channel_ptr&)>;
+
 using TimedoutCallback = std::function<void(const channel_ptr&)>;
 
 using CloseCallback = std::function<void(const channel_ptr&)>;

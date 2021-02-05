@@ -55,6 +55,7 @@ bool Server::Start(ServerOptions* options) {
     if (options_->enable_check_timeout) {
         listener_event_loop_->StartChannelTimeoutCheck(1, [&]() {
             timing_wheel_->push_bucket(Bucket());
+            DDEBUG("Push empty bucket.");
         });
     }
 
@@ -144,7 +145,6 @@ bool Server::DoInit(ServerOptions* options) {
         DDEBUG("Server not enable channel timeout check.");
     }
 
-
     return true;
 }
 
@@ -184,9 +184,24 @@ void Server::OnNewChannel(const channel_ptr& chan) {
     DTRACE("OnNewChannel csid: %s.", chan->csid().c_str());
 
     std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan, &service_map_));
+    rpc_chan->SetRefreshCallback(std::bind(&Server::OnRefreshChannel, this, std::placeholders::_1));
+    rpc_chan->SetAnyContext(this);
+
     chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
                 rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
     chan->SetAnyContext(rpc_chan);
+}
+
+void Server::OnRefreshChannel(const channel_ptr& chan) {
+    WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
+    EntryPtr entry(weak_entry.lock());
+
+    if (entry) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        timing_wheel_->push_back(entry);
+    } else {
+        DWARNING("OnRefreshChannel entry is nil.");
+    }
 }
 
 void Server::OnCloseChannel(const channel_ptr& chan) {
