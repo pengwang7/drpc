@@ -34,10 +34,12 @@
 namespace drpc {
 
 class EventLoop;
+class ServerOptions;
 
 class EventLoopGroup {
 public:
-    EventLoopGroup(std::size_t n, std::string name);
+    EventLoopGroup(ServerOptions* options, std::string name);
+
     ~EventLoopGroup();
 
 public:

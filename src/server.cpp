@@ -114,13 +114,13 @@ bool Server::DoInit(ServerOptions* options) {
     chan_table_.reset(new ChannelHashTable);
     DASSERT(chan_table_, "Server init failed, channel table is nil.");
 
-    group_.reset(new EventLoopGroup(options_->threads, "event-loop-group"));
+    group_.reset(new EventLoopGroup(options_, "event-loop-group"));
     if (!group_) {
         DERROR("Server init failed, group is nil.");
         return false;
     }
 
-    listener_event_loop_.reset(new EventLoop());
+    listener_event_loop_.reset(new EventLoop(options_->fd_limits));
     if (!listener_event_loop_) {
         DERROR("Server init failed, listener event loop is nil.");
         return false;
@@ -193,8 +193,10 @@ void Server::OnNewChannel(const channel_ptr& chan) {
 }
 
 void Server::OnRefreshChannel(const channel_ptr& chan) {
-    WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
-    EntryPtr entry(weak_entry.lock());
+    DTRACE("OnRefreshChannel...........");
+    sleep(2);
+    //WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
+    EntryPtr entry(new Entry(chan));
 
     if (entry) {
         std::lock_guard<std::mutex> lock(mutex_);

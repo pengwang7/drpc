@@ -62,6 +62,7 @@ CMakeFiles/drpc.dir/src/event_loop_group.cpp.o
  /home/pengwang/workspace/github/drpc/src/event_loop_group.hpp
  /home/pengwang/workspace/github/drpc/src/logger.hpp
  /home/pengwang/workspace/github/drpc/src/scheduled.hpp
+ /home/pengwang/workspace/github/drpc/src/server_options.hpp
  /home/pengwang/workspace/github/drpc/src/utility.hpp
 CMakeFiles/drpc.dir/src/ip_address.cpp.o
  /home/pengwang/workspace/github/drpc/src/ip_address.cpp

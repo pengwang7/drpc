@@ -27,7 +27,7 @@
 
 namespace drpc {
 
-// TODO:
+// TODO: Server status notify hight layer.
 class ObserverInterface {
 public:
     virtual void OnChanged() = 0;

@@ -61,6 +61,7 @@ CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop_group.cpp
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/event_loop_group.hpp
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/logger.hpp
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/scheduled.hpp
+CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/server_options.hpp
 CMakeFiles/drpc.dir/src/event_loop_group.cpp.o: src/utility.hpp
 
 CMakeFiles/drpc.dir/src/ip_address.cpp.o: src/ip_address.cpp

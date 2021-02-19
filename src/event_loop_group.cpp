@@ -23,13 +23,18 @@
  */
 
 #include "logger.hpp"
+#include "server_options.hpp"
 #include "event_loop.hpp"
 #include "event_loop_group.hpp"
 
 namespace drpc {
 
-EventLoopGroup::EventLoopGroup(std::size_t n, std::string name) {
-    group_size_ = n;
+static ServerOptions* g_server_options = nullptr;
+
+EventLoopGroup::EventLoopGroup(ServerOptions* options, std::string name) {
+    g_server_options = options;
+
+    group_size_ = options->threads;
     group_name_ = name;
     group_cursor_ = 0;
 }
@@ -100,7 +105,7 @@ std::size_t EventLoopGroup::size() {
 }
 
 EventLoopGroup::Thread::Thread()
-    : event_loop_(new EventLoop()), state_(INITIALIZE), detach_(false) {
+    : event_loop_(new EventLoop(g_server_options->fd_limits)), state_(INITIALIZE), detach_(false) {
     DASSERT(event_loop_, "Thread error.");
 }
 

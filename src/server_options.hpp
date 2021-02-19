@@ -45,7 +45,7 @@ public:
     std::string address;
 
     // Defaults to 'nprocs' threads.
-    std::size_t threads = 0;
+    std::size_t threads = 4;
 
     // Default used server mode.
     ServerMode server_mode = ServerMode::OLPT_NORMAL;
@@ -60,7 +60,7 @@ public:
     int timeout = 300;
 
     // Process open max file descriptor limit.
-    size_t fd_limits = 819200;
+    std::size_t fd_limits = 819200;
 
     // Maximum size of channel stream buffer. Defaults to architecture maximum.
     // Reaching this limit will result in a message_size error code.

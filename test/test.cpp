@@ -165,7 +165,13 @@ void test_scheduled() {
 void test_event_loop_group() {
     drpc::DTRACE("test_event_loop_group begin.");
 
-    std::unique_ptr<drpc::EventLoopGroup> group(new drpc::EventLoopGroup(8, "test_group"));
+    drpc::ServerOptions options;
+    options.address = "127.0.0.1";
+    options.port = 6689;
+    options.timeout = 20;
+    options.server_mode = drpc::ServerMode::OLPT_NORMAL;
+
+    std::unique_ptr<drpc::EventLoopGroup> group(new drpc::EventLoopGroup(&options, "test_group"));
     if (!group) {
         drpc::DERROR("The event loop group is nil.");
         return;
@@ -196,6 +202,7 @@ void test_listener() {
     drpc::ServerOptions options;
     options.address = "127.0.0.1";
     options.port = 6689;
+    options.timeout = 20;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
     std::unique_ptr<drpc::Listener> listener;
@@ -222,6 +229,7 @@ void server_test() {
     drpc::ServerOptions options;
     options.address = "127.0.0.1";
     options.port = 6689;
+    options.timeout = 10;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
     drpc::Server* server = new drpc::Server();

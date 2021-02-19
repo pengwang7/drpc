@@ -30,8 +30,11 @@ namespace drpc {
 #pragma pack(1)
 struct rpc_msg_hdr {
     uint8_t version:2;
+
     uint8_t type:2;
+
     uint8_t padding:4;
+
     uint32_t length;
 };
 #pragma pack()

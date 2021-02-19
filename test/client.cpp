@@ -94,5 +94,9 @@ int main() {
 
     drpc::DTRACE("Client test end.");
 
+    for (int i = 0; i < 17; ++ i) {
+        sleep(1);
+    }
+
     return 0;
 }

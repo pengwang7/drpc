@@ -93,6 +93,7 @@ struct Entry {
     ~Entry() {
         channel_ptr chan = chan_.lock();
         if (chan) {
+            DDEBUG("The channel(%s) is timeout.", chan->csid().c_str());
             chan->Close();
         }
     }
