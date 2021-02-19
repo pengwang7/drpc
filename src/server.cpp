@@ -193,9 +193,6 @@ void Server::OnNewChannel(const channel_ptr& chan) {
 }
 
 void Server::OnRefreshChannel(const channel_ptr& chan) {
-    DTRACE("OnRefreshChannel...........");
-    sleep(2);
-    //WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
     EntryPtr entry(new Entry(chan));
 
     if (entry) {
