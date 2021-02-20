@@ -85,7 +85,7 @@ using Bucket = std::unordered_set<EntryPtr>;
 using CycleBucket = RingBuffer<Bucket>;
 
 struct Entry {
-    Entry(const weak_channel_ptr chan)
+    Entry(const weak_channel_ptr& chan)
         : chan_(chan) {
 
     }

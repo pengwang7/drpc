@@ -87,11 +87,13 @@ private:
     void OnMessage(const channel_ptr& chan, Buffer& buffer);
 
 private:
-    using ChannelHashTable = std::unordered_map<std::string, channel_ptr>;
+    using RpcChannelHashTable = std::unordered_map<std::string, rpc_channel_ptr>;
 
     ServerOptions* options_;
 
     std::mutex mutex_;
+
+    std::mutex hash_mutex_;
 
     std::unique_ptr<EventLoopGroup> group_;
 
@@ -101,7 +103,7 @@ private:
 
     std::unique_ptr<TimingWheel> timing_wheel_;
 
-    std::unique_ptr<ChannelHashTable> chan_table_;
+    std::unique_ptr<RpcChannelHashTable> hash_table_;
 
     std::unordered_map<std::string, google::protobuf::Service*> service_map_;
 };

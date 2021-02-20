@@ -111,8 +111,8 @@ bool Server::DoInit(ServerOptions* options) {
         options_->threads = get_nprocs();
     }
 
-    chan_table_.reset(new ChannelHashTable);
-    DASSERT(chan_table_, "Server init failed, channel table is nil.");
+    hash_table_.reset(new RpcChannelHashTable());
+    DASSERT(hash_table_, "Server init failed, rpc channel table is nil.");
 
     group_.reset(new EventLoopGroup(options_, "event-loop-group"));
     if (!group_) {
@@ -183,17 +183,43 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
 void Server::OnNewChannel(const channel_ptr& chan) {
     DTRACE("OnNewChannel csid: %s.", chan->csid().c_str());
 
-    std::shared_ptr<RpcChannel> rpc_chan(new RpcChannel(chan, &service_map_));
+    rpc_channel_ptr rpc_chan(new RpcChannel(chan, &service_map_));
     rpc_chan->SetRefreshCallback(std::bind(&Server::OnRefreshChannel, this, std::placeholders::_1));
     rpc_chan->SetAnyContext(this);
 
+    EntryPtr entry(new Entry(chan));
+    WeakEntryPtr weak_entry(entry);
+
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        timing_wheel_->push_back(entry);
+    }
+
     chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
                 rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
-    chan->SetAnyContext(rpc_chan);
+
+    // Save the weak entry to channel any context.
+    chan->SetAnyContext(weak_entry);
+
+    // This function not thread safe.
+    std::lock_guard<std::mutex> lock(hash_mutex_);
+    hash_table_->insert(std::make_pair(chan->csid(), rpc_chan));
+
+    if (rpc_chan) {
+        DDEBUG("the chan refs:%d.", rpc_chan.use_count());
+    } else {
+        DDEBUG("is nil");
+    }
 }
 
 void Server::OnRefreshChannel(const channel_ptr& chan) {
-    EntryPtr entry(new Entry(chan));
+    DASSERT(!chan->GetAnyContext().empty(), "The channel any context is nil.");
+
+    // Don't create a new entry, if we do this(create a new entry),
+    // the channel will voluntarily close, regardless of whether there
+    // is a message refresh.
+    WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
+    EntryPtr entry(weak_entry);
 
     if (entry) {
         std::lock_guard<std::mutex> lock(mutex_);
@@ -204,11 +230,16 @@ void Server::OnRefreshChannel(const channel_ptr& chan) {
 }
 
 void Server::OnCloseChannel(const channel_ptr& chan) {
+    {
+        std::lock_guard<std::mutex> lock(hash_mutex_);
+        hash_table_->erase(chan->csid());
+    }
 
+    DTRACE("The rpc channel(%s) removed from container.", chan->csid().c_str());
 }
 
 void Server::OnTimeoutChannel(const channel_ptr& chan) {
-
+    //OnCloseChannel(chan);
 }
 
 void Server::OnMessage(const channel_ptr& chan, Buffer& buffer) {

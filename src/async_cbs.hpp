@@ -31,11 +31,15 @@ namespace drpc {
 
 class Channel;
 
+class RpcChannel;
+
 class Scheduled;
 
 using channel_ptr = std::shared_ptr<Channel>;
 
 using weak_channel_ptr = std::weak_ptr<Channel>;
+
+using rpc_channel_ptr = std::shared_ptr<RpcChannel>;
 
 using scheduled_ptr = std::shared_ptr<Scheduled>;
 
