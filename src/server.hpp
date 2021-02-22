@@ -63,14 +63,6 @@ public:
 
     //State* GetServerState();
 
-public:
-//    class ChannelManager {
-//    public:
-//        void Insert(const channel_ptr chan);
-//
-//        void Delete(const channel_ptr chan);
-//    };
-
 private:
     bool DoInit(ServerOptions* options);
 

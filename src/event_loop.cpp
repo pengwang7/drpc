@@ -76,6 +76,10 @@ void EventLoop::Run() {
 }
 
 void EventLoop::Stop() {
+    if (sched_) {
+        sched_->Cancel();
+    }
+
     auto stop_task = [this]() -> void {
         // Do all tasks before stop event loop.
         while (true) {
@@ -85,8 +89,6 @@ void EventLoop::Stop() {
 
             DoPendingTasks();
         }
-
-        sched_->Cancel();
 
         // If ev_break is called on a different thread than ev_run,
         // then the Event Loop does not exit.

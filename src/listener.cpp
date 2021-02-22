@@ -37,7 +37,7 @@ Listener::Listener(EventLoop* event_loop, ServerOptions* options)
 }
 
 Listener::~Listener() {
-
+    new_conn_cb_ = nullptr;
 }
 
 bool Listener::Start() {
@@ -79,10 +79,8 @@ bool Listener::Start() {
 
 bool Listener::Stop() {
     if (event_loop_->IsConsistent()) {
-        listen_socket_->Detach();
         listen_socket_->Close();
     } else {
-        event_loop_->SendToQueue(std::bind(&AsyncSocket::Detach, listen_socket_.get()));
         event_loop_->SendToQueue(std::bind(&AsyncSocket::Close, listen_socket_.get()));
     }
 

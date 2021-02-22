@@ -220,6 +220,19 @@ void test_listener() {
     drpc::DTRACE("test_listener end.");
 }
 
+void control_thread(drpc::Server* server) {
+    if (!server) {
+        drpc::DERROR("control thread server is nil.");
+        return;
+    }
+
+    sleep(60);
+
+    drpc::DDEBUG("control thread call stop.");
+
+    server->Stop();
+}
+
 void server_test() {
     PublishServiceImpl* publish_service = new PublishServiceImpl();
     if (!publish_service) {
@@ -236,11 +249,24 @@ void server_test() {
 
     server->AddService(publish_service);
 
+    // Create a new thread for stop rpc server.
+    std::thread th1(control_thread, server);
+
     if (server->Start(&options)) {
         drpc::DDEBUG("Server start success.");
     } else {
         drpc::DERROR("Server start failed.");
     }
+
+    drpc::DDEBUG("server test before thread join.");
+
+    th1.join();
+
+    // Need to free.
+    delete publish_service;
+    delete server;
+
+    drpc::DDEBUG("server test after thread join.");
 
     drpc::DTRACE("test_server end.");
 }

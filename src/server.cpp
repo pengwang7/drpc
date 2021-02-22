@@ -75,6 +75,7 @@ bool Server::Stop() {
     listener_->Stop();
 
     group_->Stop();
+    group_->Wait();
 
     listener_event_loop_->Stop();
 
@@ -204,12 +205,6 @@ void Server::OnNewChannel(const channel_ptr& chan) {
     // This function not thread safe.
     std::lock_guard<std::mutex> lock(hash_mutex_);
     hash_table_->insert(std::make_pair(chan->csid(), rpc_chan));
-
-    if (rpc_chan) {
-        DDEBUG("the chan refs:%d.", rpc_chan.use_count());
-    } else {
-        DDEBUG("is nil");
-    }
 }
 
 void Server::OnRefreshChannel(const channel_ptr& chan) {
