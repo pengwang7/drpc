@@ -8,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/drpc.dir/src/listener.cpp.o"
   "CMakeFiles/drpc.dir/src/async_socket.cpp.o"
   "CMakeFiles/drpc.dir/src/async_watcher.cpp.o"
+  "CMakeFiles/drpc.dir/src/thread_pool.cpp.o"
   "CMakeFiles/drpc.dir/src/event_loop.cpp.o"
   "CMakeFiles/drpc.dir/src/event_loop_group.cpp.o"
   "CMakeFiles/drpc.dir/src/scheduled.cpp.o"

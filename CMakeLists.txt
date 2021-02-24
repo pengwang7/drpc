@@ -70,6 +70,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/listener.cpp
     ${PROJECT_SOURCE_DIR}/src/async_socket.cpp
     ${PROJECT_SOURCE_DIR}/src/async_watcher.cpp
+    ${PROJECT_SOURCE_DIR}/src/thread_pool.cpp
     ${PROJECT_SOURCE_DIR}/src/event_loop.cpp
     ${PROJECT_SOURCE_DIR}/src/event_loop_group.cpp
     ${PROJECT_SOURCE_DIR}/src/scheduled.cpp

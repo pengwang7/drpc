@@ -26,6 +26,7 @@
 #define __THREAD_POOL_HPP__
 
 #include <list>
+#include <queue>
 #include <mutex>
 #include <memory>
 #include <thread>
@@ -68,9 +69,26 @@ public:
     std::size_t GetTaskSize();
 };
 
+class DynamicThreadPoolOptions {
+public:
+    std::size_t min_thds = 20;
+    
+    std::size_t max_thds = 200;
+
+    std::size_t max_tasks = 100000;
+
+    std::size_t min_pending_tasks = 100;
+
+    std::size_t default_del_thds = 10;
+
+    std::size_t default_add_thds = 5;
+
+    int manager_rate = 2;
+};
+
 class DynamicThreadPool : public ThreadPoolInterface {
 public:
-    DynamicThreadPool();
+    DynamicThreadPool(DynamicThreadPoolOptions* options);
 
     ~DynamicThreadPool();
 
@@ -89,28 +107,25 @@ private:
     void Manager();
 
 private:
-    std::size_t max_thds_;
-
-    std::szie_t min_thds_;
-
-    std::size_t idle_thds_;
-
-    std::size_t busy_thds_;
-
-    std::size_t wait_thds_;
+    DynamicThreadPoolOptions* options_;
 
     bool shutdown_;
 
-    std::mutex lock_;
+    std::size_t idle_thds_;
+    
+    std::size_t busy_thds_;
+    
+    std::size_t wait_thds_;
+
+    std::mutex mutex_;
 
     std::condition_variable cond_;
 
-    moodycamel::ConcurrentQueue<Task>* task_queue_;
+    std::queue<Task>* task_queue_;
 
     std::unique_ptr<std::thread> manager_thd_;
 
-    std::list<std::unique_ptr<std::thread>> worker_thds_;
-
+    std::unordered_map<std::thread::id, std::shared_ptr<std::thread>> worker_thds_;
 };
 
 } /* end namespace drpc */

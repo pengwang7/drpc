@@ -474,6 +474,33 @@ src/socket.cpp.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.s
 .PHONY : src/socket.cpp.s
 
+src/thread_pool.o: src/thread_pool.cpp.o
+
+.PHONY : src/thread_pool.o
+
+# target to build an object file
+src/thread_pool.cpp.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.o
+.PHONY : src/thread_pool.cpp.o
+
+src/thread_pool.i: src/thread_pool.cpp.i
+
+.PHONY : src/thread_pool.i
+
+# target to preprocess a source file
+src/thread_pool.cpp.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.i
+.PHONY : src/thread_pool.cpp.i
+
+src/thread_pool.s: src/thread_pool.cpp.s
+
+.PHONY : src/thread_pool.s
+
+# target to generate assembly for a file
+src/thread_pool.cpp.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.s
+.PHONY : src/thread_pool.cpp.s
+
 test/test.o: test/test.cpp.o
 
 .PHONY : test/test.o
@@ -549,6 +576,9 @@ help:
 	@echo "... src/socket.o"
 	@echo "... src/socket.i"
 	@echo "... src/socket.s"
+	@echo "... src/thread_pool.o"
+	@echo "... src/thread_pool.i"
+	@echo "... src/thread_pool.s"
 	@echo "... test/test.o"
 	@echo "... test/test.i"
 	@echo "... test/test.s"
