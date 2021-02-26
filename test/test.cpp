@@ -337,6 +337,46 @@ void    test_rpc_msg_hdr() {
     printf("hdr2:%d, %d\n", hdr2.version, hdr2.type);
 }
 
+void task() {
+    usleep(2000);
+    drpc::DDEBUG("doing task.");
+}
+
+void thread_pool_test() {
+    drpc::DDEBUG("The thread pool test begin.");
+
+    drpc::DynamicThreadPoolOptions options;
+    options.min_thds = 2;
+    drpc::DynamicThreadPool* dtp = new drpc::DynamicThreadPool(&options);
+    if (!dtp) {
+        drpc::DERROR("The dynamic thread pool is nil.");
+        return;
+    }
+
+    dtp->Start();
+
+    for (int i = 0; i < 10000; ++ i) {
+        dtp->AddTask([]() {
+            usleep(2000);
+            drpc::DDEBUG("doing task.");
+        });
+    }
+
+    while (dtp->GetTaskSize() != 0) {
+        drpc::DDEBUG("The dtp current task size: %ld.", dtp->GetTaskSize());
+        sleep(2);
+        continue;
+    }
+
+    drpc::DDEBUG("The dtp will be stop.");
+
+    dtp->Stop();
+
+    delete dtp;
+
+    drpc::DDEBUG("The thread pool test end.");
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -346,7 +386,10 @@ int main() {
 
 //    test_listener();
 
-    server_test();
+////    server_test();
+
+    thread_pool_test();
+
 
 //    test_rpc_msg_hdr();
 

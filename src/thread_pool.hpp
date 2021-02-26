@@ -42,7 +42,7 @@ public:
     using Task = std::function<void()>;
 
 public:
-    virtual ~ThreadPoolInterface() {}
+    virtual ~ThreadPoolInterface() {};
 
     virtual void Start() = 0;
 
@@ -50,7 +50,7 @@ public:
 
     virtual void AddTask(const Task& task) = 0;
 
-    virtual std::size_t GetTaskSize() const = 0;
+    virtual std::size_t GetTaskSize() = 0;
 };
 
 class StaticThreadPool : public ThreadPoolInterface {
@@ -71,9 +71,9 @@ public:
 
 class DynamicThreadPoolOptions {
 public:
-    std::size_t min_thds = 20;
+    std::size_t min_thds = 10;
     
-    std::size_t max_thds = 200;
+    std::size_t max_thds = 100;
 
     std::size_t max_tasks = 100000;
 
@@ -83,7 +83,7 @@ public:
 
     std::size_t default_add_thds = 5;
 
-    int manager_rate = 2;
+    int manager_rate = 1;
 };
 
 class DynamicThreadPool : public ThreadPoolInterface {
@@ -102,6 +102,21 @@ public:
     std::size_t GetTaskSize();
 
 private:
+    class DynamicThread {
+        public:
+            DynamicThread(DynamicThreadPool* pool);
+
+            ~DynamicThread();
+
+        private:
+            void Worker();
+
+        private:
+            DynamicThreadPool* thread_pool_;
+
+            std::unique_ptr<std::thread> thd_;
+    };
+
     void Worker();
 
     void Manager();
@@ -125,7 +140,9 @@ private:
 
     std::unique_ptr<std::thread> manager_thd_;
 
-    std::unordered_map<std::thread::id, std::shared_ptr<std::thread>> worker_thds_;
+    std::list<DynamicThread*> dead_thds_;
+
+    //std::unordered_map<std::thread::id, std::shared_ptr<std::thread>> worker_thds_;
 };
 
 } /* end namespace drpc */
