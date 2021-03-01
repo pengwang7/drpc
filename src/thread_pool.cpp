@@ -95,7 +95,7 @@ void DynamicThreadPool::Start() {
         new DynamicThread(this);
     }
 
-    //manager_thd_.reset(new std::thread(std::bind(&DynamicThreadPool::Manager, this)));
+    manager_thd_.reset(new std::thread(std::bind(&DynamicThreadPool::Manager, this)));
 }
 
 void DynamicThreadPool::Stop() {
@@ -121,10 +121,10 @@ void DynamicThreadPool::Stop() {
         delete (*t);
     }
 
-//    if (manager_thd_->joinable()) {
-//        DDEBUG("The join manager thread(%ld).", manager_thd_->get_id());
-//        manager_thd_->join();
-//    }
+    if (manager_thd_->joinable()) {
+        DDEBUG("The join manager thread(%ld).", manager_thd_->get_id());
+        manager_thd_->join();
+    }
 }
 
 void DynamicThreadPool::AddTask(const Task& task) {
@@ -172,34 +172,29 @@ void DynamicThreadPool::Worker() {
 }
 
 void DynamicThreadPool::Manager() {
-//    while (!shutdown_) {
-//        sleep(options_->manager_rate);
-//
-//        DDEBUG("The manager thread(%ld) is doing!", std::this_thread::get_id());
-//
-//        std::size_t all_size = GetTaskSize();
-//
-//        std::unique_lock <std::mutex> guard(mutex_, std::defer_lock);
-//
-//        DDEBUG("%d, %d, %d, %d", all_size,  options_->min_pending_tasks, idle_thds_, options_->max_thds);
-//        if (all_size >= options_->min_pending_tasks && idle_thds_ < options_->max_thds) {
-//            DDEBUG("111111111111111111111111111111111111111");
-//
-//            for (std::size_t i = 0; i < options_->default_add_thds; ++ i) {
-//                std::shared_ptr<std::thread> thd(new std::thread(std::bind(&DynamicThreadPool::Worker, this)));
-//
-//                guard.lock();
-//
-//                worker_thds_[thd->get_id()] = thd;
-//
-//                DTRACE("Manager add new thread(%ld).", thd->get_id());
-//
-//                idle_thds_ ++;
-//
-//                guard.unlock();
-//            }
-//        }
-//
+    while (!shutdown_) {
+        sleep(options_->manager_rate);
+
+        DDEBUG("The manager thread(%ld) is doing!", std::this_thread::get_id());
+
+        std::size_t all_size = GetTaskSize();
+
+        std::lock_guard <std::mutex> guard(mutex_);
+
+        DDEBUG("%d, %d, %d, %d", all_size,  options_->min_pending_tasks, idle_thds_, options_->max_thds);
+
+        if (all_size >= options_->min_pending_tasks && idle_thds_ < options_->max_thds) {
+            for (std::size_t i = 0; i < options_->default_add_thds; ++ i) {
+                new DynamicThread(this);
+
+                idle_thds_ ++;
+            }
+        }
+
+        if (!shutdown_) {
+            break;
+        }
+
 //        std::size_t alive_thds = idle_thds_;
 //        std::size_t busy_thds = busy_thds_;
 //
@@ -215,7 +210,7 @@ void DynamicThreadPool::Manager() {
 //                cond_.notify_one();
 //            }
 //        }
-//    }
+    }
 }
 
 } /* end namespace drpc */
