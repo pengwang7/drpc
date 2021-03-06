@@ -136,7 +136,8 @@ int CreateSocket(int protocol, bool nonblocking) {
 
     switch (protocol) {
     case AF_INET:
-        fd = socket(AF_INET, SOCK_STREAM, 0);;
+    case AF_UNIX:
+        fd = socket(protocol, SOCK_STREAM, 0);
         break;
     default:
         goto error;
@@ -206,6 +207,23 @@ int ConnectSocket(int fd, std::string& addr, uint16_t port, struct timeval* tv) 
     }
 
     return 0;
+}
+
+bool BindSocket(int fd, std::string local_address) {
+    unlink(local_address.c_str());
+
+    struct sockaddr_un baddr;
+    memset(&baddr, 0, sizeof(baddr));;
+
+    baddr.sun_family = AF_UNIX;
+    strcpy(baddr.sun_path, local_address.c_str());
+
+    if (bind(fd, (struct sockaddr*)&baddr, sizeof(baddr)) < 0) {
+        DERROR("BindSocket failed: %s", strerror(errno));
+        return false;
+    }
+
+    return true;
 }
 
 bool BindSocket(int fd, IPAddress ip, uint16_t port) {

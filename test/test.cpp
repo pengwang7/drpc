@@ -141,7 +141,7 @@ void test_scheduled() {
 
     drpc::scheduled_ptr sched;
     {
-        sched = drpc::Scheduled::CreateScheduled(event_loop.get(), timeout_cb, 10);
+        sched = drpc::Scheduled::Create(event_loop.get(), timeout_cb, 10);
         if (!sched) {
             drpc::DERROR("Create sched failed.");
             return;
@@ -203,11 +203,12 @@ void test_listener() {
     drpc::ServerOptions options;
     options.address = "127.0.0.1";
     options.port = 6689;
+    options.enable_check_timeout = false;
     options.timeout = 20;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
-    std::unique_ptr<drpc::Listener> listener;
-    listener.reset(new drpc::Listener(event_loop.get(), &options));
+    std::unique_ptr<drpc::NetworkListener> listener;
+    listener.reset(new drpc::TcpNetworkListener(event_loop.get(), &options));
     if (!listener) {
         drpc::DERROR("The listener is nil.");
         return;
@@ -227,7 +228,7 @@ void control_thread(drpc::Server* server) {
         return;
     }
 
-    sleep(60);
+    sleep(120);
 
     drpc::DDEBUG("control thread call stop.");
 
@@ -242,7 +243,9 @@ void server_test() {
 
     drpc::ServerOptions options;
     options.address = "127.0.0.1";
+    options.listener_mode = drpc::ListenerMode::LISTEN_ETH_NET;
     options.port = 6689;
+    options.enable_check_timeout = false;
     options.timeout = 10;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
@@ -377,6 +380,20 @@ void thread_pool_test() {
     drpc::DDEBUG("The thread pool test end.");
 }
 
+void test_async_watcher() {
+    drpc::DDEBUG("The async watcher test begin.");
+
+    drpc::AsyncWatcher* watcher = new drpc::EventfdWatcher(NULL, NULL);
+    if (!watcher) {
+        drpc::DERROR("The watcher is nil.");
+        return;
+    }
+
+    delete watcher;
+
+    drpc::DDEBUG("The async watcher test end.");
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -386,10 +403,11 @@ int main() {
 
 //    test_listener();
 
-////    server_test();
+    server_test();
 
-    thread_pool_test();
+//    thread_pool_test();
 
+//    test_async_watcher();
 
 //    test_rpc_msg_hdr();
 

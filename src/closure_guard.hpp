@@ -22,7 +22,7 @@ public:
         }
     }
 
-    // Run internal closure if it's not NULL and set it to `done'.
+    // Run internal closure if it's not NULL and set it to 'done'.
     void reset(google::protobuf::Closure* done) {
         if (done_) {
             done_->Run();

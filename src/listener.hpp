@@ -36,6 +36,57 @@ class AsyncSocket;
 
 using NewConnCallback = std::function<void(int fd, std::string& peer_addr)>;
 
+class NetworkListener {
+public:
+    NetworkListener(EventLoop* event_loop, ServerOptions* options);
+
+    ~NetworkListener();
+
+    virtual bool Start() = 0;
+
+    virtual bool Stop() = 0;
+
+    void SetNewConnCallback(NewConnCallback cb) {
+        new_conn_cb_ = cb;
+    }
+
+protected:
+    void AcceptHandle();
+
+protected:
+    EventLoop* event_loop_;
+
+    std::unique_ptr<AsyncSocket> listen_socket_;
+
+    ServerOptions* options_;
+
+    NewConnCallback new_conn_cb_;
+};
+
+class BasicNetworkListener : public NetworkListener {
+public:
+    BasicNetworkListener(EventLoop* event_loop, ServerOptions* options);
+
+    ~BasicNetworkListener();
+
+public:
+    bool Start() override;
+
+    bool Stop() override;
+};
+
+class TcpNetworkListener : public NetworkListener {
+public:
+    TcpNetworkListener(EventLoop* event_loop, ServerOptions* options);
+
+    ~TcpNetworkListener();
+
+public:
+    bool Start() override;
+
+    bool Stop() override;
+};
+
 class Listener {
 public:
     Listener(EventLoop* event_loop, ServerOptions* options);

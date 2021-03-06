@@ -26,6 +26,7 @@
 #define __SOCKET_HPP__
 
 #include <unistd.h>
+#include <sys/un.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
@@ -49,6 +50,8 @@ void GetSendRecvBufferSize(int fd, int option, size_t& size);
 int CreateSocket(int protocol, bool nonblocking = true);
 
 int ConnectSocket(int fd, std::string& addr, uint16_t port, struct timeval* tv);
+
+bool BindSocket(int fd, std::string local_address);
 
 bool BindSocket(int fd, IPAddress ip, uint16_t port);
 

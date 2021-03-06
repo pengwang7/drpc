@@ -27,9 +27,10 @@
 
 #include <unordered_map>
 
+#include "listener.hpp"
 #include "closure_guard.hpp"
-#include "server_options.hpp"
 #include "event_loop_group.hpp"
+#include "server_options.hpp"
 
 namespace google {
 
@@ -76,8 +77,6 @@ private:
 
     void OnTimeoutChannel(const channel_ptr& chan);
 
-    void OnMessage(const channel_ptr& chan, Buffer& buffer);
-
 private:
     using RpcChannelHashTable = std::unordered_map<std::string, rpc_channel_ptr>;
 
@@ -89,7 +88,8 @@ private:
 
     std::unique_ptr<EventLoopGroup> group_;
 
-    std::unique_ptr<Listener> listener_;
+    //std::unique_ptr<Listener> network_listener_;
+    std::unique_ptr<NetworkListener> network_listener_;
 
     std::unique_ptr<EventLoop> listener_event_loop_;
 

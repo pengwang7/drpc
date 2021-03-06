@@ -30,9 +30,14 @@
 
 namespace drpc {
 
+enum class ListenerMode {
+    LISTEN_ETH_NET     = 1,
+    LISTEN_UNIX_DOMAIN = 1 << 1,
+};
+
 enum class ServerMode {
-    OLPT_NORMAL = 0,
-    OLPT_REUSE_PORT = 1,
+    OLPT_NORMAL     = 10,
+    OLPT_REUSE_PORT = 10 << 1,
 };
 
 class ServerOptions {
@@ -44,13 +49,15 @@ public:
     // If empty, the address will be any address.
     std::string address;
 
-    // Defaults to 'nprocs' threads.
-    std::size_t threads = 4;
+    ListenerMode listener_mode = ListenerMode::LISTEN_ETH_NET;
 
     // Default used server mode.
     ServerMode server_mode = ServerMode::OLPT_NORMAL;
 
-    // SSL
+    // Defaults to 'nprocs' threads.
+    std::size_t threads = 4;
+
+    // SSL not support.
     bool enable_ssl = false;
 
     // Channel heartbeat. Defaults to enabled.

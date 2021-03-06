@@ -50,7 +50,7 @@ Scheduled::~Scheduled() {
     delete timer_;
 }
 
-scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist) {
+scheduled_ptr Scheduled::Create(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist) {
     scheduled_ptr sched(new Scheduled(event_loop, std::move(cb), seconds, persist));
     DASSERT(sched, "Create Scheduled error.");
 
@@ -59,7 +59,7 @@ scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, ScheduledFunctor
     return sched;
 }
 
-scheduled_ptr Scheduled::CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist) {
+scheduled_ptr Scheduled::Create(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist) {
     scheduled_ptr sched(new Scheduled(event_loop, cb, seconds, persist));
     DASSERT(sched, "Create Scheduled error.");
 

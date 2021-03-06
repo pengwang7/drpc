@@ -29,7 +29,6 @@
 
 #include "logger.hpp"
 #include "async_socket.hpp"
-#include "listener.hpp"
 #include "channel.hpp"
 #include "timing_wheel.hpp"
 #include "rpc_channel.hpp"
@@ -61,7 +60,7 @@ bool Server::Start(ServerOptions* options) {
 
     group_->Run();
 
-    if (!listener_->Start()) {
+    if (!network_listener_->Start()) {
         DERROR("Server start error.");
         return false;
     }
@@ -72,7 +71,7 @@ bool Server::Start(ServerOptions* options) {
 }
 
 bool Server::Stop() {
-    listener_->Stop();
+    network_listener_->Stop();
 
     group_->Stop();
     group_->Wait();
@@ -116,35 +115,37 @@ bool Server::DoInit(ServerOptions* options) {
     DASSERT(hash_table_, "Server init failed, rpc channel table is nil.");
 
     group_.reset(new EventLoopGroup(options_, "event-loop-group"));
-    if (!group_) {
-        DERROR("Server init failed, group is nil.");
-        return false;
-    }
+
+    DASSERT(group_, "Server init failed, group is nil.");
 
     listener_event_loop_.reset(new EventLoop(options_->fd_limits));
-    if (!listener_event_loop_) {
-        DERROR("Server init failed, listener event loop is nil.");
-        return false;
-    }
 
-    listener_.reset(new Listener(listener_event_loop_.get(), options_));
-    if (!listener_) {
-        DERROR("Server init failed, listener is nil.");
-        return false;
-    }
+    DASSERT(listener_event_loop_, "Server init failed, listener event loop is nil.");
 
-    listener_->SetNewConnCallback(std::bind(&Server::BuildChannel,
-                this, std::placeholders::_1, std::placeholders::_2));
+    //network_listener_.reset(new Listener(listener_event_loop_.get(), options_));
 
-    if (options_->enable_check_timeout || options_->timeout <= 0) {
-        timing_wheel_.reset(new TimingWheel(options_->timeout, 1));
-        if (!timing_wheel_) {
-            DERROR("Server init failed, timing wheel is nil.");
-            return false;
-        }
+    if (options_->listener_mode != ListenerMode::LISTEN_ETH_NET) {
+        network_listener_.reset(
+                new BasicNetworkListener(listener_event_loop_.get(), options_));
     } else {
-        DDEBUG("Server not enable channel timeout check.");
+        network_listener_.reset(
+                new TcpNetworkListener(listener_event_loop_.get(), options_));
     }
+
+    DASSERT(network_listener_, "Server init failed, network listener is nil.");
+
+    network_listener_->SetNewConnCallback(std::bind(&Server::BuildChannel,
+                    this, std::placeholders::_1, std::placeholders::_2));
+
+//    if (options_->enable_check_timeout && options_->timeout > 0) {
+//        timing_wheel_.reset(new TimingWheel(options_->timeout, 1));
+//        if (!timing_wheel_) {
+//            DERROR("Server init failed, timing wheel is nil.");
+//            return false;
+//        }
+//    } else {
+//        DDEBUG("Server not enable channel timeout check.");
+//    }
 
     return true;
 }
@@ -175,8 +176,6 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
                 this, std::placeholders::_1));
     chan->SetTimedoutCallback(std::bind(&Server::OnTimeoutChannel,
             this, std::placeholders::_1));
-//    chan->SetRecvMessageCallback(std::bind(&Server::OnMessage,
-//                this, std::placeholders::_1, std::placeholders::_2));
 
     event_loop->SendToQueue(std::bind(&Channel::Attach, chan));
 }
@@ -185,22 +184,24 @@ void Server::OnNewChannel(const channel_ptr& chan) {
     DTRACE("OnNewChannel csid: %s.", chan->csid().c_str());
 
     rpc_channel_ptr rpc_chan(new RpcChannel(chan, &service_map_));
-    rpc_chan->SetRefreshCallback(std::bind(&Server::OnRefreshChannel, this, std::placeholders::_1));
     rpc_chan->SetAnyContext(this);
 
-    EntryPtr entry(new Entry(chan));
-    WeakEntryPtr weak_entry(entry);
+    if (options_->enable_check_timeout &&
+        options_->timeout > 0 && timing_wheel_) {
+        rpc_chan->SetRefreshCallback(std::bind(&Server::OnRefreshChannel, this, std::placeholders::_1));
 
-    {
+        EntryPtr entry(new Entry(chan));
+        WeakEntryPtr weak_entry(entry);
+
         std::lock_guard<std::mutex> lock(mutex_);
         timing_wheel_->push_back(entry);
+
+        // Save the weak entry to channel any context.
+        chan->SetAnyContext(weak_entry);
     }
 
     chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
                 rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
-
-    // Save the weak entry to channel any context.
-    chan->SetAnyContext(weak_entry);
 
     // This function not thread safe.
     std::lock_guard<std::mutex> lock(hash_mutex_);
@@ -210,17 +211,20 @@ void Server::OnNewChannel(const channel_ptr& chan) {
 void Server::OnRefreshChannel(const channel_ptr& chan) {
     DASSERT(!chan->GetAnyContext().empty(), "The channel any context is nil.");
 
-    // Don't create a new entry, if we do this(create a new entry),
-    // the channel will voluntarily close, regardless of whether there
-    // is a message refresh.
-    WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
-    EntryPtr entry(weak_entry);
+    if (options_->enable_check_timeout &&
+        options_->timeout > 0 && timing_wheel_) {
+        // Don't create a new entry, if we do this(create a new entry),
+        // the channel will voluntarily close, regardless of whether there
+        // is a message refresh.
+        WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
+        EntryPtr entry(weak_entry);
 
-    if (entry) {
-        std::lock_guard<std::mutex> lock(mutex_);
-        timing_wheel_->push_back(entry);
-    } else {
-        DWARNING("OnRefreshChannel entry is nil.");
+        if (entry) {
+            std::lock_guard<std::mutex> lock(mutex_);
+            timing_wheel_->push_back(entry);
+        } else {
+            DWARNING("OnRefreshChannel entry is nil.");
+        }
     }
 }
 
@@ -237,8 +241,5 @@ void Server::OnTimeoutChannel(const channel_ptr& chan) {
     //OnCloseChannel(chan);
 }
 
-void Server::OnMessage(const channel_ptr& chan, Buffer& buffer) {
-
-}
 
 } /* end namespace drpc */

@@ -40,9 +40,9 @@ class Scheduled {
 public:
     ~Scheduled();
 
-    static scheduled_ptr CreateScheduled(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist = true);
+    static scheduled_ptr Create(EventLoop* event_loop, ScheduledFunctor&& cb, ev_tstamp seconds, bool persist = true);
 
-    static scheduled_ptr CreateScheduled(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist = true);
+    static scheduled_ptr Create(EventLoop* event_loop, const ScheduledFunctor& cb, ev_tstamp seconds, bool persist = true);
 
     void Run();
 

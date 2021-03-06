@@ -39,6 +39,8 @@ public:
     using AsyncWatcherTaskFunctor = std::function<void()>;
 
 public:
+    AsyncWatcher(struct ev_loop* event_loop, AsyncWatcherTaskFunctor&& handle);
+
     virtual ~AsyncWatcher();
 
     bool Init();
@@ -50,8 +52,6 @@ public:
     void Terminate();
 
 protected:
-    AsyncWatcher(struct ev_loop* event_loop, AsyncWatcherTaskFunctor&& handle);
-
     virtual bool DoInitImpl() = 0;
 
     virtual void DoTerminateImpl() = 0;
@@ -76,8 +76,6 @@ public:
     ~EventfdWatcher();
 
     void Notify();
-
-    int event_fd();
 
 private:
     bool DoInitImpl() override;

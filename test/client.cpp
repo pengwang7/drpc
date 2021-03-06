@@ -38,7 +38,7 @@ int main() {
 
     drpc::RpcMessage message;
     message.set_type(drpc::REQUEST);
-    message.set_id(101);
+    message.set_id(fd);
     message.set_service("drpc.PublishService");
     message.set_method("Publish");
 

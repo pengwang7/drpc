@@ -32,14 +32,14 @@ Channel::Channel(AsyncSocket* ast) {
     DASSERT(event_loop_ = ast->event_loop(), "Channel constructor error.");
 
     // The array size must be > 8.
-    char p[12] = {0};
-    snprintf(p, sizeof(p) - 1, "%p", this);
+    char p[8] = {0};
+    snprintf(p, sizeof(p), "%d", ast->fd2());
     csid_ = std::string(p);
 
     async_socket_.reset(ast);
     DASSERT(async_socket_, "Channel constructor error.");
 
-    DTRACE("Create channel success, csid: %s", csid_.c_str());
+    DTRACE("Create channel success, csid: %s.", csid_.c_str());
 }
 
 Channel::~Channel() {

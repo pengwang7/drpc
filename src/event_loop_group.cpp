@@ -86,14 +86,10 @@ EventLoop* EventLoopGroup::event_loop() {
     EventLoop* best_event_loop = nullptr;
     std::size_t min = std::numeric_limits<std::size_t>::max();
 
-    {
-        // Lock there ? Maybe.
-        // std::lock_guard<std::mutex> scoped_lock(group_mutex_);
-        for (std::size_t i = 0; i < group_size_; ++ i) {
-            if (thread_group_[i]->event_loop()->GetCurrentRegisterSize() < min) {
-                min = thread_group_[i]->event_loop()->GetCurrentRegisterSize();
-                best_event_loop = thread_group_[i]->event_loop();
-            }
+    for (std::size_t i = 0; i < group_size_; ++ i) {
+        if (thread_group_[i]->event_loop()->GetCurrentRegisterSize() < min) {
+            min = thread_group_[i]->event_loop()->GetCurrentRegisterSize();
+            best_event_loop = thread_group_[i]->event_loop();
         }
     }
 

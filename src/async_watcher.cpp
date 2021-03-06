@@ -52,6 +52,8 @@ bool AsyncWatcher::Init() {
 
     ev_io_start(event_loop_, io_);
 
+    DDEBUG("AsyncWatcher register to event loop success.");
+
     return true;
 }
 
@@ -104,10 +106,6 @@ void EventfdWatcher::Notify() {
     }
 
     DTRACE("EventfdWatcher notify success.");
-}
-
-int EventfdWatcher::event_fd() {
-    return event_fd_;
 }
 
 bool EventfdWatcher::DoInitImpl() {

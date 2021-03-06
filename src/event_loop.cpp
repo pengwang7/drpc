@@ -106,7 +106,7 @@ void EventLoop::StartChannelTimeoutCheck(ev_tstamp seconds, const TaskFunctor& t
         return;
     }
 
-    sched_ = Scheduled::CreateScheduled(this, task, seconds, true);
+    sched_ = Scheduled::Create(this, task, seconds, true);
 
     sched_->Run();
 }

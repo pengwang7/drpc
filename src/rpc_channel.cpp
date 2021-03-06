@@ -215,8 +215,10 @@ bool RpcChannel::OnRpcResponse(const RpcMessagePtr& rpc_message) {
 }
 
 void RpcChannel::OnRpcRefresh() {
-    DDEBUG("OnRpcRefresh the channel csid: %s", chan_->csid().c_str());
-    refresh_cb_(chan_);
+    if (refresh_cb_) {
+        DDEBUG("OnRpcRefresh the channel csid: %s", chan_->csid().c_str());
+        refresh_cb_(chan_);
+    }
 }
 
 void RpcChannel::OnRpcError(enum ErrorCode& ec) {
