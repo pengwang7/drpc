@@ -7,12 +7,14 @@ set(CMAKE_BUILD_TYPE "Release")
 #-Woverloaded-virtual
 set(CXX_FLAGS
     -g
+    -pipe
     -DCHECK_PTHREAD_RETURN_VALUE
     -D_FILE_OFFSET_BITS=64
     -Wall
     -Wextra
     -Werror
-    -Wconversion
+    -Wclass-memaccess
+    #-Wconversion
     -Wno-unused-parameter
     -Wpointer-arith
     -Wwrite-strings
@@ -65,6 +67,10 @@ protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto proto/service.proto
 
 set(
     BUTIL_SRC
+    ${PROJECT_SOURCE_DIR}/src/json2pb/encode_decode.cpp
+    ${PROJECT_SOURCE_DIR}/src/json2pb/protobuf_map.cpp
+    ${PROJECT_SOURCE_DIR}/src/json2pb/pb_to_json.cpp
+    ${PROJECT_SOURCE_DIR}/src/json2pb/json_to_pb.cpp
     ${PROJECT_SOURCE_DIR}/src/socket.cpp
     ${PROJECT_SOURCE_DIR}/src/ip_address.cpp
     ${PROJECT_SOURCE_DIR}/src/listener.cpp

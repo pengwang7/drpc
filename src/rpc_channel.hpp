@@ -88,9 +88,13 @@ private:
 
     void SetMessageId(std::size_t msid);
 
+    void OnRpcJsonMessage(std::string& content);
+
+    void OnRpcProtobufMessage(std::string& content);
+
     bool OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& ec);
 
-    bool OnRpcResponse(const RpcMessagePtr& rpc_message);
+    bool OnRpcResponse(/*const RpcMessagePtr& rpc_message*/);
 
     void OnRpcRefresh();
 
