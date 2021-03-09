@@ -27,6 +27,12 @@
 
 namespace drpc {
 
+enum MessageContentType {
+    MSG_CONTENT_TYPE_JSON = 0,
+
+    MSG_CONTENT_TYPE_PROTOBUF = 1,
+};
+
 #pragma pack(1)
 struct rpc_msg_hdr {
     uint8_t version:2;
