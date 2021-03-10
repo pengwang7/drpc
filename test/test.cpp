@@ -394,6 +394,39 @@ void test_async_watcher() {
     drpc::DDEBUG("The async watcher test end.");
 }
 
+#include "json2pb/pb_to_json.h"
+#include "json2pb/json_to_pb.h"
+
+void json_protobuf_test() {
+    drpc::RpcMessage message;
+    message.set_type(drpc::REQUEST);
+    message.set_id(101);
+    message.set_service("TestService");
+    message.set_method("GetExten");
+
+    drpc::PublishRequest request;
+    request.set_message("exten: 1001, status: idle");
+    message.set_request(request.SerializeAsString());
+    //message.set_request("exten: 1001, type: pjsip");
+
+    std::string test_json;
+    if (json2pb::ProtoMessageToJson(message, &test_json)) {
+        drpc::DDEBUG("success, json:%s", test_json.c_str());
+    } else {
+        drpc::DDEBUG("failed, protobuf to json.");
+    }
+
+    drpc::RpcMessage message2;
+
+    if (json2pb::JsonToProtoMessage(test_json, &message2)) {
+        drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+                message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
+
+    } else {
+        drpc::DDEBUG("failed, json to protobuf.");
+    }
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
@@ -402,6 +435,8 @@ int main() {
 //    test_event_loop_group();
 
 //    test_listener();
+
+//    json_protobuf_test();
 
     server_test();
 

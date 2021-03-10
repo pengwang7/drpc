@@ -93,6 +93,8 @@ inline bool value_invalid(const google::protobuf::FieldDescriptor* field, const 
         if (!err->empty()) {
             err->append(", ");
         }
+        err->append("Invalid value `");
+        err->append(field->full_name().c_str());
 //        err->append("Invalid value `");
 //        string_append_value(value, err);
 //        butil::string_appendf(err, "' for %sfield `%s' which SHOULD be %s",

@@ -25,6 +25,9 @@
 #include <google/protobuf/descriptor.h>
 
 #include "rpc.pb.h"
+#include "json2pb/pb_to_json.h"
+#include "json2pb/json_to_pb.h"
+#include "json2pb/encode_decode.h"
 #include "logger.hpp"
 #include "channel.hpp"
 #include "rpc_channel.hpp"
@@ -66,7 +69,7 @@ void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
 
     if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
         OnRpcJsonMessage(content);
-    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
+    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
         OnRpcProtobufMessage(content);
     } else {
         DWARNING("OnRpcMessage invalid message type.");
@@ -137,6 +140,37 @@ void RpcChannel::OnRpcJsonMessage(std::string& content) {
 
 }
 
+void    test_json_protobuf(RpcMessage* message) {
+//    drpc::RpcMessage message;
+//    message.set_type(drpc::REQUEST);
+//    message.set_id(101);
+//    message.set_service("TestService");
+//    message.set_method("GetExten");
+//
+//    drpc::PublishRequest request;
+//    request.set_message("exten: 1001, status: idle");
+//    message.set_request(request.SerializeAsString());
+//    //message.set_request("exten: 1001, type: pjsip");
+
+    std::string test_json;
+    if (json2pb::ProtoMessageToJson(*message, &test_json)) {
+        drpc::DDEBUG("success, json:%s", test_json.c_str());
+    } else {
+        drpc::DDEBUG("failed, protobuf to json.");
+    }
+
+    drpc::RpcMessage message2;
+
+    if (json2pb::JsonToProtoMessage(test_json, &message2)) {
+        drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+                message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
+
+    } else {
+        drpc::DDEBUG("failed, json to protobuf.");
+    }
+
+}
+
 void RpcChannel::OnRpcProtobufMessage(std::string& content) {
     bool ret = false;
     ErrorCode ec = INVALID_REQUEST;
@@ -154,14 +188,16 @@ void RpcChannel::OnRpcProtobufMessage(std::string& content) {
     rpc_message = std::dynamic_pointer_cast<RpcMessage>(message);
     if (!rpc_message) {
         DERROR("OnRpcMessage std::dynamic_pointer_cast failed.");
-        return;
+        goto error;
     }
 
     DDEBUG("The string serialize to proto message: id: %d, "
             "service: %s, method: %s, request: %s",
             rpc_message->id(), rpc_message->service().c_str(),
             rpc_message->method().c_str(), rpc_message->request().c_str());
-
+////////////////////////////////////////////////////////////////////////////////
+    test_json_protobuf(rpc_message.get());
+////////////////////////////////////////////////////////////////////////////////
     switch (rpc_message->type()) {
     case REQUEST:
         ret = OnRpcRequest(rpc_message, ec);
