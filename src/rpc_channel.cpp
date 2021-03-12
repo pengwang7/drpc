@@ -137,67 +137,22 @@ void RpcChannel::SetMessageId(std::size_t msid) {
 }
 
 void RpcChannel::OnRpcJsonMessage(std::string& content) {
-
-}
-
-void    test_json_protobuf(RpcMessage* message) {
-//    drpc::RpcMessage message;
-//    message.set_type(drpc::REQUEST);
-//    message.set_id(101);
-//    message.set_service("TestService");
-//    message.set_method("GetExten");
-//
-//    drpc::PublishRequest request;
-//    request.set_message("exten: 1001, status: idle");
-//    message.set_request(request.SerializeAsString());
-//    //message.set_request("exten: 1001, type: pjsip");
-
-    std::string test_json;
-    if (json2pb::ProtoMessageToJson(*message, &test_json)) {
-        drpc::DDEBUG("success, json:%s", test_json.c_str());
-    } else {
-        drpc::DDEBUG("failed, protobuf to json.");
-    }
-
-    drpc::RpcMessage message2;
-
-    if (json2pb::JsonToProtoMessage(test_json, &message2)) {
-        drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
-                message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
-
-    } else {
-        drpc::DDEBUG("failed, json to protobuf.");
-    }
-
-}
-
-void RpcChannel::OnRpcProtobufMessage(std::string& content) {
     bool ret = false;
     ErrorCode ec = INVALID_REQUEST;
-    std::shared_ptr<RpcMessage> rpc_message;
-    std::shared_ptr<google::protobuf::Message> message(default_->New());
-    if (!message) {
+    std::shared_ptr<RpcMessage> rpc_message(default_->New());
+    if (!rpc_message) {
         return;
     }
 
-    if (!message->ParseFromString(content)) {
-        DERROR("OnRpcMessage protobuf parse from string failed.");
+    if (!json2pb::JsonToProtoMessage(content, rpc_message.get())) {
+        DERROR("OnRpcJsonMessage json to protobuf failed.");
         goto error;
     }
 
-    rpc_message = std::dynamic_pointer_cast<RpcMessage>(message);
-    if (!rpc_message) {
-        DERROR("OnRpcMessage std::dynamic_pointer_cast failed.");
-        goto error;
-    }
+    DDEBUG("The json serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+            rpc_message->id(), rpc_message->service().c_str(), rpc_message->method().c_str(),
+            rpc_message->request().c_str());
 
-    DDEBUG("The string serialize to proto message: id: %d, "
-            "service: %s, method: %s, request: %s",
-            rpc_message->id(), rpc_message->service().c_str(),
-            rpc_message->method().c_str(), rpc_message->request().c_str());
-////////////////////////////////////////////////////////////////////////////////
-    test_json_protobuf(rpc_message.get());
-////////////////////////////////////////////////////////////////////////////////
     switch (rpc_message->type()) {
     case REQUEST:
         ret = OnRpcRequest(rpc_message, ec);
@@ -208,7 +163,48 @@ void RpcChannel::OnRpcProtobufMessage(std::string& content) {
         break;
 
     default:
-        DERROR("OnRpcMessage the message type is invalid.");
+        DERROR("OnRpcJsonMessage the message type is invalid.");
+    };
+
+    if (ret && ec == NO_ERROR) {
+        return;
+    }
+
+error:
+    OnRpcError(ec);
+    
+    DERROR("OnRpcJsonMessage met error: %d.", ec);
+}
+
+void RpcChannel::OnRpcProtobufMessage(std::string& content) {
+    bool ret = false;
+    ErrorCode ec = INVALID_REQUEST;
+    std::shared_ptr<RpcMessage> rpc_message(default_->New());
+    if (!rpc_message) {
+        return;
+    }
+
+    if (!rpc_message->ParseFromString(content)) {
+        DERROR("OnRpcProtobufMessage protobuf parse from string failed.");
+        goto error;
+    }
+
+    DDEBUG("The string serialize to proto message: id: %d, "
+            "service: %s, method: %s, request: %s",
+            rpc_message->id(), rpc_message->service().c_str(),
+            rpc_message->method().c_str(), rpc_message->request().c_str());
+
+    switch (rpc_message->type()) {
+    case REQUEST:
+        ret = OnRpcRequest(rpc_message, ec);
+        break;
+
+    case RESPONSE:
+        ret = OnRpcResponse();
+        break;
+
+    default:
+        DERROR("OnRpcProtobufMessage the message type is invalid.");
     };
 
     if (ret && ec == NO_ERROR) {
@@ -218,7 +214,7 @@ void RpcChannel::OnRpcProtobufMessage(std::string& content) {
 error:
     OnRpcError(ec);
 
-    DERROR("OnRpcMessage met error: %d.", ec);
+    DERROR("OnRpcProtobufMessage met error: %d.", ec);
 }
 
 bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& ec) {

@@ -81,6 +81,8 @@ public:
 
     any& GetAnyContext();
 
+    void test_json_protobuf(RpcMessage* message);
+
 private:
     bool ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader);
 
@@ -119,7 +121,7 @@ private:
 
     RefreshCallback refresh_cb_;
 
-    const google::protobuf::Message* default_;
+    const RpcMessage* default_;
 
     std::map<std::size_t, outstanding_call> outstandings_;
 
