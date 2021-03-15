@@ -39,6 +39,7 @@ EventLoop::EventLoop(std::size_t max_register_size) {
         DDEBUG("The event loop don't limit channel registration size.");
     }
 
+    wait_destroy_.store(true);
     notified_.store(false);
 
     // The first time thread id is set, the really
@@ -54,12 +55,18 @@ EventLoop::EventLoop(std::size_t max_register_size) {
 }
 
 EventLoop::~EventLoop() {
+
+    while (wait_destroy_) { sleep(1); }
+
     DTRACE("The event loop destroy:%p.", this);
 
     async_watcher_->Terminate();
     async_watcher_->Cancel();
 
+    notified_.store(true);
+
     delete pending_task_queue_;
+    pending_task_queue_ = nullptr;
 
     OBJECT_SAFE_DESTROY(event_loop_, ev_loop_destroy);
 }
@@ -93,6 +100,8 @@ void EventLoop::Stop() {
         // If ev_break is called on a different thread than ev_run,
         // then the Event Loop does not exit.
         ev_break(event_loop_, EVBREAK_ALL);
+
+        wait_destroy_.store(false);
 
         DDEBUG("The event loop is stopped:%p.", this);
     };
@@ -177,6 +186,10 @@ void EventLoop::DoPendingTasks() {
 }
 
 bool EventLoop::PendingTaskQueueIsEmpty() {
+    if (!pending_task_queue_) {
+        return true;
+    }
+
     return pending_task_queue_->size_approx() == 0;
 }
 

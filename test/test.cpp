@@ -228,7 +228,7 @@ void control_thread(drpc::Server* server) {
         return;
     }
 
-    sleep(120);
+    sleep(40);
 
     drpc::DDEBUG("control thread call stop.");
 
