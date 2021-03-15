@@ -87,32 +87,6 @@ public:
     bool Stop() override;
 };
 
-class Listener {
-public:
-    Listener(EventLoop* event_loop, ServerOptions* options);
-
-    ~Listener();
-
-public:
-    bool Start();
-
-    bool Stop();
-
-    void SetNewConnCallback(NewConnCallback cb);
-
-private:
-    void AcceptHandle();
-
-private:
-    EventLoop* event_loop_;
-
-    std::unique_ptr<AsyncSocket> listen_socket_;
-
-    ServerOptions* options_;
-
-    NewConnCallback new_conn_cb_;
-};
-
 } /* end namespace drpc */
 
 #endif /* __LISTENER_HPP__ */
