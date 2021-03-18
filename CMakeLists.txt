@@ -67,23 +67,23 @@ protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto proto/service.proto
 
 set(
     BUTIL_SRC
-    ${PROJECT_SOURCE_DIR}/src/json2pb/encode_decode.cpp
-    ${PROJECT_SOURCE_DIR}/src/json2pb/protobuf_map.cpp
-    ${PROJECT_SOURCE_DIR}/src/json2pb/pb_to_json.cpp
-    ${PROJECT_SOURCE_DIR}/src/json2pb/json_to_pb.cpp
-    ${PROJECT_SOURCE_DIR}/src/socket.cpp
-    ${PROJECT_SOURCE_DIR}/src/ip_address.cpp
-    ${PROJECT_SOURCE_DIR}/src/listener.cpp
-    ${PROJECT_SOURCE_DIR}/src/async_socket.cpp
-    ${PROJECT_SOURCE_DIR}/src/async_watcher.cpp
-    ${PROJECT_SOURCE_DIR}/src/thread_pool.cpp
-    ${PROJECT_SOURCE_DIR}/src/event_loop.cpp
-    ${PROJECT_SOURCE_DIR}/src/event_loop_group.cpp
-    ${PROJECT_SOURCE_DIR}/src/scheduled.cpp
-    ${PROJECT_SOURCE_DIR}/src/channel.cpp
-    ${PROJECT_SOURCE_DIR}/src/rpc_channel.cpp
-    ${PROJECT_SOURCE_DIR}/src/server.cpp
-    ${PROJECT_SOURCE_DIR}/test/test.cpp
+    ${PROJECT_SOURCE_DIR}/src/json2pb/encode_decode.cc
+    ${PROJECT_SOURCE_DIR}/src/json2pb/protobuf_map.cc
+    ${PROJECT_SOURCE_DIR}/src/json2pb/pb_to_json.cc
+    ${PROJECT_SOURCE_DIR}/src/json2pb/json_to_pb.cc
+    ${PROJECT_SOURCE_DIR}/src/socket.cc
+    ${PROJECT_SOURCE_DIR}/src/ip_address.cc
+    ${PROJECT_SOURCE_DIR}/src/listener.cc
+    ${PROJECT_SOURCE_DIR}/src/async_socket.cc
+    ${PROJECT_SOURCE_DIR}/src/async_watcher.cc
+    #${PROJECT_SOURCE_DIR}/src/thread_pool.cc
+    ${PROJECT_SOURCE_DIR}/src/event_loop.cc
+    ${PROJECT_SOURCE_DIR}/src/event_loop_group.cc
+    #${PROJECT_SOURCE_DIR}/src/scheduled.cc
+    ${PROJECT_SOURCE_DIR}/src/channel.cc
+    ${PROJECT_SOURCE_DIR}/src/rpc_channel.cc
+    ${PROJECT_SOURCE_DIR}/src/server.cc
+    ${PROJECT_SOURCE_DIR}/test/test_server.cc
     #${PROJECT_SOURCE_DIR}/test/client.cpp
 )
 
