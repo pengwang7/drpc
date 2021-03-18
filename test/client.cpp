@@ -17,11 +17,7 @@
 #include "service.pb.h"
 #include "rpc_msg_hdr.hpp"
 
-int main() {
-    drpc::Logger::Instance().Init();
-
-    drpc::DTRACE("Client test begin.");
-
+void connect_and_sendrecv() {
     int fd;
     struct sockaddr_in server;
 
@@ -33,7 +29,7 @@ int main() {
 
     ssize_t ret = connect(fd, (struct sockaddr *)&server, sizeof(struct sockaddr));
     if (ret < 0) {
-        return -1;
+        return;
     }
 
     drpc::RpcMessage message;
@@ -49,8 +45,6 @@ int main() {
 
     std::string result;
     message.SerializeToString(&result);
-
-    sleep(3);
 
     char buf[256] = {0};
 
@@ -72,31 +66,41 @@ int main() {
         drpc::DDEBUG("Send message success.");
     } else {
         drpc::DERROR("Send message failed, %s", strerror(errno));
-        return -1;
+        close(fd);
+        return;
     }
 
-    drpc::RpcMessage message1;
+//    drpc::RpcMessage message1;
+//
+//    memset(buf, 0, sizeof(buf));
+//    ret = recv(fd, buf, sizeof(buf), 0);
+//    if (ret <= 0) {
+//        drpc::DERROR("Recv message failed, %s", strerror(errno));
+//        close(fd);
+//        return;
+//    }
+//
+//    drpc::DDEBUG("Recv message success.");
+//
+//    message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
+//
+//    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
+//                message1.id(), message1.service().c_str(), message1.method().c_str(),
+//                message1.response().c_str(), message1.error());
 
-    memset(buf, 0, sizeof(buf));
-    ret = recv(fd, buf, sizeof(buf), 0);
-    if (ret <= 0) {
-        drpc::DERROR("Recv message failed, %s", strerror(errno));
-        return -1;
+    close(fd);
+}
+
+int main() {
+    drpc::Logger::Instance().Init();
+
+    drpc::DTRACE("Client test begin.");
+
+    for (int i = 0; i < 10000; ++ i) {
+        connect_and_sendrecv();
     }
-
-    drpc::DDEBUG("Recv message success.");
-
-    message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
-
-    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
-                message1.id(), message1.service().c_str(), message1.method().c_str(),
-                message1.response().c_str(), message1.error());    
 
     drpc::DTRACE("Client test end.");
-
-    for (int i = 0; i < 17; ++ i) {
-        sleep(1);
-    }
 
     return 0;
 }

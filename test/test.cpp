@@ -228,7 +228,7 @@ void control_thread(drpc::Server* server) {
         return;
     }
 
-    sleep(40);
+    sleep(1000);
 
     drpc::DDEBUG("control thread call stop.");
 
@@ -247,6 +247,7 @@ void server_test() {
     options.port = 6689;
     options.enable_check_timeout = false;
     options.timeout = 10;
+    options.threads = 1;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
     drpc::Server* server = new drpc::Server();

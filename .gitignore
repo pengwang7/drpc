@@ -34,3 +34,9 @@
 # Log
 *.log
 log*
+
+# Cmake
+CMakeFiles/*
+
+# Binary
+bin/*

@@ -177,356 +177,410 @@ service.pb.cc.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/service.pb.cc.s
 .PHONY : service.pb.cc.s
 
-src/async_socket.o: src/async_socket.cpp.o
+src/async_socket.o: src/async_socket.cc.o
 
 .PHONY : src/async_socket.o
 
 # target to build an object file
-src/async_socket.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.o
-.PHONY : src/async_socket.cpp.o
+src/async_socket.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cc.o
+.PHONY : src/async_socket.cc.o
 
-src/async_socket.i: src/async_socket.cpp.i
+src/async_socket.i: src/async_socket.cc.i
 
 .PHONY : src/async_socket.i
 
 # target to preprocess a source file
-src/async_socket.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.i
-.PHONY : src/async_socket.cpp.i
+src/async_socket.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cc.i
+.PHONY : src/async_socket.cc.i
 
-src/async_socket.s: src/async_socket.cpp.s
+src/async_socket.s: src/async_socket.cc.s
 
 .PHONY : src/async_socket.s
 
 # target to generate assembly for a file
-src/async_socket.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cpp.s
-.PHONY : src/async_socket.cpp.s
+src/async_socket.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_socket.cc.s
+.PHONY : src/async_socket.cc.s
 
-src/async_watcher.o: src/async_watcher.cpp.o
+src/async_watcher.o: src/async_watcher.cc.o
 
 .PHONY : src/async_watcher.o
 
 # target to build an object file
-src/async_watcher.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.o
-.PHONY : src/async_watcher.cpp.o
+src/async_watcher.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cc.o
+.PHONY : src/async_watcher.cc.o
 
-src/async_watcher.i: src/async_watcher.cpp.i
+src/async_watcher.i: src/async_watcher.cc.i
 
 .PHONY : src/async_watcher.i
 
 # target to preprocess a source file
-src/async_watcher.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.i
-.PHONY : src/async_watcher.cpp.i
+src/async_watcher.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cc.i
+.PHONY : src/async_watcher.cc.i
 
-src/async_watcher.s: src/async_watcher.cpp.s
+src/async_watcher.s: src/async_watcher.cc.s
 
 .PHONY : src/async_watcher.s
 
 # target to generate assembly for a file
-src/async_watcher.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cpp.s
-.PHONY : src/async_watcher.cpp.s
+src/async_watcher.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/async_watcher.cc.s
+.PHONY : src/async_watcher.cc.s
 
-src/channel.o: src/channel.cpp.o
+src/channel.o: src/channel.cc.o
 
 .PHONY : src/channel.o
 
 # target to build an object file
-src/channel.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.o
-.PHONY : src/channel.cpp.o
+src/channel.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cc.o
+.PHONY : src/channel.cc.o
 
-src/channel.i: src/channel.cpp.i
+src/channel.i: src/channel.cc.i
 
 .PHONY : src/channel.i
 
 # target to preprocess a source file
-src/channel.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.i
-.PHONY : src/channel.cpp.i
+src/channel.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cc.i
+.PHONY : src/channel.cc.i
 
-src/channel.s: src/channel.cpp.s
+src/channel.s: src/channel.cc.s
 
 .PHONY : src/channel.s
 
 # target to generate assembly for a file
-src/channel.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cpp.s
-.PHONY : src/channel.cpp.s
+src/channel.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cc.s
+.PHONY : src/channel.cc.s
 
-src/event_loop.o: src/event_loop.cpp.o
+src/event_loop.o: src/event_loop.cc.o
 
 .PHONY : src/event_loop.o
 
 # target to build an object file
-src/event_loop.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.o
-.PHONY : src/event_loop.cpp.o
+src/event_loop.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cc.o
+.PHONY : src/event_loop.cc.o
 
-src/event_loop.i: src/event_loop.cpp.i
+src/event_loop.i: src/event_loop.cc.i
 
 .PHONY : src/event_loop.i
 
 # target to preprocess a source file
-src/event_loop.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.i
-.PHONY : src/event_loop.cpp.i
+src/event_loop.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cc.i
+.PHONY : src/event_loop.cc.i
 
-src/event_loop.s: src/event_loop.cpp.s
+src/event_loop.s: src/event_loop.cc.s
 
 .PHONY : src/event_loop.s
 
 # target to generate assembly for a file
-src/event_loop.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cpp.s
-.PHONY : src/event_loop.cpp.s
+src/event_loop.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop.cc.s
+.PHONY : src/event_loop.cc.s
 
-src/event_loop_group.o: src/event_loop_group.cpp.o
+src/event_loop_group.o: src/event_loop_group.cc.o
 
 .PHONY : src/event_loop_group.o
 
 # target to build an object file
-src/event_loop_group.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.o
-.PHONY : src/event_loop_group.cpp.o
+src/event_loop_group.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cc.o
+.PHONY : src/event_loop_group.cc.o
 
-src/event_loop_group.i: src/event_loop_group.cpp.i
+src/event_loop_group.i: src/event_loop_group.cc.i
 
 .PHONY : src/event_loop_group.i
 
 # target to preprocess a source file
-src/event_loop_group.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.i
-.PHONY : src/event_loop_group.cpp.i
+src/event_loop_group.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cc.i
+.PHONY : src/event_loop_group.cc.i
 
-src/event_loop_group.s: src/event_loop_group.cpp.s
+src/event_loop_group.s: src/event_loop_group.cc.s
 
 .PHONY : src/event_loop_group.s
 
 # target to generate assembly for a file
-src/event_loop_group.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cpp.s
-.PHONY : src/event_loop_group.cpp.s
+src/event_loop_group.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cc.s
+.PHONY : src/event_loop_group.cc.s
 
-src/ip_address.o: src/ip_address.cpp.o
+src/ip_address.o: src/ip_address.cc.o
 
 .PHONY : src/ip_address.o
 
 # target to build an object file
-src/ip_address.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.o
-.PHONY : src/ip_address.cpp.o
+src/ip_address.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.o
+.PHONY : src/ip_address.cc.o
 
-src/ip_address.i: src/ip_address.cpp.i
+src/ip_address.i: src/ip_address.cc.i
 
 .PHONY : src/ip_address.i
 
 # target to preprocess a source file
-src/ip_address.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.i
-.PHONY : src/ip_address.cpp.i
+src/ip_address.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.i
+.PHONY : src/ip_address.cc.i
 
-src/ip_address.s: src/ip_address.cpp.s
+src/ip_address.s: src/ip_address.cc.s
 
 .PHONY : src/ip_address.s
 
 # target to generate assembly for a file
-src/ip_address.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cpp.s
-.PHONY : src/ip_address.cpp.s
+src/ip_address.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.s
+.PHONY : src/ip_address.cc.s
 
-src/listener.o: src/listener.cpp.o
+src/json2pb/encode_decode.o: src/json2pb/encode_decode.cc.o
+
+.PHONY : src/json2pb/encode_decode.o
+
+# target to build an object file
+src/json2pb/encode_decode.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/encode_decode.cc.o
+.PHONY : src/json2pb/encode_decode.cc.o
+
+src/json2pb/encode_decode.i: src/json2pb/encode_decode.cc.i
+
+.PHONY : src/json2pb/encode_decode.i
+
+# target to preprocess a source file
+src/json2pb/encode_decode.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/encode_decode.cc.i
+.PHONY : src/json2pb/encode_decode.cc.i
+
+src/json2pb/encode_decode.s: src/json2pb/encode_decode.cc.s
+
+.PHONY : src/json2pb/encode_decode.s
+
+# target to generate assembly for a file
+src/json2pb/encode_decode.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/encode_decode.cc.s
+.PHONY : src/json2pb/encode_decode.cc.s
+
+src/json2pb/json_to_pb.o: src/json2pb/json_to_pb.cc.o
+
+.PHONY : src/json2pb/json_to_pb.o
+
+# target to build an object file
+src/json2pb/json_to_pb.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/json_to_pb.cc.o
+.PHONY : src/json2pb/json_to_pb.cc.o
+
+src/json2pb/json_to_pb.i: src/json2pb/json_to_pb.cc.i
+
+.PHONY : src/json2pb/json_to_pb.i
+
+# target to preprocess a source file
+src/json2pb/json_to_pb.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/json_to_pb.cc.i
+.PHONY : src/json2pb/json_to_pb.cc.i
+
+src/json2pb/json_to_pb.s: src/json2pb/json_to_pb.cc.s
+
+.PHONY : src/json2pb/json_to_pb.s
+
+# target to generate assembly for a file
+src/json2pb/json_to_pb.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/json_to_pb.cc.s
+.PHONY : src/json2pb/json_to_pb.cc.s
+
+src/json2pb/pb_to_json.o: src/json2pb/pb_to_json.cc.o
+
+.PHONY : src/json2pb/pb_to_json.o
+
+# target to build an object file
+src/json2pb/pb_to_json.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/pb_to_json.cc.o
+.PHONY : src/json2pb/pb_to_json.cc.o
+
+src/json2pb/pb_to_json.i: src/json2pb/pb_to_json.cc.i
+
+.PHONY : src/json2pb/pb_to_json.i
+
+# target to preprocess a source file
+src/json2pb/pb_to_json.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/pb_to_json.cc.i
+.PHONY : src/json2pb/pb_to_json.cc.i
+
+src/json2pb/pb_to_json.s: src/json2pb/pb_to_json.cc.s
+
+.PHONY : src/json2pb/pb_to_json.s
+
+# target to generate assembly for a file
+src/json2pb/pb_to_json.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/pb_to_json.cc.s
+.PHONY : src/json2pb/pb_to_json.cc.s
+
+src/json2pb/protobuf_map.o: src/json2pb/protobuf_map.cc.o
+
+.PHONY : src/json2pb/protobuf_map.o
+
+# target to build an object file
+src/json2pb/protobuf_map.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/protobuf_map.cc.o
+.PHONY : src/json2pb/protobuf_map.cc.o
+
+src/json2pb/protobuf_map.i: src/json2pb/protobuf_map.cc.i
+
+.PHONY : src/json2pb/protobuf_map.i
+
+# target to preprocess a source file
+src/json2pb/protobuf_map.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/protobuf_map.cc.i
+.PHONY : src/json2pb/protobuf_map.cc.i
+
+src/json2pb/protobuf_map.s: src/json2pb/protobuf_map.cc.s
+
+.PHONY : src/json2pb/protobuf_map.s
+
+# target to generate assembly for a file
+src/json2pb/protobuf_map.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/json2pb/protobuf_map.cc.s
+.PHONY : src/json2pb/protobuf_map.cc.s
+
+src/listener.o: src/listener.cc.o
 
 .PHONY : src/listener.o
 
 # target to build an object file
-src/listener.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.o
-.PHONY : src/listener.cpp.o
+src/listener.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cc.o
+.PHONY : src/listener.cc.o
 
-src/listener.i: src/listener.cpp.i
+src/listener.i: src/listener.cc.i
 
 .PHONY : src/listener.i
 
 # target to preprocess a source file
-src/listener.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.i
-.PHONY : src/listener.cpp.i
+src/listener.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cc.i
+.PHONY : src/listener.cc.i
 
-src/listener.s: src/listener.cpp.s
+src/listener.s: src/listener.cc.s
 
 .PHONY : src/listener.s
 
 # target to generate assembly for a file
-src/listener.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cpp.s
-.PHONY : src/listener.cpp.s
+src/listener.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/listener.cc.s
+.PHONY : src/listener.cc.s
 
-src/rpc_channel.o: src/rpc_channel.cpp.o
+src/rpc_channel.o: src/rpc_channel.cc.o
 
 .PHONY : src/rpc_channel.o
 
 # target to build an object file
-src/rpc_channel.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.o
-.PHONY : src/rpc_channel.cpp.o
+src/rpc_channel.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cc.o
+.PHONY : src/rpc_channel.cc.o
 
-src/rpc_channel.i: src/rpc_channel.cpp.i
+src/rpc_channel.i: src/rpc_channel.cc.i
 
 .PHONY : src/rpc_channel.i
 
 # target to preprocess a source file
-src/rpc_channel.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.i
-.PHONY : src/rpc_channel.cpp.i
+src/rpc_channel.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cc.i
+.PHONY : src/rpc_channel.cc.i
 
-src/rpc_channel.s: src/rpc_channel.cpp.s
+src/rpc_channel.s: src/rpc_channel.cc.s
 
 .PHONY : src/rpc_channel.s
 
 # target to generate assembly for a file
-src/rpc_channel.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cpp.s
-.PHONY : src/rpc_channel.cpp.s
+src/rpc_channel.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/rpc_channel.cc.s
+.PHONY : src/rpc_channel.cc.s
 
-src/scheduled.o: src/scheduled.cpp.o
-
-.PHONY : src/scheduled.o
-
-# target to build an object file
-src/scheduled.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.o
-.PHONY : src/scheduled.cpp.o
-
-src/scheduled.i: src/scheduled.cpp.i
-
-.PHONY : src/scheduled.i
-
-# target to preprocess a source file
-src/scheduled.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.i
-.PHONY : src/scheduled.cpp.i
-
-src/scheduled.s: src/scheduled.cpp.s
-
-.PHONY : src/scheduled.s
-
-# target to generate assembly for a file
-src/scheduled.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/scheduled.cpp.s
-.PHONY : src/scheduled.cpp.s
-
-src/server.o: src/server.cpp.o
+src/server.o: src/server.cc.o
 
 .PHONY : src/server.o
 
 # target to build an object file
-src/server.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.o
-.PHONY : src/server.cpp.o
+src/server.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cc.o
+.PHONY : src/server.cc.o
 
-src/server.i: src/server.cpp.i
+src/server.i: src/server.cc.i
 
 .PHONY : src/server.i
 
 # target to preprocess a source file
-src/server.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.i
-.PHONY : src/server.cpp.i
+src/server.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cc.i
+.PHONY : src/server.cc.i
 
-src/server.s: src/server.cpp.s
+src/server.s: src/server.cc.s
 
 .PHONY : src/server.s
 
 # target to generate assembly for a file
-src/server.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cpp.s
-.PHONY : src/server.cpp.s
+src/server.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/server.cc.s
+.PHONY : src/server.cc.s
 
-src/socket.o: src/socket.cpp.o
+src/socket.o: src/socket.cc.o
 
 .PHONY : src/socket.o
 
 # target to build an object file
-src/socket.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.o
-.PHONY : src/socket.cpp.o
+src/socket.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cc.o
+.PHONY : src/socket.cc.o
 
-src/socket.i: src/socket.cpp.i
+src/socket.i: src/socket.cc.i
 
 .PHONY : src/socket.i
 
 # target to preprocess a source file
-src/socket.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.i
-.PHONY : src/socket.cpp.i
+src/socket.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cc.i
+.PHONY : src/socket.cc.i
 
-src/socket.s: src/socket.cpp.s
+src/socket.s: src/socket.cc.s
 
 .PHONY : src/socket.s
 
 # target to generate assembly for a file
-src/socket.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cpp.s
-.PHONY : src/socket.cpp.s
+src/socket.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cc.s
+.PHONY : src/socket.cc.s
 
-src/thread_pool.o: src/thread_pool.cpp.o
+test/test_server.o: test/test_server.cc.o
 
-.PHONY : src/thread_pool.o
-
-# target to build an object file
-src/thread_pool.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.o
-.PHONY : src/thread_pool.cpp.o
-
-src/thread_pool.i: src/thread_pool.cpp.i
-
-.PHONY : src/thread_pool.i
-
-# target to preprocess a source file
-src/thread_pool.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.i
-.PHONY : src/thread_pool.cpp.i
-
-src/thread_pool.s: src/thread_pool.cpp.s
-
-.PHONY : src/thread_pool.s
-
-# target to generate assembly for a file
-src/thread_pool.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/thread_pool.cpp.s
-.PHONY : src/thread_pool.cpp.s
-
-test/test.o: test/test.cpp.o
-
-.PHONY : test/test.o
+.PHONY : test/test_server.o
 
 # target to build an object file
-test/test.cpp.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cpp.o
-.PHONY : test/test.cpp.o
+test/test_server.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.o
+.PHONY : test/test_server.cc.o
 
-test/test.i: test/test.cpp.i
+test/test_server.i: test/test_server.cc.i
 
-.PHONY : test/test.i
+.PHONY : test/test_server.i
 
 # target to preprocess a source file
-test/test.cpp.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cpp.i
-.PHONY : test/test.cpp.i
+test/test_server.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.i
+.PHONY : test/test_server.cc.i
 
-test/test.s: test/test.cpp.s
+test/test_server.s: test/test_server.cc.s
 
-.PHONY : test/test.s
+.PHONY : test/test_server.s
 
 # target to generate assembly for a file
-test/test.cpp.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cpp.s
-.PHONY : test/test.cpp.s
+test/test_server.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.s
+.PHONY : test/test_server.cc.s
 
 # Help Target
 help:
@@ -561,27 +615,33 @@ help:
 	@echo "... src/ip_address.o"
 	@echo "... src/ip_address.i"
 	@echo "... src/ip_address.s"
+	@echo "... src/json2pb/encode_decode.o"
+	@echo "... src/json2pb/encode_decode.i"
+	@echo "... src/json2pb/encode_decode.s"
+	@echo "... src/json2pb/json_to_pb.o"
+	@echo "... src/json2pb/json_to_pb.i"
+	@echo "... src/json2pb/json_to_pb.s"
+	@echo "... src/json2pb/pb_to_json.o"
+	@echo "... src/json2pb/pb_to_json.i"
+	@echo "... src/json2pb/pb_to_json.s"
+	@echo "... src/json2pb/protobuf_map.o"
+	@echo "... src/json2pb/protobuf_map.i"
+	@echo "... src/json2pb/protobuf_map.s"
 	@echo "... src/listener.o"
 	@echo "... src/listener.i"
 	@echo "... src/listener.s"
 	@echo "... src/rpc_channel.o"
 	@echo "... src/rpc_channel.i"
 	@echo "... src/rpc_channel.s"
-	@echo "... src/scheduled.o"
-	@echo "... src/scheduled.i"
-	@echo "... src/scheduled.s"
 	@echo "... src/server.o"
 	@echo "... src/server.i"
 	@echo "... src/server.s"
 	@echo "... src/socket.o"
 	@echo "... src/socket.i"
 	@echo "... src/socket.s"
-	@echo "... src/thread_pool.o"
-	@echo "... src/thread_pool.i"
-	@echo "... src/thread_pool.s"
-	@echo "... test/test.o"
-	@echo "... test/test.i"
-	@echo "... test/test.s"
+	@echo "... test/test_server.o"
+	@echo "... test/test_server.i"
+	@echo "... test/test_server.s"
 .PHONY : help
 
 
