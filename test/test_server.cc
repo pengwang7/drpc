@@ -45,7 +45,7 @@ void control_thread(drpc::Server* server) {
         return;
     }
 
-    sleep(1000);
+    sleep(120);
 
     drpc::DDEBUG("control thread call stop.");
 
@@ -93,10 +93,43 @@ void server_test() {
     drpc::DTRACE("test_server end.");
 }
 
+void buffer_test() {
+    std::string request_line = "POST / HTTP/1.1\r\n";
+    std::string content_type = "Content-Type: json\r\n";
+    std::string content_length = "Content-Length: 10\r\n\r\n";
+    std::string content_body = "aaabbbcccd";
+
+    drpc::Buffer buffer;
+
+    buffer.AppendData(request_line.c_str(), request_line.size());
+    buffer.AppendData(content_type.c_str(), content_type.size());
+    buffer.AppendData(content_length.c_str(), content_length.size());
+    buffer.AppendData(content_body.c_str(), content_body.size());
+
+    drpc::DDEBUG("The buffer size:%d", buffer.size());
+    drpc::DDEBUG("The buffer data:%s", buffer.data());
+
+    const char* crlf = buffer.Find2CRLF();
+    if (crlf) {
+        drpc::DDEBUG("crlf:%s", crlf);
+    } else {
+        drpc::DERROR("not found crlf.");
+    }
+
+    drpc::ByteBufferReader reader(buffer);
+    std::string res;
+    reader.ReadString(&res, 55);
+
+    drpc::DDEBUG("The res is:%s", res.c_str());
+
+}
+
 int main() {
     drpc::Logger::Instance().Init();
 
-    server_test();
+    buffer_test();
+
+    //server_test();
 
     drpc::Logger::Instance().Destroy();
 

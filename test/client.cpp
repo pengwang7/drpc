@@ -13,9 +13,9 @@
 #include <iostream>
 
 #include "rpc.pb.h"
-#include "logger.hpp"
+#include "logger.h"
 #include "service.pb.h"
-#include "rpc_msg_hdr.hpp"
+#include "rpc_msg_hdr.h"
 
 void connect_and_sendrecv() {
     int fd;
@@ -70,23 +70,23 @@ void connect_and_sendrecv() {
         return;
     }
 
-//    drpc::RpcMessage message1;
-//
-//    memset(buf, 0, sizeof(buf));
-//    ret = recv(fd, buf, sizeof(buf), 0);
-//    if (ret <= 0) {
-//        drpc::DERROR("Recv message failed, %s", strerror(errno));
-//        close(fd);
-//        return;
-//    }
-//
-//    drpc::DDEBUG("Recv message success.");
-//
-//    message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
-//
-//    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
-//                message1.id(), message1.service().c_str(), message1.method().c_str(),
-//                message1.response().c_str(), message1.error());
+    drpc::RpcMessage message1;
+
+    memset(buf, 0, sizeof(buf));
+    ret = recv(fd, buf, sizeof(buf), 0);
+    if (ret <= 0) {
+        drpc::DERROR("Recv message failed, %s", strerror(errno));
+        close(fd);
+        return;
+    }
+
+    drpc::DDEBUG("Recv message success.");
+
+    message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
+
+    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
+                message1.id(), message1.service().c_str(), message1.method().c_str(),
+                message1.response().c_str(), message1.error());
 
     close(fd);
 }
@@ -96,7 +96,7 @@ int main() {
 
     drpc::DTRACE("Client test begin.");
 
-    for (int i = 0; i < 10000; ++ i) {
+    for (int i = 0; i < 50000; ++ i) {
         connect_and_sendrecv();
     }
 

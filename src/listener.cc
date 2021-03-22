@@ -163,9 +163,11 @@ bool TcpNetworkListener::Start() {
 }
 
 bool TcpNetworkListener::Stop() {
-    DASSERT(event_loop_->IsConsistent(), "Stop error.");
+    //DASSERT(event_loop_->IsConsistent(), "Stop error.");
 
-    listen_socket_->Close();
+    event_loop_->RunInLoop(std::bind(&AsyncSocket::Close, listen_socket_.get()));
+
+    //listen_socket_->Close();
 
     return true;
 }

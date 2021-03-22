@@ -18,6 +18,8 @@
 
 namespace drpc {
 
+static const char k2CRLF[] = "\r\n\r\n";
+
 // Modify webRTC basic buffer for easy to use for socket buffer.
 namespace internal {
 
@@ -67,7 +69,7 @@ class ByteBufferReader;
 // If "ZeroOnFree" is true, any memory is explicitly cleared before releasing.
 // The type alias "ZeroOnFreeBuffer" below should be used instead of setting
 // "ZeroOnFree" in the template manually to "true".
-template <typename T, bool ZeroOnFree = false>
+template <typename T, bool ZeroOnFree = true>
 class BufferT {
     static_assert(std::is_trivial<T>::value, "T must be a trivial type.");
 
@@ -87,7 +89,7 @@ public:
           read_index_(0),
           write_index_(0),
           data_(capacity_ > 0 ?
-                new T[capacity_] : nullptr) {
+                new T[capacity_]{0} : nullptr) {
         DASSERT(IsConsistent(), "BufferT error.");
     }
 
@@ -311,6 +313,11 @@ public:
         return data() + write_index_;
     }
 
+    const char* Find2CRLF() const {
+        const char* crlf = std::search(begin(), end(), k2CRLF, k2CRLF + 4);
+        return crlf == end() ? nullptr : crlf;
+    }
+
 private:
     void EnsureCapacityWithHeadroom(size_t capacity, bool extra_headroom) {
         DASSERT(IsConsistent(), "BufferT error.");
@@ -328,7 +335,7 @@ private:
                 extra_headroom ? std::max(capacity, capacity_ + capacity_ / 2)
                 : capacity;
 
-            std::unique_ptr<T[]> new_data(new T[new_capacity]);
+            std::unique_ptr<T[]> new_data(new T[new_capacity]{0});
             if (data_ != nullptr) {
                 std::memcpy(new_data.get(), begin(), unread_byte_size);
             }

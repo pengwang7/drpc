@@ -61,22 +61,19 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
 }
 
 void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
-    DDEBUG("begin OnRpcMessage");
     std::string content;
     if (!MessageTransform(buffer, content)) {
         DWARNING("OnRpcMessage message transform failed.");
         return;
     }
-//
-//    if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
-//        OnRpcJsonMessage(content);
-//    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
-//        OnRpcProtobufMessage(content);
-//    } else {
-//        DWARNING("OnRpcMessage invalid message type.");
-//    }
 
-    DDEBUG("end OnRpcMessage");
+    if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
+        OnRpcJsonMessage(content);
+    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
+        OnRpcProtobufMessage(content);
+    } else {
+        DWARNING("OnRpcMessage invalid message type.");
+    }
 }
 
 void RpcChannel::SetRefreshCallback(const RefreshCallback& cb) {

@@ -104,8 +104,6 @@ void EventfdWatcher::Notify() {
         DERROR("EventfdWatcher notify failed.");
         return;
     }
-
-    DTRACE("EventfdWatcher notify success.");
 }
 
 bool EventfdWatcher::DoInitImpl() {

@@ -88,8 +88,6 @@ private:
 
     moodycamel::ConcurrentQueue<Functor>* pending_task_queue_;
 
-    //std::atomic<bool> wait_destroy_;
-
     std::atomic<bool> notified_;
 };
 
