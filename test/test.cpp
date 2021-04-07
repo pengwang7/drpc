@@ -35,7 +35,7 @@ public:
         // Sync model.
         drpc::ClosureGuard done_guard(done);
 
-        drpc::DDEBUG("The message: %s", request->message().c_str());
+        drpc::DDEBUG("The message: {}", request->message());
 
         response->set_message("200OK");
     }
@@ -88,15 +88,15 @@ void buffer_test() {
         drpc::DDEBUG("Buffer is not empty.");
     }
 
-    drpc::DDEBUG("1 Buffer current size: %d, capacity: %d.", buf1->size(), buf1->capacity());
+    drpc::DDEBUG("1 Buffer current size: {}, capacity: {}.", buf1->size(), buf1->capacity());
 
     buf1->AppendData("pengwang", 8);
 
-    drpc::DDEBUG("2 Buffer current size: %d, capacity: %d.", buf1->size(), buf1->capacity());
+    drpc::DDEBUG("2 Buffer current size: {}, capacity: {}.", buf1->size(), buf1->capacity());
 
-    drpc::DDEBUG("Buffer data1: %s", buf1->data());
+    drpc::DDEBUG("Buffer data1: {}", buf1->data());
 
-    drpc::DDEBUG("Buffer data2: %s", buf1->begin());
+    drpc::DDEBUG("Buffer data2: {}", buf1->begin());
 
     std::string content = "66778899";
     buf1->AppendData(content);
@@ -107,11 +107,11 @@ void buffer_test() {
 */
     buf1->AppendData("666666666666666666666666666666", 30);
 
-    drpc::DDEBUG("3 Buffer current size: %d, capacity: %d.", buf1->size(), buf1->capacity());
+    drpc::DDEBUG("3 Buffer current size: {}, capacity: {}.", buf1->size(), buf1->capacity());
 
-    drpc::DDEBUG("Buffer data3: %s", buf1->data());
+    drpc::DDEBUG("Buffer data3: {}", buf1->data());
 
-    drpc::DDEBUG("Buffer data4: %s", buf1->begin());
+    drpc::DDEBUG("Buffer data4: {}", buf1->begin());
 
 }
 
@@ -124,7 +124,7 @@ void channel_refs() {
     drpc::channel_ptr chan(new drpc::Channel(socket));
     chan->Init();
 
-    drpc::DDEBUG("channel refs: %d.", chan.use_count());
+    drpc::DDEBUG("channel refs: {}.", chan.use_count());
 }
 
 void timeout_cb() {
@@ -147,13 +147,13 @@ void test_scheduled() {
             return;
         }
 
-        drpc::DDEBUG("The sched 111 use count: %d.", sched.use_count());
+        drpc::DDEBUG("The sched 111 use count: {}.", sched.use_count());
     }
 
     if (sched) {
-        drpc::DDEBUG("The sched 222 use count: %d.", sched.use_count());
+        drpc::DDEBUG("The sched 222 use count: {}.", sched.use_count());
     } else {
-        drpc::DDEBUG("The sched 333 use count: %d.", sched.use_count());
+        drpc::DDEBUG("The sched 333 use count: {}.", sched.use_count());
     }
 
     sched->Run();
@@ -312,7 +312,7 @@ void proto_message_test() {
     drpc::RpcMessage message2;
     message2.ParseFromString(result);
 
-    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+    drpc::DDEBUG("The string serialize to proto message: id: {}, service: {}, method: {}, request: {}",
                 message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
 
     drpc::DTRACE("proto_message_test end.");
@@ -420,7 +420,7 @@ void json_protobuf_test() {
     drpc::RpcMessage message2;
 
     if (json2pb::JsonToProtoMessage(test_json, &message2)) {
-        drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+        drpc::DDEBUG("The string serialize to proto message: id: {}, service: {}, method: {}, request: {}",
                 message2.id(), message2.service().c_str(), message2.method().c_str(), message2.request().c_str());
 
     } else {

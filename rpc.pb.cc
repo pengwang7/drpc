@@ -69,7 +69,7 @@ const char descriptor_table_protodef_rpc_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "Code\022\014\n\010NO_ERROR\020\000\022\017\n\013WRONG_PROTO\020\001\022\016\n\nN"
   "O_SERVICE\020\002\022\r\n\tNO_METHOD\020\003\022\023\n\017INVALID_RE"
   "QUEST\020\004\022\024\n\020INVALID_RESPONSE\020\005\022\013\n\007TIMEOUT"
-  "\020\006b\006proto3"
+  "\020\006B\006\200\001\001\210\001\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_rpc_2eproto_deps[1] = {
 };
@@ -78,7 +78,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_rpc
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_rpc_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_rpc_2eproto = {
-  false, false, descriptor_table_protodef_rpc_2eproto, "rpc.proto", 370,
+  false, false, descriptor_table_protodef_rpc_2eproto, "rpc.proto", 378,
   &descriptor_table_rpc_2eproto_once, descriptor_table_rpc_2eproto_sccs, descriptor_table_rpc_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_rpc_2eproto::offsets,
   file_level_metadata_rpc_2eproto, 1, file_level_enum_descriptors_rpc_2eproto, file_level_service_descriptors_rpc_2eproto,

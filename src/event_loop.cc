@@ -31,8 +31,6 @@
 namespace drpc {
 
 EventLoop::EventLoop() {
-    DTRACE("The event loop create:%p.", this);
-
     // Create libev event loop used EPOLL engine.
     event_loop_ = ev_loop_new(EVBACKEND_EPOLL);
     DASSERT(event_loop_, "EventLoop is nil.");
@@ -41,8 +39,6 @@ EventLoop::EventLoop() {
 }
 
 EventLoop::~EventLoop() {
-    DTRACE("The event loop destroy:%p.", this);
-
     async_watcher_->Terminate();
     async_watcher_->Cancel();
 
@@ -88,7 +84,7 @@ void EventLoop::Stop() {
         // then the Event Loop does not exit.
         ev_break(event_loop_, EVBREAK_ALL);
 
-        DDEBUG("The event loop is stopped: %p", this);
+        DDEBUG("The event loop is stopped.");
     };
 
     RunInLoop(stop);
@@ -111,8 +107,8 @@ void EventLoop::QueueInLoop(const Functor& task) {
         if (async_watcher_) {
             async_watcher_->Notify();
         } else {
-            DTRACE("Status: %s", ToString().c_str());
-            DASSERT(!IsRunning(), "Status: %s", ToString().c_str());
+            DTRACE("Status: {}", ToString());
+            DASSERT(!IsRunning(), "Status: {}", ToString());
         }
     }
 }

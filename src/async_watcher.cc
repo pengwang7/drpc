@@ -110,7 +110,7 @@ bool EventfdWatcher::DoInitImpl() {
     event_fd_ = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
     if (event_fd_ < 0) {
         DoTerminateImpl();
-        DERROR("EventfdWatcher initialize error:%s.", strerror(errno));
+        DERROR("EventfdWatcher initialize error: {}.", std::strerror(errno));
         return false;
     }
 
@@ -130,7 +130,7 @@ void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, 
     uint64_t data = 0;
 
     if (events & EV_ERROR) {
-        DERROR("EventfdWatcher receive error:%s.", events);
+        DERROR("EventfdWatcher receive error: {}.", events);
         return;
     }
 
@@ -141,7 +141,7 @@ void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, 
     }
 
     if (read(fd_watcher->event_fd_, &data, sizeof(data)) != sizeof(uint64_t)) {
-        DERROR("EventfdWatcher read event fd error:%s.", strerror(errno));
+        DERROR("EventfdWatcher read event fd error: {}.", std::strerror(errno));
         return;
     }
 

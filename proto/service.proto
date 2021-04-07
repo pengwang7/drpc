@@ -1,8 +1,8 @@
 syntax="proto3";
+option cc_generic_services = true;
+option java_generic_services = true;
 
 package drpc;
-
-option cc_generic_services = true;
 
 message PublishRequest {
     string message = 1;

@@ -38,11 +38,10 @@ RpcChannel::RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services)
     : msid_(0), chan_(chan), default_(&RpcMessage::default_instance()), service_map_(services) {
     memset(&msg_hdr_, 0, sizeof(msg_hdr_));
     DASSERT(chan_, "RpcChannel create failed.");
-    DTRACE("Create RpcChannel: %p.", this);
 }
 
 RpcChannel::~RpcChannel() {
-    DTRACE("The RpcChannel destroy: %p, csid: %d, msid: %d.", this, chan_->csid(), msid_);
+    DTRACE("The RpcChannel destroy csid: {}, msid: {}.", chan_->csid(), msid_);
 
     // When the RpcChannel for rpc client, need to used outstandings_.
     for (auto it = outstandings_.begin(); it != outstandings_.end(); ++ it) {
@@ -112,8 +111,8 @@ bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
 
     OnRpcRefresh();
 
-    DDEBUG("MessageTransform the message version: %d, type: %d, length:%d.",
-           msg_hdr_.version, msg_hdr_.type, msg_hdr_.length);
+//    DDEBUG("MessageTransform the message version: {}, type: {}, length: {}.",
+//        (msg_hdr_.version), (msg_hdr_.type), msg_hdr_.length);
 
     if (buffer.UnreadByteSize() < msg_hdr_.length + sizeof(msg_hdr_)) {
         DDEBUG("MessageTransform data is not complete.");
@@ -149,7 +148,7 @@ void RpcChannel::OnRpcJsonMessage(std::string& content) {
         goto error;
     }
 
-    DDEBUG("The json serialize to proto message: id: %d, service: %s, method: %s, request: %s",
+    DDEBUG("The json serialize to proto message: id: {}, service: {}, method: {}, request: {}",
            rpc_message->id(), rpc_message->service().c_str(), rpc_message->method().c_str(),
            rpc_message->request().c_str());
 
@@ -173,7 +172,7 @@ void RpcChannel::OnRpcJsonMessage(std::string& content) {
 error:
     OnRpcError(ec);
 
-    DERROR("OnRpcJsonMessage met error: %d.", ec);
+    DERROR("OnRpcJsonMessage met error: {}.", ec);
 }
 
 void RpcChannel::OnRpcProtobufMessage(std::string& content) {
@@ -189,10 +188,10 @@ void RpcChannel::OnRpcProtobufMessage(std::string& content) {
         goto error;
     }
 
-    DDEBUG("The string serialize to proto message: id: %d, "
-           "service: %s, method: %s, request: %s",
-           rpc_message->id(), rpc_message->service().c_str(),
-           rpc_message->method().c_str(), rpc_message->request().c_str());
+    DDEBUG("The string serialize to proto message: id: {}, "
+           "service: {}, method: {}, request: {}",
+           rpc_message->id(), rpc_message->service(),
+           rpc_message->method(), rpc_message->request());
 
     switch (rpc_message->type()) {
     case REQUEST:
@@ -214,7 +213,7 @@ void RpcChannel::OnRpcProtobufMessage(std::string& content) {
 error:
     OnRpcError(ec);
 
-    DERROR("OnRpcProtobufMessage met error: %d.", ec);
+    DERROR("OnRpcProtobufMessage met error: {}.", ec);
 }
 
 bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& ec) {
@@ -232,8 +231,8 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
         const google::protobuf::ServiceDescriptor* sdes = service->GetDescriptor();
         const google::protobuf::MethodDescriptor* method = sdes->FindMethodByName(rpc_message->method());
         if (!method) {
-            DERROR("OnRpcRequest %s service not found %s method.",
-                   rpc_message->service().c_str(), rpc_message->method().c_str());
+            DERROR("OnRpcRequest {} service not found {} method.",
+                   rpc_message->service(), rpc_message->method());
             ec = NO_METHOD;
             return false;
         }
@@ -247,7 +246,7 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
             return true;
         }
     } else {
-        DERROR("OnRpcRequest %s service not found.", rpc_message->service().c_str());
+        DERROR("OnRpcRequest {} service not found.", rpc_message->service());
         ec = NO_SERVICE;
     }
 
@@ -261,7 +260,7 @@ bool RpcChannel::OnRpcResponse(/*const RpcMessagePtr& rpc_message*/) {
 
 void RpcChannel::OnRpcRefresh() {
     if (refresh_cb_) {
-        DDEBUG("OnRpcRefresh the channel csid: %d", chan_->csid());
+        DDEBUG("OnRpcRefresh the channel csid: {}", chan_->csid());
         refresh_cb_(chan_);
     }
 }

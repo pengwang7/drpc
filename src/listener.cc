@@ -48,7 +48,7 @@ void NetworkListener::AcceptHandle() {
     int sock = AcceptSocket(listen_socket_->fd2(), peer_addr);
     if (sock < 0) {
         if (errno != EAGAIN && errno != EINTR) {
-            DERROR("NetworkListener accept failed: %s", strerror(errno));
+            DERROR("NetworkListener accept failed: {}.", std::strerror(errno));
         }
         return;
     }

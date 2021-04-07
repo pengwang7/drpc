@@ -99,7 +99,7 @@ EventLoopGroup::Thread::Thread()
 
 EventLoopGroup::Thread::~Thread() {
     DASSERT(state_ == STOPPED, "Thread state error.");
-    DTRACE("Thread destroy: %p", this);
+    //DTRACE("Thread destroy: {}", thread_id());
 }
 
 void EventLoopGroup::Thread::Run(bool detach) {
@@ -127,7 +127,7 @@ void EventLoopGroup::Thread::Wait() {
 }
 
 void EventLoopGroup::Thread::Cycle() {
-    DDEBUG("On cycle running thread id: %ld, event_loop name: %p.", pthread_self(), event_loop_.get());
+    //DDEBUG("On cycle running thread id: {}, event_loop name: {}.", thread_id(), event_loop_.get());
 
     state_ = RUNNING;
 
@@ -135,7 +135,7 @@ void EventLoopGroup::Thread::Cycle() {
 
     state_ = STOPPED;
 
-    DDEBUG("On cycle stopped thread id: %ld, event_loop name: %p.", pthread_self(), event_loop_.get());
+    //DDEBUG("On cycle stopped thread id: {}, event_loop name: {}.", thread_id(), event_loop_.get());
 }
 
 bool EventLoopGroup::Thread::IsRunning() const {

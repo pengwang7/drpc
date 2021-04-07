@@ -83,7 +83,7 @@ const char descriptor_table_protodef_service_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\017\n\007message\030\001 \001(\t\"\"\n\017PublishResponse\022\017\n\007m"
   "essage\030\001 \001(\t2H\n\016PublishService\0226\n\007Publis"
   "h\022\024.drpc.PublishRequest\032\025.drpc.PublishRe"
-  "sponseB\003\200\001\001b\006proto3"
+  "sponseB\006\200\001\001\210\001\001b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_service_2eproto_deps[1] = {
 };
@@ -93,7 +93,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_ser
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_service_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_service_2eproto = {
-  false, false, descriptor_table_protodef_service_2eproto, "service.proto", 179,
+  false, false, descriptor_table_protodef_service_2eproto, "service.proto", 182,
   &descriptor_table_service_2eproto_once, descriptor_table_service_2eproto_sccs, descriptor_table_service_2eproto_deps, 2, 0,
   schemas, file_default_instances, TableStruct_service_2eproto::offsets,
   file_level_metadata_service_2eproto, 2, file_level_enum_descriptors_service_2eproto, file_level_service_descriptors_service_2eproto,

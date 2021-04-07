@@ -31,13 +31,13 @@ int SetSocketNonblocking(int fd) {
     int flags = 0;
 
     if ((flags = fcntl(fd, F_GETFL, NULL)) < 0) {
-        DERROR("SetSocketNonblocking failed: %s, %d", strerror(errno), fd);
+        DERROR("SetSocketNonblocking failed: {}, {}.", std::strerror(errno), fd);
         return -1;
     }
 
     if (!(flags & O_NONBLOCK)) {
         if (fcntl(fd, F_SETFL, flags | O_NONBLOCK) == -1) {
-            DERROR("SetSocketNonblocking failed: %s, %d", strerror(errno), fd);
+            DERROR("SetSocketNonblocking failed: {}, {}.", std::strerror(errno), fd);
             return -1;
         }
     }
@@ -191,11 +191,11 @@ int ConnectSocket(int fd, std::string& addr, uint16_t port, struct timeval* tv) 
 
         res = select(fd + 1, NULL, &conn_fdset, &error_fdset, tv);
         if (res < 0) {
-            DERROR("ConnectSocket failed: %s", strerror(errno));
+            DERROR("ConnectSocket failed: {}.", std::strerror(errno));
             return -1;
         } else if (res == 0) {
             errno = ETIMEDOUT;
-            DERROR("ConnectSocket failed: %s", strerror(errno));
+            DERROR("ConnectSocket failed: {}.", std::strerror(errno));
             return 0;
         }
 
@@ -205,11 +205,11 @@ int ConnectSocket(int fd, std::string& addr, uint16_t port, struct timeval* tv) 
         if (FD_ISSET(fd, &error_fdset)) {
             getsockopt(fd, SOL_SOCKET, SO_ERROR, &so_error, &so_error_len);
             errno = so_error;
-            DERROR("ConnectSocket failed: %s", strerror(errno));
+            DERROR("ConnectSocket failed: {}.", std::strerror(errno));
             return -1;
         }
     } else {
-        DERROR("ConnectSocket failed: %s", strerror(errno));
+        DERROR("ConnectSocket failed: {}.", std::strerror(errno));
         return -1;
     }
 
@@ -226,7 +226,7 @@ bool BindSocket(int fd, std::string local_address) {
     strcpy(baddr.sun_path, local_address.c_str());
 
     if (bind(fd, (struct sockaddr*)&baddr, sizeof(baddr)) < 0) {
-        DERROR("BindSocket failed: %s", strerror(errno));
+        DERROR("BindSocket failed: {}.", std::strerror(errno));
         return false;
     }
 
@@ -242,7 +242,7 @@ bool BindSocket(int fd, IPAddress ip, uint16_t port) {
     baddr.sin_addr = ip.ipv4_address();
 
     if (bind(fd, (struct sockaddr*)&baddr, sizeof(baddr)) < 0) {
-        DERROR("BindSocket failed: %s", strerror(errno));
+        DERROR("BindSocket failed: {}.", std::strerror(errno));
         return false;
     }
 
@@ -262,7 +262,7 @@ bool ListenSocket(int fd, int so_max_conn) {
     // When syncookies are enabled there is no logical maximum length and this setting
     // is ignored.
     if (listen(fd, so_max_conn) < 0) {
-        DERROR("ListenSocket failed: %s", strerror(errno));
+        DERROR("ListenSocket failed: {}.", std::strerror(errno));
         return false;
     }
 
@@ -276,7 +276,7 @@ int AcceptSocket(int fd, std::string& peer_addr) {
 
     int conn_fd = accept(fd, reinterpret_cast<struct sockaddr*>(&raddr), &addr_len);
     if (conn_fd <= 0) {
-        DERROR("AcceptSocket failed: %s", strerror(errno));
+        DERROR("AcceptSocket failed: {}.", std::strerror(errno));
         return -1;
     }
 

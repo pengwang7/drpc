@@ -65,7 +65,7 @@ void connect_and_sendrecv() {
     if (ret == static_cast<ssize_t>(result.size() + 4 + 1)) {
         drpc::DDEBUG("Send message success.");
     } else {
-        drpc::DERROR("Send message failed, %s", strerror(errno));
+        drpc::DERROR("Send message failed, {}", std::strerror(errno));
         close(fd);
         return;
     }
@@ -75,7 +75,7 @@ void connect_and_sendrecv() {
     memset(buf, 0, sizeof(buf));
     ret = recv(fd, buf, sizeof(buf), 0);
     if (ret <= 0) {
-        drpc::DERROR("Recv message failed, %s", strerror(errno));
+        drpc::DERROR("Recv message failed, {}", std::strerror(errno));
         close(fd);
         return;
     }
@@ -84,9 +84,9 @@ void connect_and_sendrecv() {
 
     message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
 
-    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
-                message1.id(), message1.service().c_str(), message1.method().c_str(),
-                message1.response().c_str(), message1.error());
+//    drpc::DDEBUG("The string serialize to proto message: id: %d, service: %s, method: %s, request: %s, errno: %d",
+//                message1.id(), message1.service().c_str(), message1.method().c_str(),
+//                message1.response().c_str(), message1.error());
 
     close(fd);
 }

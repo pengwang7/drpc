@@ -38,11 +38,11 @@
 namespace drpc {
 
 Server::Server() {
-    DTRACE("Create Server: %p.", this);
+    DTRACE("Create Server.");
 }
 
 Server::~Server() {
-    DTRACE("Destroy Server: %p.", this);
+    DTRACE("Destroy Server.");
 }
 
 bool Server::Start(ServerOptions* options) {
@@ -93,7 +93,7 @@ bool Server::AddService(::google::protobuf::Service* service) {
 
     service_map_.insert({desc->full_name(), service});
 
-    DDEBUG("The service add to rpc success(%s).", desc->full_name().c_str());
+    DDEBUG("The service add to rpc success({}).", desc->full_name());
 
     return true;
 }
@@ -148,12 +148,12 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
     DASSERT(listener_event_loop_->IsConsistent(), "Listener event loop check failed.");
 
     if (IsStopping()) {
-        DWARNING("The server is at stopping status, discard socket fd=%d", fd);
+        DWARNING("The server is at stopping status, discard socket fd={}.", fd);
         close(fd);
         return;
     }
 
-    DTRACE("BuildChannel fd: %d, peer address: %s.", fd, peer_addr.c_str());
+    DTRACE("BuildChannel fd: {}, peer address: {}.", fd, peer_addr);
 
     EventLoop* event_loop = group_->event_loop();
     DASSERT(event_loop, "BuildChannel error.");
@@ -185,7 +185,7 @@ void Server::BuildChannel(int fd, std::string& peer_addr) {
 }
 
 void Server::OnNewChannel(const channel_ptr& chan) {
-    DTRACE("OnNewChannel csid: %d.", chan->csid());
+    DTRACE("OnNewChannel csid: {}.", chan->csid());
 
     rpc_channel_ptr rpc_chan(new RpcChannel(chan, &service_map_));
     rpc_chan->SetAnyContext(this);
@@ -205,7 +205,7 @@ void Server::OnNewChannel(const channel_ptr& chan) {
 //    }
 
     chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
-            rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
+                                           rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
 
     std::lock_guard<std::mutex> guard(hash_mutex_);
     hash_table_[chan->csid()] = rpc_chan;
@@ -232,7 +232,7 @@ void Server::OnRefreshChannel(const channel_ptr& chan) {
 }
 
 void Server::OnCloseChannel(const channel_ptr& chan) {
-    DTRACE("The rpc channel(%d) removed from container.", chan->csid());
+    DTRACE("The rpc channel({}) removed from container.", chan->csid());
 
     {
         std::lock_guard<std::mutex> lock(hash_mutex_);

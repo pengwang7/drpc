@@ -33,7 +33,7 @@ public:
         // Sync model.
         drpc::ClosureGuard done_guard(done);
 
-        drpc::DDEBUG("The message: %s", request->message().c_str());
+        DDEBUG("The message: {}", request->message());
 
         response->set_message("200OK");
     }
@@ -41,13 +41,13 @@ public:
 
 void control_thread(drpc::Server* server) {
     if (!server) {
-        drpc::DERROR("control thread server is nil.");
+        DERROR("control thread server is nil.");
         return;
     }
 
     sleep(120);
 
-    drpc::DDEBUG("control thread call stop.");
+    DDEBUG("control thread call stop.");
 
     server->Stop();
 }
@@ -75,12 +75,12 @@ void server_test() {
     std::thread th1(control_thread, server);
 
     if (server->Start(&options)) {
-        drpc::DDEBUG("Server start success.");
+        DDEBUG("Server start success.");
     } else {
-        drpc::DERROR("Server start failed.");
+        DERROR("Server start failed.");
     }
 
-    drpc::DDEBUG("server test before thread join.");
+    DDEBUG("server test before thread join.");
 
     th1.join();
 
@@ -88,9 +88,9 @@ void server_test() {
     delete publish_service;
     delete server;
 
-    drpc::DDEBUG("server test after thread join.");
+    DDEBUG("server test after thread join.");
 
-    drpc::DTRACE("test_server end.");
+    DTRACE("test_server end.");
 }
 
 void buffer_test() {
@@ -106,22 +106,21 @@ void buffer_test() {
     buffer.AppendData(content_length.c_str(), content_length.size());
     buffer.AppendData(content_body.c_str(), content_body.size());
 
-    drpc::DDEBUG("The buffer size:%d", buffer.size());
-    drpc::DDEBUG("The buffer data:%s", buffer.data());
+    DDEBUG("The buffer size: {}", buffer.size());
+    DDEBUG("The buffer data: {}", buffer.data());
 
     const char* crlf = buffer.Find2CRLF();
     if (crlf) {
-        drpc::DDEBUG("crlf:%s", crlf);
+        DDEBUG("crlf: {}", crlf);
     } else {
-        drpc::DERROR("not found crlf.");
+        DERROR("not found crlf.");
     }
 
     drpc::ByteBufferReader reader(buffer);
     std::string res;
     reader.ReadString(&res, 55);
 
-    drpc::DDEBUG("The res is:%s", res.c_str());
-
+    DDEBUG("The res is: {}", res);
 }
 
 int main() {

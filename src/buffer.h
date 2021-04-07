@@ -89,7 +89,9 @@ public:
           read_index_(0),
           write_index_(0),
           data_(capacity_ > 0 ?
-                new T[capacity_]{0} : nullptr) {
+                new T[capacity_] {
+        0
+    } : nullptr) {
         DASSERT(IsConsistent(), "BufferT error.");
     }
 
@@ -335,7 +337,7 @@ private:
                 extra_headroom ? std::max(capacity, capacity_ + capacity_ / 2)
                 : capacity;
 
-            std::unique_ptr<T[]> new_data(new T[new_capacity]{0});
+            std::unique_ptr<T[]> new_data(new T[new_capacity] {0});
             if (data_ != nullptr) {
                 std::memcpy(new_data.get(), begin(), unread_byte_size);
             }

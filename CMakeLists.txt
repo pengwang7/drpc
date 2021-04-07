@@ -83,6 +83,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/channel.cc
     ${PROJECT_SOURCE_DIR}/src/rpc_channel.cc
     ${PROJECT_SOURCE_DIR}/src/server.cc
+    #${PROJECT_SOURCE_DIR}/test/test_logger.cc
     ${PROJECT_SOURCE_DIR}/test/test_server.cc
     #${PROJECT_SOURCE_DIR}/test/client.cpp
 )

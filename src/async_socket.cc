@@ -48,16 +48,14 @@ AsyncSocket::AsyncSocket(EventLoop* event_loop, int fd, int io_events) {
     attached_ = false;
 
     if (fd <= 0) {
-        DERROR("The fd:%d", fd);
+        DERROR("The fd({}) error: {}", fd, std::strerror(errno));
     }
 
     ev_io_init(io_, IOEventHandle, fd, events_);
-
-    DTRACE("Create async socket: %p.", this);
 }
 
 AsyncSocket::~AsyncSocket() {
-    DTRACE("Destroy async socket: %p.", this);
+    DTRACE("Destroy async socket.");
 }
 
 bool AsyncSocket::Attach() {

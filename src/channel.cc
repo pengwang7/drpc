@@ -36,11 +36,10 @@ Channel::Channel(AsyncSocket* ast, uint64_t csid) {
     async_socket_.reset(ast);
     DASSERT(async_socket_, "Channel constructor error.");
 
-    DTRACE("Create channel success, csid: %d.", csid_);
+    DTRACE("Create channel success, csid: {}.", csid_);
 }
 
 Channel::~Channel() {
-    DTRACE("Destroy channel: %p.", this);
     async_socket_->Close();
 }
 
@@ -177,9 +176,9 @@ void Channel::AsyncSocketReadHandle() {
     ssize_t bytes_transferred = recv_buffer_.RecvData(async_socket_->fd2());
     if (bytes_transferred <= 0) {
         if (bytes_transferred == 0) {
-            DDEBUG("Peer socket is closed(%d).", async_socket_->fd2());
+            DDEBUG("Peer socket is closed({}).", async_socket_->fd2());
         } else {
-            DERROR("The buffer recv data failed: %s.", strerror(errno));
+            DERROR("The buffer recv data failed: {}.", std::strerror(errno));
         }
         Close();
         return;
