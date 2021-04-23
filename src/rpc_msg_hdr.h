@@ -67,7 +67,7 @@ public:
     };
 
 public:
-    static RpcPacket* CreateRpcPacket(Buffer& buffer, ByteBufferReader* io_reader) {
+    static RpcPacket* Parse(Buffer& buffer, ByteBufferReader* io_reader) {
         Header header;
         memset(&header, 0, sizeof(header));
 
@@ -91,6 +91,7 @@ public:
 
         if (!io_reader->ReadString(&body.content, body_length)) {
             DERROR("Read data from buffer failed.");
+            io_reader->Consume(body_length);
             return nullptr;
         }
 
@@ -110,19 +111,19 @@ public:
     }
 
 public:
-    uint8_t GetVersion() {
+    uint8_t GetVersion() const {
         return header_.version;
     }
 
-    uint8_t GetPayloadType() {
+    uint8_t GetPayloadType() const {
         return header_.payload;
     }
 
-    uint32_t GetBodyLength() {
+    uint32_t GetBodyLength() const {
         return static_cast<uint32_t>(ntohl(header_.length));
     }
 
-    std::string GetBody() {
+    std::string GetBody() const {
         return body_.content;
     }
 

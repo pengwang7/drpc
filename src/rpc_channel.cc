@@ -59,21 +59,49 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     // TODO: this function for rpc client.
 }
 
+// NOTE: In here, we can't be sure that there is only one message in the buffer,
+// so we have to process all the complete messages.
 void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
-    std::string content;
-    if (!MessageTransform(buffer, content)) {
-        DWARNING("OnRpcMessage message transform failed.");
+    std::unique_ptr<ByteBufferReader> io_reader(new ByteBufferReader(buffer));
+    if (!io_reader) {
+        DERROR("MessageTransform new ByteBufferReader failed.");
         return;
     }
 
-    if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
-        OnRpcJsonMessage(content);
-    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
-        OnRpcProtobufMessage(content);
-    } else {
-        DWARNING("OnRpcMessage invalid message type.");
+    RpcPacket* packet = nullptr;
+
+    // Process all messages in buffer.
+    while ((packet = RpcPacket::Parse(buffer, io_reader.get()))) {
+        switch (packet->GetPayloadType()) {
+        case PAYLOAD_TYPE_JSON:
+            OnRpcJsonMessage(packet->GetBody());
+            break;
+        case PAYLOAD_TYPE_PROTOBUF:
+            OnRpcProtobufMessage(packet->GetBody());
+            break;
+        default:
+            DERROR("RpcPacket with invalid payload type({}).", packet->GetPayloadType());
+        };
+
+        delete packet;
     }
 }
+
+//void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
+//    std::string content;
+//    if (!MessageTransform(buffer, content)) {
+//        DWARNING("OnRpcMessage message transform failed.");
+//        return;
+//    }
+//
+//    if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
+//        OnRpcJsonMessage(content);
+//    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
+//        OnRpcProtobufMessage(content);
+//    } else {
+//        DWARNING("OnRpcMessage invalid message type.");
+//    }
+//}
 
 void RpcChannel::SetRefreshCallback(const RefreshCallback& cb) {
     refresh_cb_ = cb;
@@ -135,7 +163,7 @@ void RpcChannel::SetMessageId(std::size_t msid) {
     msid_ = msid;
 }
 
-void RpcChannel::OnRpcJsonMessage(std::string& content) {
+void RpcChannel::OnRpcJsonMessage(std::string content) {
     bool ret = false;
     ErrorCode ec = INVALID_REQUEST;
     std::shared_ptr<RpcMessage> rpc_message(default_->New());
@@ -175,7 +203,7 @@ error:
     DERROR("OnRpcJsonMessage met error: {}.", ec);
 }
 
-void RpcChannel::OnRpcProtobufMessage(std::string& content) {
+void RpcChannel::OnRpcProtobufMessage(std::string content) {
     bool ret = false;
     ErrorCode ec = INVALID_REQUEST;
     std::shared_ptr<RpcMessage> rpc_message(default_->New());

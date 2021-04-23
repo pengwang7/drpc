@@ -112,6 +112,7 @@ public:
         std::swap(data_, buf.data_);
         buf.data_.reset();
         buf.OnMovedFrom();
+
         return *this;
     }
 
@@ -206,8 +207,9 @@ public:
 
         ssize_t bytes_transferred = readv(socket, iove, iovs);
         if (bytes_transferred <= 0) {
-            // 0: Peer closed.
-            // ohter: Read error.
+            if (EVUTIL_ERR_RW_RETRIABLE(bytes_transferred)) {
+                return RETRIABLE_ERROR;
+            }
         } else if (static_cast<size_t>(bytes_transferred) <= WritableByteSize()) {
             write_index_ += bytes_transferred;
         } else {

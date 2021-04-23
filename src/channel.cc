@@ -171,16 +171,22 @@ void Channel::InternalSendMessage(char* data, size_t len) {
 void Channel::AsyncSocketReadHandle() {
     DASSERT(event_loop_->IsConsistent(), "Channel error.");
 
-    DTRACE("Channel will be recv peer data.");
-
     ssize_t bytes_transferred = recv_buffer_.RecvData(async_socket_->fd2());
     if (bytes_transferred <= 0) {
-        if (bytes_transferred == 0) {
-            DDEBUG("Peer socket is closed({}).", async_socket_->fd2());
-        } else {
-            DERROR("The buffer recv data failed: {}.", std::strerror(errno));
+        // Ignore error:
+        // errno == EINTR || errno == EAGAIN.
+        if (bytes_transferred == RETRIABLE_ERROR) {
+            return;
         }
+
+        if (bytes_transferred == 0) {
+            DDEBUG("Peer is closed({}).", async_socket_->fd2());
+        } else {
+            DERROR("Recv data failed: {}.", std::strerror(errno));
+        }
+
         Close();
+
         return;
     }
 

@@ -35,6 +35,8 @@
 
 namespace drpc {
 
+#define RETRIABLE_ERROR (-1000)
+
 #if EAGAIN == EWOULDBLOCK
 #define EVUTIL_ERR_IS_EAGAIN(e)                 \
                 ((e) == EAGAIN)
