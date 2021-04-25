@@ -48,24 +48,41 @@ void connect_and_sendrecv() {
 
     char buf[256] = {0};
 
-    drpc::rpc_msg_hdr msg_hdr;
-    memset(&msg_hdr, 0, sizeof(msg_hdr));
-    msg_hdr.version = 2;
-    msg_hdr.type = 1;
+    drpc::RpcPacket::Header header;
+    memset(&header, 0, sizeof(header));
 
-    char c;
-    memcpy(&c, &msg_hdr, 1);
+    drpc::RpcPacket::Body body;
 
-    uint32_t len = htonl(static_cast<uint32_t>(result.size()));
-    memcpy(buf, &c, 1);
-    memcpy(buf + 1, &len, sizeof(uint32_t));
-    memcpy(buf + 1 + 4, result.c_str(), result.size());
+    header.version = 1;
+    header.length = htonl(static_cast<uint32_t>(result.size()));
+    header.payload = drpc::PAYLOAD_TYPE_PROTOBUF;
 
-    ret = send(fd, buf, result.size() + 1 + 4, 0);
-    if (ret == static_cast<ssize_t>(result.size() + 4 + 1)) {
-        drpc::DDEBUG("Send message success.");
+    
+    //drpc::RpcPacket* packet = new drpc::RpcPacket(header, body);
+
+
+    memcpy(buf, &header, sizeof(header));
+    memcpy(buf + sizeof(header), result.c_str(), result.size());
+
+//    drpc::rpc_msg_hdr msg_hdr;
+//    memset(&msg_hdr, 0, sizeof(msg_hdr));
+//    msg_hdr.version = 2;
+//    msg_hdr.type = 1;
+//
+//    char c;
+//    memcpy(&c, &msg_hdr, 1);
+//
+//    uint32_t len = htonl(static_cast<uint32_t>(result.size()));
+//    memcpy(buf, &c, 1);
+//    memcpy(buf + 1, &len, sizeof(uint32_t));
+//    memcpy(buf + 1 + 4, result.c_str(), result.size());
+
+    int len = sizeof(header) + result.size();
+    ret = send(fd, buf, len, 0);
+    if (ret == static_cast<ssize_t>(len)) {
+        DDEBUG("Send message success.");
     } else {
-        drpc::DERROR("Send message failed, {}", std::strerror(errno));
+        DERROR("Send message failed, {}", std::strerror(errno));
         close(fd);
         return;
     }
@@ -75,12 +92,12 @@ void connect_and_sendrecv() {
     memset(buf, 0, sizeof(buf));
     ret = recv(fd, buf, sizeof(buf), 0);
     if (ret <= 0) {
-        drpc::DERROR("Recv message failed, {}", std::strerror(errno));
+        DERROR("Recv message failed, {}", std::strerror(errno));
         close(fd);
         return;
     }
 
-    drpc::DDEBUG("Recv message success.");
+    DDEBUG("Recv message success.");
 
     message1.ParseFromArray(buf, static_cast<uint32_t>(ret));
 
@@ -89,18 +106,22 @@ void connect_and_sendrecv() {
 //                message1.response().c_str(), message1.error());
 
     close(fd);
+
+    //delete packet;
 }
 
 int main() {
     drpc::Logger::Instance().Init();
 
-    drpc::DTRACE("Client test begin.");
+    DTRACE("Client test begin.");
 
-    for (int i = 0; i < 50000; ++ i) {
+    for (int i = 0; i < 1; ++ i) {
         connect_and_sendrecv();
     }
 
-    drpc::DTRACE("Client test end.");
+    DTRACE("Client test end.");
+
+    drpc::Logger::Instance().Destroy();
 
     return 0;
 }

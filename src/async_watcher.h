@@ -88,6 +88,27 @@ private:
     int event_fd_;
 };
 
+class TimerEventWatcher : public AsyncWatcher {
+public:
+    TimerEventWatcher(EventLoop* event_loop, AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist);
+
+    bool Watching();
+
+private:
+    bool DoInitImpl() override;
+
+    void DoTerminateImpl() override;
+
+    static void NotifyHandle(struct ev_loop* event_loop, struct ev_timer* timer, int events);
+
+private:
+    struct ev_timer* timer_;
+
+    uint32_t delay_sec_;
+
+    bool persist_;
+};
+
 } // namespace drpc
 
 #endif // __ASYNC_WATCHER_H__

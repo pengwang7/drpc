@@ -29,7 +29,6 @@
 #include <google/protobuf/service.h>
 
 #include "async_cbs.h"
-#include "rpc_msg_hdr.h"
 
 namespace google {
 
@@ -84,10 +83,6 @@ public:
     void test_json_protobuf(RpcMessage* message);
 
 private:
-    bool ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader);
-
-    bool MessageTransform(Buffer& buffer, std::string& content);
-
     void SetMessageId(std::size_t msid);
 
     void OnRpcJsonMessage(std::string content);
@@ -116,8 +111,6 @@ private:
     std::size_t msid_;
 
     channel_ptr chan_;
-
-    rpc_msg_hdr msg_hdr_;
 
     RefreshCallback refresh_cb_;
 

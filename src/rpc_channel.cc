@@ -30,13 +30,13 @@
 #include "json2pb/encode_decode.h"
 #include "logger.h"
 #include "channel.h"
+#include "rpc_packet.h"
 #include "rpc_channel.h"
 
 namespace drpc {
 
 RpcChannel::RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services)
     : msid_(0), chan_(chan), default_(&RpcMessage::default_instance()), service_map_(services) {
-    memset(&msg_hdr_, 0, sizeof(msg_hdr_));
     DASSERT(chan_, "RpcChannel create failed.");
 }
 
@@ -87,22 +87,6 @@ void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
     }
 }
 
-//void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
-//    std::string content;
-//    if (!MessageTransform(buffer, content)) {
-//        DWARNING("OnRpcMessage message transform failed.");
-//        return;
-//    }
-//
-//    if (msg_hdr_.type == MSG_CONTENT_TYPE_JSON) {
-//        OnRpcJsonMessage(content);
-//    } else if (msg_hdr_.type == MSG_CONTENT_TYPE_PROTOBUF) {
-//        OnRpcProtobufMessage(content);
-//    } else {
-//        DWARNING("OnRpcMessage invalid message type.");
-//    }
-//}
-
 void RpcChannel::SetRefreshCallback(const RefreshCallback& cb) {
     refresh_cb_ = cb;
 }
@@ -113,50 +97,6 @@ void RpcChannel::SetAnyContext(const any& context) {
 
 any& RpcChannel::GetAnyContext() {
     return context_;
-}
-
-bool RpcChannel::ReadRpcHeader(Buffer& buffer, ByteBufferReader* io_reader) {
-    if (!io_reader->ReadBytes(reinterpret_cast<char*>(&msg_hdr_), sizeof(msg_hdr_))) {
-        DWARNING("ReadRpcHeader buffer unread bytes < rpc_msg_hdr.");
-        return false;
-    }
-
-    msg_hdr_.length = ntohl(msg_hdr_.length);
-
-    return true;
-}
-
-bool RpcChannel::MessageTransform(Buffer& buffer, std::string& content) {
-    std::unique_ptr<ByteBufferReader> io_reader(new ByteBufferReader(buffer));
-    if (!io_reader) {
-        DERROR("MessageTransform new ByteBufferReader failed.");
-        return false;
-    }
-
-    if (!ReadRpcHeader(buffer, io_reader.get())) {
-        return false;
-    }
-
-    OnRpcRefresh();
-
-//    DDEBUG("MessageTransform the message version: {}, type: {}, length: {}.",
-//        (msg_hdr_.version), (msg_hdr_.type), msg_hdr_.length);
-
-    if (buffer.UnreadByteSize() < msg_hdr_.length + sizeof(msg_hdr_)) {
-        DDEBUG("MessageTransform data is not complete.");
-        return false;
-    }
-
-    io_reader->Consume(sizeof(msg_hdr_));
-
-    if (!io_reader->ReadString(&content, msg_hdr_.length)) {
-        DERROR("MessageTransform buffer read failed.");
-        return false;
-    }
-
-    io_reader->Consume(msg_hdr_.length);
-
-    return true;
 }
 
 void RpcChannel::SetMessageId(std::size_t msid) {
@@ -194,6 +134,7 @@ void RpcChannel::OnRpcJsonMessage(std::string content) {
     };
 
     if (ret && ec == NO_ERROR) {
+        OnRpcRefresh();
         return;
     }
 

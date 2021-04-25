@@ -18,6 +18,8 @@
 #include "rpc.pb.h"
 #include "service.pb.h"
 
+//#include "https/client.hpp"
+
 class PublishServiceImpl : public drpc::PublishService {
 public:
     PublishServiceImpl() {}
@@ -126,9 +128,9 @@ void buffer_test() {
 int main() {
     drpc::Logger::Instance().Init();
 
-    buffer_test();
+    //buffer_test();
 
-    //server_test();
+    server_test();
 
     drpc::Logger::Instance().Destroy();
 

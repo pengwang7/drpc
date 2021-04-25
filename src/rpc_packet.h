@@ -22,10 +22,13 @@
  * SOFTWARE.
  */
 
-#ifndef __MESSAGE_HEADER_H__
-#define __MESSAGE_HEADER_H__
+#ifndef __RPC_PACKET_H__
+#define __RPC_PACKET_H__
 
 #include <endian.h>
+
+#include "byte_buffer.h"
+#include "constructor_magic.h"
 
 namespace drpc {
 
@@ -41,10 +44,10 @@ enum RpcPayloadType {
     PAYLOAD_TYPE_PROTOBUF = 1,
 };
 
-#pragma pack(1)
-
 class RpcPacket {
 public:
+    // Struct for RPC header.
+#pragma pack(1)
     struct Header {
 #if (__BYTE_ORDER == __LITTLE_ENDIAN)
         uint8_t padding:1;
@@ -61,7 +64,9 @@ public:
 #endif
         uint32_t length;
     };
+#pragma pack()
 
+    // Struct for RPC body.
     struct Body {
         std::string content;
     };
@@ -78,8 +83,6 @@ public:
 
         uint32_t body_length = static_cast<uint32_t>(ntohl(header.length));
 
-        //DDEBUG("payload_type: {}, body_length: {}.", header.payload, body_length);
-
         Body body;
 
         if (buffer.UnreadByteSize() < body_length + sizeof(header)) {
@@ -90,7 +93,7 @@ public:
         io_reader->Consume(sizeof(header));
 
         if (!io_reader->ReadString(&body.content, body_length)) {
-            DERROR("Read data from buffer failed.");
+            DERROR("Read failed, packet discarded.");
             io_reader->Consume(body_length);
             return nullptr;
         }
@@ -101,6 +104,8 @@ public:
 
         return packet;
     }
+
+    RpcPacket() = delete;
 
     RpcPacket(Header header, Body body) : header_(header), body_(body) {
         DTRACE("Construct RpcPacket.");
@@ -128,24 +133,13 @@ public:
     }
 
 private:
+    DISALLOW_COPY_AND_ASSIGN(RpcPacket);
+
     Header header_;
 
     Body body_;
 };
 
-struct rpc_msg_hdr {
-    uint8_t version:2;
-
-    uint8_t type:2;
-
-    uint8_t padding:4;
-
-    uint32_t length;
-};
-#pragma pack()
-
-typedef struct rpc_msg_hdr rpc_msg_hdr;
-
 } // namespace drpc
 
-#endif // __MESSAGE_HEADER_H__
+#endif // __RPC_PACKET_H__

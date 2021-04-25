@@ -31,7 +31,8 @@
 
 namespace drpc {
 
-AsyncWatcher::AsyncWatcher(struct ev_loop* event_loop, AsyncWatcherTaskFunctor&& handle)
+AsyncWatcher::AsyncWatcher(struct ev_loop* event_loop,
+    AsyncWatcherTaskFunctor&& handle)
     : event_loop_(event_loop), io_(NULL), task_handle_(std::move(handle)), attached_(false) {
     io_ = static_cast<ev_io*>(calloc(1, sizeof(*io_)));
     memset(io_, 0, sizeof(*io_));
@@ -89,7 +90,8 @@ void AsyncWatcher::Terminate() {
     DoTerminateImpl();
 }
 
-EventfdWatcher::EventfdWatcher(EventLoop* event_loop, AsyncWatcherTaskFunctor&& handle)
+EventfdWatcher::EventfdWatcher(EventLoop* event_loop,
+    AsyncWatcherTaskFunctor&& handle)
     : AsyncWatcher(event_loop->event_loop(), std::move(handle)) {
 
 }
@@ -148,6 +150,61 @@ void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, 
     DTRACE("EventfdWatcher receive notify success.");
 
     fd_watcher->task_handle_();
+}
+
+
+TimerEventWatcher::TimerEventWatcher(EventLoop* event_loop,
+    AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist)
+    : AsyncWatcher(event_loop->event_loop(), std::move(handle)),
+    delay_sec_(delay_sec), persist_(persist)  {
+
+}
+
+bool TimerEventWatcher::Watching() {
+    if (attached_ && timer_) {
+        ev_timer_stop(event_loop_, timer_);
+    }
+
+    attached_ = false;
+
+    ev_timer_start(event_loop_, timer_);
+
+    attached_ = true;
+
+    return true;
+}
+
+bool TimerEventWatcher::DoInitImpl() {
+    timer_ = static_cast<ev_timer*>(calloc(1, sizeof(*timer_)));
+    if (!timer_) {
+        return false;
+    }
+
+    timer_->data = static_cast<void*>(this);
+    ev_timer_init(timer_, TimerEventWatcher::NotifyHandle, delay_sec_, persist_ ? delay_sec_ : 0);
+
+    return true;
+}
+
+void TimerEventWatcher::DoTerminateImpl() {
+    // TODO:
+}
+
+void TimerEventWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_timer* timer, int events) {
+    if (events & EV_ERROR) {
+        DERROR("TimerEventWatcher receive error: {}.", events);
+        return;
+    }
+
+    TimerEventWatcher* timer_watcher = static_cast<TimerEventWatcher*>(timer->data);
+    if (!timer_watcher) {
+        DERROR("TimerEventWatcher watcher is nil.");
+        return;
+    }
+
+    if (events & EV_TIMER) {
+        timer_watcher->task_handle_();
+    }
 }
 
 } // namespace drpc
