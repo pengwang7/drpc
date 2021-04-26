@@ -32,6 +32,7 @@
 #include "constructor_magic.h"
 #include "concurrentqueue.h"
 #include "async_watcher.h"
+#include "timer_controller.h"
 //#include "scheduled.hpp"
 
 struct ev_loop;
@@ -54,6 +55,10 @@ public:
     void RunInLoop(const Functor& task);
 
     void QueueInLoop(const Functor& task);
+
+    TimerControllerPtr RunEvery(const Functor& task, uint32_t delay_sec, bool persist = true);
+
+    TimerControllerPtr RunAfter(const Functor& task, uint32_t delay_sec, bool persist = false);
 
 public:
     struct ev_loop* event_loop() const {

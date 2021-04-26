@@ -30,6 +30,7 @@
 #include "logger.h"
 #include "async_socket.h"
 #include "channel.h"
+#include "timer_controller.h"
 //#include "timing_wheel.h"
 #include "rpc_channel.h"
 #include "event_loop.h"
@@ -77,6 +78,10 @@ bool Server::Stop() {
     group_->Stop();
     group_->Wait();
 
+    if (timer_controller_) {
+        timer_controller_->Cancel();
+    }
+
     listener_event_loop_->Stop();
 
     status_.store(kStopped);
@@ -100,6 +105,10 @@ bool Server::AddService(::google::protobuf::Service* service) {
 
 ServerOptions* Server::GetServerOptions() {
     return options_;
+}
+
+EventLoop* Server::GetListenerEventLoop() {
+    return listener_event_loop_.get();
 }
 
 bool Server::DoInit(ServerOptions* options) {

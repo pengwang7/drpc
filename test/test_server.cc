@@ -1,3 +1,4 @@
+#include "logger.h"
 #include "server_options.h"
 #include "socket.h"
 #include "ip_address.h"
@@ -6,7 +7,7 @@
 #include "async_socket.h"
 #include "channel.h"
 #include "async_watcher.h"
-#include "logger.h"
+#include "timer_controller.h"
 #include "buffer.h"
 #include "byte_buffer.h"
 //#include "scheduled.h"
@@ -54,6 +55,18 @@ void control_thread(drpc::Server* server) {
     server->Stop();
 }
 
+void test_timer() {
+    drpc::EventLoop* event_loop = new drpc::EventLoop();
+
+    event_loop->RunEvery([&]() {
+        DDEBUG("timer trigger.");
+    }, 5);
+
+    event_loop->Run();
+
+    delete event_loop;
+}
+
 void server_test() {
     PublishServiceImpl* publish_service = new PublishServiceImpl();
     if (!publish_service) {
@@ -66,15 +79,16 @@ void server_test() {
     options.port = 6689;
     options.enable_check_timeout = false;
     options.timeout = 10;
-    options.threads = 4;
+    options.threads = 2;
     options.server_mode = drpc::ServerMode::OLPT_NORMAL;
 
     drpc::Server* server = new drpc::Server();
 
     server->AddService(publish_service);
 
+
     // Create a new thread for stop rpc server.
-    std::thread th1(control_thread, server);
+    // std::thread th1(control_thread, server);
 
     if (server->Start(&options)) {
         DDEBUG("Server start success.");
@@ -84,7 +98,7 @@ void server_test() {
 
     DDEBUG("server test before thread join.");
 
-    th1.join();
+    // th1.join();
 
     // Need to free.
     delete publish_service;
@@ -127,6 +141,8 @@ void buffer_test() {
 
 int main() {
     drpc::Logger::Instance().Init();
+
+    //test_timer();
 
     //buffer_test();
 

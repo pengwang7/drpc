@@ -76,6 +76,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/listener.cc
     ${PROJECT_SOURCE_DIR}/src/async_socket.cc
     ${PROJECT_SOURCE_DIR}/src/async_watcher.cc
+    ${PROJECT_SOURCE_DIR}/src/timer_controller.cc
     #${PROJECT_SOURCE_DIR}/src/thread_pool.cc
     ${PROJECT_SOURCE_DIR}/src/event_loop.cc
     ${PROJECT_SOURCE_DIR}/src/event_loop_group.cc

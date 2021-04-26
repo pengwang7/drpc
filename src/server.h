@@ -61,6 +61,8 @@ public:
 
     ServerOptions* GetServerOptions();
 
+    EventLoop* GetListenerEventLoop();
+
 private:
     bool DoInit(ServerOptions* options);
 
@@ -92,6 +94,10 @@ private:
     std::unique_ptr<NetworkListener> network_listener_;
 
     std::unique_ptr<EventLoop> listener_event_loop_;
+
+    TimerControllerPtr timer_controller_;
+
+    //std::unique_ptr<EventLoop> timer_event_loop_;
 
     //std::unique_ptr<TimingWheel> timing_wheel_;
 

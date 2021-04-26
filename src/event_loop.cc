@@ -113,6 +113,24 @@ void EventLoop::QueueInLoop(const Functor& task) {
     }
 }
 
+TimerControllerPtr EventLoop::RunEvery(const Functor& task, uint32_t delay_sec, bool persist) {
+    TimerControllerPtr cnt = TimerController::Create(this, task, delay_sec, persist);
+
+    cnt->Run();
+
+    DDEBUG("The cnt use count:{}", cnt.use_count());
+
+    return cnt;
+}
+
+TimerControllerPtr EventLoop::RunAfter(const Functor& task, uint32_t delay_sec, bool persist) {
+    TimerControllerPtr cnt = TimerController::Create(this, task, delay_sec, persist);
+
+    cnt->Run();
+
+    return cnt;
+}
+
 void EventLoop::DoInit() {
     status_.store(kInitializing);
 

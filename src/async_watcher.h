@@ -34,12 +34,19 @@ namespace drpc {
 
 class EventLoop;
 
+enum class AsyncWatcherType {
+    IO = 1,
+    TIMER = 1 << 2,
+};
+
 class AsyncWatcher {
 public:
     using AsyncWatcherTaskFunctor = std::function<void()>;
 
 public:
-    AsyncWatcher(struct ev_loop* event_loop, AsyncWatcherTaskFunctor&& handle);
+    AsyncWatcher(struct ev_loop* event_loop,
+                 AsyncWatcherTaskFunctor&& handle,
+                 AsyncWatcherType type = AsyncWatcherType::IO);
 
     virtual ~AsyncWatcher();
 
@@ -51,6 +58,10 @@ public:
 
     void Terminate();
 
+    void SetCancelCallback(const AsyncWatcherTaskFunctor& cb) {
+        cancel_handle_ = cb;
+    }
+
 protected:
     virtual bool DoInitImpl() = 0;
 
@@ -60,6 +71,10 @@ protected:
     struct ev_loop* event_loop_;
 
     struct ev_io* io_;
+
+    struct ev_timer* timer_;
+
+    AsyncWatcherType type_;
 
     AsyncWatcherTaskFunctor task_handle_;
 
@@ -92,8 +107,6 @@ class TimerEventWatcher : public AsyncWatcher {
 public:
     TimerEventWatcher(EventLoop* event_loop, AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist);
 
-    bool Watching();
-
 private:
     bool DoInitImpl() override;
 
@@ -102,8 +115,6 @@ private:
     static void NotifyHandle(struct ev_loop* event_loop, struct ev_timer* timer, int events);
 
 private:
-    struct ev_timer* timer_;
-
     uint32_t delay_sec_;
 
     bool persist_;

@@ -32,15 +32,26 @@
 namespace drpc {
 
 AsyncWatcher::AsyncWatcher(struct ev_loop* event_loop,
-    AsyncWatcherTaskFunctor&& handle)
-    : event_loop_(event_loop), io_(NULL), task_handle_(std::move(handle)), attached_(false) {
-    io_ = static_cast<ev_io*>(calloc(1, sizeof(*io_)));
-    memset(io_, 0, sizeof(*io_));
+                           AsyncWatcherTaskFunctor&& handle, AsyncWatcherType type)
+    : event_loop_(event_loop), io_(NULL), timer_(NULL), type_(type),
+      task_handle_(std::move(handle)), attached_(false) {
+
+    if (type_ == AsyncWatcherType::IO) {
+        io_ = static_cast<ev_io*>(calloc(1, sizeof(*io_)));
+        memset(io_, 0, sizeof(*io_));
+    } else {
+        timer_ = static_cast<ev_timer*>(calloc(1, sizeof(*timer_)));
+        memset(timer_, 0, sizeof(*timer_));
+    }
+
+    DASSERT(type_ == AsyncWatcherType::IO || type_ == AsyncWatcherType::TIMER, "Invalid AsyncWatcher type.");
+
     DTRACE("Create AsyncWatcher.");
 }
 
 AsyncWatcher::~AsyncWatcher() {
-    assert(!io_ && !attached_);
+    DASSERT(!io_ && !timer_ && !attached_, "AsyncWatcher memory leak.");
+
     DTRACE("Destroy AsyncWatcher.");
 }
 
@@ -48,12 +59,9 @@ bool AsyncWatcher::Init() {
     if (!DoInitImpl()) {
         DoTerminateImpl();
         DERROR("AsyncWatcher initialize failed.");
+
         return false;
     }
-
-    ev_io_start(event_loop_, io_);
-
-    DDEBUG("AsyncWatcher register to event loop success.");
 
     return true;
 }
@@ -63,9 +71,17 @@ bool AsyncWatcher::Watching() {
         ev_io_stop(event_loop_, io_);
     }
 
+    if (attached_ && timer_) {
+        ev_timer_stop(event_loop_, timer_);
+    }
+
     attached_ = false;
 
-    ev_io_start(event_loop_, io_);
+    if (type_ == AsyncWatcherType::IO) {
+        ev_io_start(event_loop_, io_);
+    } else {
+        ev_timer_start(event_loop_, timer_);
+    }
 
     attached_ = true;
 
@@ -73,17 +89,23 @@ bool AsyncWatcher::Watching() {
 }
 
 void AsyncWatcher::Cancel() {
-    if (cancel_handle_) {
-        cancel_handle_();
-        cancel_handle_ = AsyncWatcherTaskFunctor();
-    }
-
     if (attached_) {
-        ev_io_stop(event_loop_, io_);
+        if (type_ == AsyncWatcherType::IO) {
+            ev_io_stop(event_loop_, io_);
+        } else {
+            ev_timer_stop(event_loop_, timer_);
+        }
+
         attached_ = false;
     }
 
     OBJECT_SAFE_DESTROY(io_, free);
+    OBJECT_SAFE_DESTROY(timer_, free);
+
+    // After the cancel_handle_ executed, AsyncWatcher will be destroyed.
+    if (cancel_handle_) {
+        cancel_handle_();
+    }
 }
 
 void AsyncWatcher::Terminate() {
@@ -91,7 +113,7 @@ void AsyncWatcher::Terminate() {
 }
 
 EventfdWatcher::EventfdWatcher(EventLoop* event_loop,
-    AsyncWatcherTaskFunctor&& handle)
+                               AsyncWatcherTaskFunctor&& handle)
     : AsyncWatcher(event_loop->event_loop(), std::move(handle)) {
 
 }
@@ -154,32 +176,13 @@ void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, 
 
 
 TimerEventWatcher::TimerEventWatcher(EventLoop* event_loop,
-    AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist)
-    : AsyncWatcher(event_loop->event_loop(), std::move(handle)),
-    delay_sec_(delay_sec), persist_(persist)  {
+                                     AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist)
+    : AsyncWatcher(event_loop->event_loop(), std::move(handle), AsyncWatcherType::TIMER),
+      delay_sec_(delay_sec), persist_(persist)  {
 
-}
-
-bool TimerEventWatcher::Watching() {
-    if (attached_ && timer_) {
-        ev_timer_stop(event_loop_, timer_);
-    }
-
-    attached_ = false;
-
-    ev_timer_start(event_loop_, timer_);
-
-    attached_ = true;
-
-    return true;
 }
 
 bool TimerEventWatcher::DoInitImpl() {
-    timer_ = static_cast<ev_timer*>(calloc(1, sizeof(*timer_)));
-    if (!timer_) {
-        return false;
-    }
-
     timer_->data = static_cast<void*>(this);
     ev_timer_init(timer_, TimerEventWatcher::NotifyHandle, delay_sec_, persist_ ? delay_sec_ : 0);
 
