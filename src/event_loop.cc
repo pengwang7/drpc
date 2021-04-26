@@ -118,8 +118,6 @@ TimerControllerPtr EventLoop::RunEvery(const Functor& task, uint32_t delay_sec, 
 
     cnt->Run();
 
-    DDEBUG("The cnt use count:{}", cnt.use_count());
-
     return cnt;
 }
 

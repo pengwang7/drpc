@@ -78,9 +78,7 @@ void TimerController::Cancel() {
     auto fn = [weak_cnt]() {
         auto cnt = weak_cnt.lock();
         if (cnt && cnt->timer_watcher_) {
-            DDEBUG("TimerController Cancel begin.");
             cnt->timer_watcher_->Cancel();
-            DDEBUG("TimerController Cancel end.");
         }
     };
 
