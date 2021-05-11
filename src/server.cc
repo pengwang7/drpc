@@ -27,14 +27,11 @@
 
 #include <sys/sysinfo.h>
 
-#include "logger.h"
-#include "async_socket.h"
-#include "channel.h"
-#include "timer_controller.h"
-//#include "timing_wheel.h"
-#include "rpc_channel.h"
-#include "event_loop.h"
-#include "server.h"
+#include "logger.hpp"
+#include "async_socket.hpp"
+#include "channel.hpp"
+#include "rpc_channel.hpp"
+#include "server.hpp"
 
 namespace drpc {
 
@@ -46,24 +43,22 @@ Server::~Server() {
     DTRACE("Destroy Server.");
 }
 
-bool Server::Start(ServerOptions* options) {
-    if (!DoInit(options)) {
-        DERROR("Server start error.");
-        return false;
-    }
+bool Server::Start(Options* options) {
+    options_ = options;
+
+    Init();
 
     status_.store(kStarting);
 
     group_->Run();
 
-    if (!network_listener_->Start()) {
-        DERROR("Server start error.");
+    if (!listener_->Start()) {
         return false;
     }
 
     status_.store(kRunning);
 
-    listener_event_loop_->Run();
+    event_loop_->Run();
 
     return true;
 }
@@ -72,185 +67,144 @@ bool Server::Stop() {
     DASSERT(status_ == kRunning, "Server status error.");
 
     status_.store(kStopping);
+    substatus_.store(kStoppingListener);
 
-    network_listener_->Stop();
-
-    group_->Stop();
-    group_->Wait();
-
-    if (timer_controller_) {
-        timer_controller_->Cancel();
-    }
-
-    listener_event_loop_->Stop();
-
-    status_.store(kStopped);
+    event_loop_->RunInLoop(std::bind(&Server::StopInLoop, this, DoneCallback()));
 
     return true;
 }
 
-bool Server::AddService(::google::protobuf::Service* service) {
-    const google::protobuf::ServiceDescriptor* desc = service->GetDescriptor();
-    if (service_map_.find(desc->full_name()) != service_map_.end()) {
-        DWARNING("AddService failed, already had same name.");
+bool Server::AddService(google::protobuf::Service* service) {
+    auto* desc = service->GetDescriptor();
+    if (services_.find(desc->full_name()) != services_.end()) {
+        DWARNING("AddService failed, already had this service({}).", desc->full_name());
         return false;
     }
 
-    service_map_.insert({desc->full_name(), service});
+    services_.insert({desc->full_name(), service});
 
-    DDEBUG("The service add to rpc success({}).", desc->full_name());
+    DDEBUG("Add service({}) to RPC success.", desc->full_name());
 
     return true;
 }
 
-ServerOptions* Server::GetServerOptions() {
-    return options_;
-}
-
-EventLoop* Server::GetListenerEventLoop() {
-    return listener_event_loop_.get();
-}
-
-bool Server::DoInit(ServerOptions* options) {
-    status_.store(kInitializing);
-
-    if (!options) {
-        DERROR("Server init failed, options is nil.");
-        return false;
-    }
-
-    options_ = options;
+void Server::Init() {
+    DASSERT(status_ == kNull, "Server status error.");
 
     next_channel_id_ = 0;
+
+    endpoint_.reset(new Endpoint(options_->address.c_str(), options_->port));
+
+    event_loop_.reset(new EventLoop());
+
+    listener_.reset(new TcpNetworkListener(event_loop_.get(), endpoint_.get()));
+
+    listener_->SetNewConnCallback(
+        std::bind(&Server::HandleNewChannel,
+                  this,
+                  std::placeholders::_1,
+                  std::placeholders::_2));
 
     if (options_->threads <= 0) {
         options_->threads = get_nprocs();
     }
 
-    group_.reset(new EventLoopGroup(options_, "event-loop-group"));
-
-    DASSERT(group_, "Server init failed, group is nil.");
-
-    listener_event_loop_.reset(new EventLoop());
-
-    DASSERT(listener_event_loop_, "Server init failed, listener event loop is nil.");
-
-    if (options_->listener_mode != ListenerMode::LISTEN_ETH_NET) {
-        network_listener_.reset(
-            new BasicNetworkListener(listener_event_loop_.get(), options_));
-    } else {
-        network_listener_.reset(
-            new TcpNetworkListener(listener_event_loop_.get(), options_));
-    }
-
-    DASSERT(network_listener_, "Server init failed, network listener is nil.");
-
-    network_listener_->SetNewConnCallback(std::bind(&Server::BuildChannel,
-                                          this, std::placeholders::_1, std::placeholders::_2));
+    group_.reset(new EventLoopGroup(options_->threads, "group1"));
 
     status_.store(kInitialized);
-
-    return true;
 }
 
-void Server::BuildChannel(int fd, std::string& peer_addr) {
-    DASSERT(listener_event_loop_->IsConsistent(), "Listener event loop check failed.");
+void Server::StopLoopGroup() {
+    DASSERT(event_loop_->IsConsistent(), "StopLoopGroup error.");
+    DASSERT(IsStopping(), "Server status error.");
+
+    substatus_.store(kStoppingThreadPool);
+
+    group_->Stop();
+    group_->Wait();
+    group_.reset();
+
+    substatus_.store(kSubStatusNull);
+}
+
+void Server::StopInLoop(DoneCallback cb) {
+    DASSERT(event_loop_->IsConsistent(), "StopInLoop error.");
+
+    listener_->Stop();
+    listener_.reset();
+
+    if (channels_.empty()) {
+        StopLoopGroup();
+        event_loop_->Stop();
+        status_.store(kStopped);
+        return;
+    }
+
+    for (auto& c : channels_) {
+        if (c.second->IsConnected()) {
+            DTRACE("Close channel id={}, fd={}.", c.second->id(), c.second->fd());
+            c.second->Close();
+        }
+    }
+}
+
+void Server::RemoveChannel(const ChannelPtr& channel) {
+    DTRACE("The fd={}, channels_.size()={}.", channel->fd(), channels_.size());
+
+    auto fn = [this, channel]() -> void {
+        DASSERT(event_loop_->IsConsistent(), "RemoveChannel error.");
+        channels_.erase(channel->id());
+
+        if (IsStopping() && channels_.empty()) {
+            StopLoopGroup();
+            event_loop_->Stop();
+            status_.store(kStopped);
+        }
+    };
+
+    event_loop_->RunInLoop(fn);
+}
+
+void Server::HandleNewChannel(int fd, const std::string& raddr) {
+    DASSERT(event_loop_->IsConsistent(), "HandleNewChannel error.");
 
     if (IsStopping()) {
-        DWARNING("The server is at stopping status, discard socket fd={}.", fd);
+        DWARNING("The server is at stopping status. Discard fd={}, remote_addr={}.", fd, raddr);
         close(fd);
         return;
     }
 
-    DTRACE("BuildChannel fd: {}, peer address: {}.", fd, peer_addr);
+    DASSERT(IsRunning(), "Server status error.");
 
-    EventLoop* event_loop = group_->event_loop();
-    DASSERT(event_loop, "BuildChannel error.");
+    EventLoop* io_event_loop = GetNextEventLoop();
 
-    AsyncSocket* ast = new AsyncSocket(event_loop, fd, kReadEvent);
-    if (!ast) {
-        DERROR("AsyncSocket new failed.");
-        close(fd);
-        return;
-    }
+    ++ next_channel_id_;
 
-    channel_ptr chan(new Channel(ast, ++ next_channel_id_));
-    if (!chan) {
-        DERROR("BuildChannel error.");
-        close(fd);
-        return;
-    }
+    ChannelPtr channel(new Channel(io_event_loop, fd, next_channel_id_));
+    channel->SetChannelCallback(std::bind(&Server::OnChannel, this, std::placeholders::_1));
+    channel->SetCloseCallback(std::bind(&Server::RemoveChannel, this, std::placeholders::_1));
 
-    chan->Init();
+    channels_[channel->id()] = channel;
 
-    chan->SetNewChannelCallback(std::bind(&Server::OnNewChannel,
-                                          this, std::placeholders::_1));
-    chan->SetCloseCallback(std::bind(&Server::OnCloseChannel,
-                                     this, std::placeholders::_1));
-    chan->SetTimedoutCallback(std::bind(&Server::OnTimeoutChannel,
-                                        this, std::placeholders::_1));
-
-    event_loop->RunInLoop(std::bind(&Channel::Attach, chan));
+    io_event_loop->RunInLoop(std::bind(&Channel::Attach, channel));
 }
 
-void Server::OnNewChannel(const channel_ptr& chan) {
-    DTRACE("OnNewChannel csid: {}.", chan->csid());
-
-    rpc_channel_ptr rpc_chan(new RpcChannel(chan, &service_map_));
-    rpc_chan->SetAnyContext(this);
-
-//    if (options_->enable_check_timeout &&
-//        options_->timeout > 0 && timing_wheel_) {
-//        rpc_chan->SetRefreshCallback(std::bind(&Server::OnRefreshChannel, this, std::placeholders::_1));
-//
-//        EntryPtr entry(new Entry(chan));
-//        WeakEntryPtr weak_entry(entry);
-//
-//        std::lock_guard<std::mutex> lock(mutex_);
-//        timing_wheel_->push_back(entry);
-//
-//        // Save the weak entry to channel any context.
-//        chan->SetAnyContext(weak_entry);
-//    }
-
-    chan->SetRecvMessageCallback(std::bind(&RpcChannel::OnRpcMessage,
-                                           rpc_chan.get(), std::placeholders::_1, std::placeholders::_2));
-
-    std::lock_guard<std::mutex> guard(hash_mutex_);
-    hash_table_[chan->csid()] = rpc_chan;
-}
-
-void Server::OnRefreshChannel(const channel_ptr& chan) {
-//    DASSERT(!chan->GetAnyContext().empty(), "The channel any context is nil.");
-//
-//    if (options_->enable_check_timeout &&
-//        options_->timeout > 0 && timing_wheel_) {
-//        // Don't create a new entry, if we do this(create a new entry),
-//        // the channel will voluntarily close, regardless of whether there
-//        // is a message refresh.
-//        WeakEntryPtr weak_entry(any_cast<WeakEntryPtr>(chan->GetAnyContext()));
-//        EntryPtr entry(weak_entry);
-//
-//        if (entry) {
-//            std::lock_guard<std::mutex> lock(mutex_);
-//            timing_wheel_->push_back(entry);
-//        } else {
-//            DWARNING("OnRefreshChannel entry is nil.");
-//        }
-//    }
-}
-
-void Server::OnCloseChannel(const channel_ptr& chan) {
-    DTRACE("The rpc channel({}) removed from container.", chan->csid());
-
-    {
-        std::lock_guard<std::mutex> lock(hash_mutex_);
-        hash_table_.erase(chan->csid());
+void Server::OnChannel(const ChannelPtr& channel) {
+    if (channel->IsConnected()) {
+        RpcChannelPtr rpc_channel(new RpcChannel(channel));
+        rpc_channel->SetServiceMap(&services_);
+        channel->SetMessageCallback(
+            std::bind(&RpcChannel::OnRpcMessage,
+                      get_raw_pointer(rpc_channel), std::placeholders::_1,
+                      std::placeholders::_2));
+        channel->SetContext(0, rpc_channel);
+    } else {
+        channel->SetContext(0, RpcChannelPtr());
     }
 }
 
-void Server::OnTimeoutChannel(const channel_ptr& chan) {
-    //OnCloseChannel(chan);
+EventLoop* Server::GetNextEventLoop() {
+    return group_->GetNextEventLoop();
 }
 
 } // namespace drpc

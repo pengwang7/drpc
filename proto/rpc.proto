@@ -8,7 +8,7 @@ enum MessageType
 {
   REQUEST = 0;
   RESPONSE = 1;
-  ERROR = 2;
+  UNKNOW = 2;
 }
 
 enum ErrorCode
@@ -25,10 +25,13 @@ enum ErrorCode
 message RpcMessage
 {
     MessageType type = 1;
+
     fixed64 id = 2;
 
     string service = 3;
+
     string method = 4;
+
     bytes request = 5;
 
     bytes response = 6;

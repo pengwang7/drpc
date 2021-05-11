@@ -22,20 +22,18 @@
  * SOFTWARE.
  */
 
-#include "logger.h"
-#include "server_options.h"
-#include "event_loop.h"
-#include "event_loop_group.h"
+#include "logger.hpp"
+#include "event_loop_group.hpp"
 
 namespace drpc {
 
-EventLoopGroup::EventLoopGroup(ServerOptions* options, std::string name) {
-    group_size_ = options->threads;
-    group_name_ = name;
-    group_cursor_ = 0;
+EventLoopGroup::EventLoopGroup(uint32_t group_size, std::string group_name)
+    : group_size_(group_size), group_name_(group_name), group_cursor_(0) {
+    DTRACE("Create EventLoopGroup, group size={}, group_name={}.", group_size_, group_name_);
 }
 
 EventLoopGroup::~EventLoopGroup() {
+    DTRACE("Destroy EventLoopGroup.");
     group_size_ = 0;
     group_cursor_ = 0;
     thread_group_.clear();
@@ -59,7 +57,7 @@ void EventLoopGroup::Run(bool detach) {
         thread_group_.emplace_back(thd);
     }
 
-    DDEBUG("Start group all thread success.");
+    DTRACE("Start group all thread success.");
 }
 
 void EventLoopGroup::Stop() {
@@ -67,7 +65,7 @@ void EventLoopGroup::Stop() {
         t->Stop();
     }
 
-    DDEBUG("Stop group all thread success.");
+    DTRACE("Stop group all thread success.");
 }
 
 void EventLoopGroup::Wait() {
@@ -75,10 +73,10 @@ void EventLoopGroup::Wait() {
         t->Wait();
     }
 
-    DDEBUG("Wait group all thread success.");
+    DTRACE("Wait group all thread success.");
 }
 
-EventLoop* EventLoopGroup::event_loop() {
+EventLoop* EventLoopGroup::GetNextEventLoop() {
     EventLoop* best_event_loop = nullptr;
 
     int64_t next = group_cursor_.fetch_add(1);
@@ -99,7 +97,6 @@ EventLoopGroup::Thread::Thread()
 
 EventLoopGroup::Thread::~Thread() {
     DASSERT(state_ == STOPPED, "Thread state error.");
-    //DTRACE("Thread destroy: {}", thread_id());
 }
 
 void EventLoopGroup::Thread::Run(bool detach) {
@@ -127,15 +124,11 @@ void EventLoopGroup::Thread::Wait() {
 }
 
 void EventLoopGroup::Thread::Cycle() {
-    //DDEBUG("On cycle running thread id: {}, event_loop name: {}.", thread_id(), event_loop_.get());
-
     state_ = RUNNING;
 
     event_loop_->Run();
 
     state_ = STOPPED;
-
-    //DDEBUG("On cycle stopped thread id: {}, event_loop name: {}.", thread_id(), event_loop_.get());
 }
 
 bool EventLoopGroup::Thread::IsRunning() const {

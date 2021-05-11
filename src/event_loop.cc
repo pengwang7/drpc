@@ -22,30 +22,21 @@
  * SOFTWARE.
  */
 
-#include <ev.h>
-
-#include "logger.h"
-#include "utility.h"
-#include "event_loop.h"
+#include "logger.hpp"
+#include "utility.hpp"
+#include "event_loop.hpp"
 
 namespace drpc {
 
 EventLoop::EventLoop() {
-    // Create libev event loop used EPOLL engine.
-    event_loop_ = ev_loop_new(EVBACKEND_EPOLL);
-    DASSERT(event_loop_, "EventLoop is nil.");
-
     DoInit();
 }
 
 EventLoop::~EventLoop() {
-    async_watcher_->Terminate();
-    async_watcher_->Cancel();
+    OBJECT_SAFE_DESTROY(event_loop_, event_base_free);
 
     delete pending_task_queue_;
     pending_task_queue_ = nullptr;
-
-    OBJECT_SAFE_DESTROY(event_loop_, ev_loop_destroy);
 }
 
 void EventLoop::Run() {
@@ -55,39 +46,54 @@ void EventLoop::Run() {
     thread_id_ = std::this_thread::get_id();
 
     // Register async watcher to event loop.
-    DASSERT(async_watcher_->Watching(), "The async watcher watching failed.");
+    DASSERT(async_watcher_->AsyncWait(), "The async watcher watching failed.");
 
     status_.store(kRunning);
 
-    // Start libev event loop to watching all register IO events.
-    ev_run(event_loop_, 0);
+    // Start event loop to watching all register IO events.
+    int rc = event_base_dispatch(event_loop_);
+    if (rc == 1) {
+        DERROR("RUN failed, no event registered.");
+    } else if (rc == -1) {
+        DERROR("Run failed, {} {}.", errno, std::strerror(errno));
+    }
+
+    async_watcher_.reset();
+
+    DTRACE("EventLoop stopped.");
 
     status_.store(kStopped);
 }
 
 void EventLoop::Stop() {
-    DASSERT(status_.load() == kRunning, "Stop failed.");
+    DASSERT(status_.load() == kRunning, "EventLoop status error.");
 
     status_.store(kStopping);
 
-    auto stop = [this]() -> void {
-        // Do all tasks before stop event loop.
-        while (true) {
-            if (PendingTaskQueueIsEmpty()) {
-                break;
-            }
+    QueueInLoop(std::bind(&EventLoop::StopInLoop, this));
+}
 
-            DoPendingTasks();
+void EventLoop::RunInLoop(Functor&& task) {
+    if (IsRunning() && IsConsistent()) {
+        task();
+    } else {
+        QueueInLoop(std::move(task));
+    }
+}
+
+void EventLoop::QueueInLoop(Functor&& task) {
+    while (!pending_task_queue_->enqueue(std::move(task))) {}
+
+    if (!notified_.load()) {
+        notified_.store(true);
+
+        if (async_watcher_) {
+            async_watcher_->Notify();
+        } else {
+            DTRACE("async_watcher_ is empty, maybe we call EventLoop::QueueInLoop on a stopped EventLoop.");
+            DASSERT(!IsRunning(), "{}", StatusToString());
         }
-
-        // If ev_break is called on a different thread than ev_run,
-        // then the Event Loop does not exit.
-        ev_break(event_loop_, EVBREAK_ALL);
-
-        DDEBUG("The event loop is stopped.");
-    };
-
-    RunInLoop(stop);
+    }
 }
 
 void EventLoop::RunInLoop(const Functor& task) {
@@ -107,30 +113,27 @@ void EventLoop::QueueInLoop(const Functor& task) {
         if (async_watcher_) {
             async_watcher_->Notify();
         } else {
-            DTRACE("Status: {}", ToString());
-            DASSERT(!IsRunning(), "Status: {}", ToString());
+            DTRACE("async_watcher_ is empty, maybe we call EventLoop::QueueInLoop on a stopped EventLoop.");
+            DASSERT(!IsRunning(), "{}", StatusToString());
         }
     }
 }
 
-TimerControllerPtr EventLoop::RunEvery(const Functor& task, uint32_t delay_sec, bool persist) {
-    TimerControllerPtr cnt = TimerController::Create(this, task, delay_sec, persist);
-
-    cnt->Run();
-
-    return cnt;
-}
-
-TimerControllerPtr EventLoop::RunAfter(const Functor& task, uint32_t delay_sec, bool persist) {
-    TimerControllerPtr cnt = TimerController::Create(this, task, delay_sec, persist);
-
-    cnt->Run();
-
-    return cnt;
-}
-
 void EventLoop::DoInit() {
     status_.store(kInitializing);
+
+    // Each event_base executes in a single thread, selected with no lock.
+    struct event_config* cfg = event_config_new();
+    DASSERT(cfg, "event_config is nil.");
+
+    event_config_set_flag(cfg, EVENT_BASE_FLAG_NOLOCK);
+    event_config_set_flag(cfg, EVENT_BASE_FLAG_EPOLL_USE_CHANGELIST);
+
+    event_loop_ = event_base_new_with_config(cfg);
+    DASSERT(cfg, "event_base is nil.");
+
+    event_config_free(cfg);
+    cfg = NULL;
 
     notified_.store(false);
 
@@ -149,13 +152,42 @@ void EventLoop::DoInit() {
     status_.store(kInitialized);
 }
 
+void EventLoop::StopInLoop() {
+    DTRACE("EventLoop is stopping now.");
+
+    DASSERT(status_.load() == kStopping, "EventLoop status error.");
+
+    auto fn = [this]() -> void {
+        for (int i = 0; ; i++) {
+            DTRACE("Calling DoPendingFunctors index={}.", i);
+
+            DoPendingTasks();
+
+            if (PendingTaskQueueIsEmpty()) {
+                break;
+            }
+        }
+    };
+
+    DTRACE("Before event_base_loopexit, invoke DoPendingTasks.");
+
+    fn();
+
+    event_base_loopexit(event_loop_, nullptr);
+
+    DTRACE("After event_base_loopexit, invoke DoPendingTasks.");
+
+    fn();
+
+    DTRACE("End of StopInLoop.");
+}
+
 void EventLoop::DoPendingTasks() {
     notified_.store(false);
 
     Functor task;
 
     while (pending_task_queue_->try_dequeue(task)) {
-        DDEBUG("Doing pending queue task.");
         task();
     }
 }

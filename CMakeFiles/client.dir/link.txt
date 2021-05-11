@@ -1,1 +1,0 @@
-/usr/bin/c++  -g -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wall -Wextra -Werror -Wconversion -Wno-unused-parameter -Wpointer-arith -Wwrite-strings -march=native -fno-omit-frame-pointer -std=c++11 -rdynamic -lpthread -ldl -lm -lev -fsanitize=address -O0 -DNDEBUG   CMakeFiles/client.dir/test/client.cpp.o CMakeFiles/client.dir/rpc.pb.cc.o  -o bin/client 

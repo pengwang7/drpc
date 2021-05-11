@@ -25,7 +25,7 @@ set(CXX_FLAGS
     -lpthread
     -ldl
     -lm
-    -lev
+    -levent
     -fsanitize=address
 )
 string(REPLACE ";" " " CMAKE_CXX_FLAGS "${CXX_FLAGS}")
@@ -38,13 +38,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/src)
-
-find_package(Libev)
-if (LIBEV_FOUND)
-    message(STATUS "found libev")
-else(LIBEV_FOUND)
-    message(FATAL_ERROR "not found libev")
-endif()
 
 find_package(Protobuf)
 if(PROTOBUF_FOUND)
@@ -67,16 +60,18 @@ protobuf_generate_cpp(PROTO_SRC PROTO_HEADER proto/rpc.proto proto/service.proto
 
 set(
     BUTIL_SRC
+#=======================================================#
     ${PROJECT_SOURCE_DIR}/src/json2pb/encode_decode.cc
     ${PROJECT_SOURCE_DIR}/src/json2pb/protobuf_map.cc
     ${PROJECT_SOURCE_DIR}/src/json2pb/pb_to_json.cc
     ${PROJECT_SOURCE_DIR}/src/json2pb/json_to_pb.cc
-    ${PROJECT_SOURCE_DIR}/src/socket.cc
-    ${PROJECT_SOURCE_DIR}/src/ip_address.cc
-    ${PROJECT_SOURCE_DIR}/src/listener.cc
-    ${PROJECT_SOURCE_DIR}/src/async_socket.cc
+#=======================================================#
+    ${PROJECT_SOURCE_DIR}/src/duration.cc
     ${PROJECT_SOURCE_DIR}/src/async_watcher.cc
-    ${PROJECT_SOURCE_DIR}/src/timer_controller.cc
+    ${PROJECT_SOURCE_DIR}/src/socket.cc
+    ${PROJECT_SOURCE_DIR}/src/async_socket.cc
+    ${PROJECT_SOURCE_DIR}/src/listener.cc
+    #${PROJECT_SOURCE_DIR}/src/timer_controller.cc
     #${PROJECT_SOURCE_DIR}/src/thread_pool.cc
     ${PROJECT_SOURCE_DIR}/src/event_loop.cc
     ${PROJECT_SOURCE_DIR}/src/event_loop_group.cc
@@ -86,15 +81,14 @@ set(
     ${PROJECT_SOURCE_DIR}/src/server.cc
     #${PROJECT_SOURCE_DIR}/src/https/client.cc
     #${PROJECT_SOURCE_DIR}/test/test_logger.cc
-    ${PROJECT_SOURCE_DIR}/test/test_server.cc
-    #${PROJECT_SOURCE_DIR}/test/client.cpp
+    ${PROJECT_SOURCE_DIR}/test/test.cc
 )
 
 add_executable(drpc ${BUTIL_SRC} ${PROTO_SRC})
 
 set(
     DYNAMIC_LIB
-    ${LIBEV_LIBRARY}
+    ${LIBEVENT_LIBRARIES}
     ${PROTOBUF_LIBRARIES}
     spdlog::spdlog_header_only
     -fsanitize=address

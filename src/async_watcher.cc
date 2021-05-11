@@ -22,85 +22,51 @@
  * SOFTWARE.
  */
 
-#include <ev.h>
-
-#include "logger.h"
-#include "utility.h"
-#include "event_loop.h"
-#include "async_watcher.h"
+#include "logger.hpp"
+#include "utility.hpp"
+#include "event.hpp"
+#include "event_loop.hpp"
+#include "async_watcher.hpp"
 
 namespace drpc {
 
-AsyncWatcher::AsyncWatcher(struct ev_loop* event_loop,
-                           AsyncWatcherTaskFunctor&& handle, AsyncWatcherType type)
-    : event_loop_(event_loop), io_(NULL), timer_(NULL), type_(type),
-      task_handle_(std::move(handle)), attached_(false) {
-
-    if (type_ == AsyncWatcherType::IO) {
-        io_ = static_cast<ev_io*>(calloc(1, sizeof(*io_)));
-        memset(io_, 0, sizeof(*io_));
-    } else {
-        timer_ = static_cast<ev_timer*>(calloc(1, sizeof(*timer_)));
-        memset(timer_, 0, sizeof(*timer_));
-    }
-
-    DASSERT(type_ == AsyncWatcherType::IO || type_ == AsyncWatcherType::TIMER, "Invalid AsyncWatcher type.");
+AsyncWatcher::AsyncWatcher(struct event_base* event_loop, AsyncWatcherFunctor&& handle)
+    : event_loop_(event_loop), io_(nullptr), attached_(false),
+      task_handle_(std::move(handle)), cancel_handle_(nullptr)  {
 
     DTRACE("Create AsyncWatcher.");
+
+    io_ = new ::event;
+    DASSERT(io_, "Create AsyncWatcher error.");
+
+    memset(io_, 0, sizeof(struct event));
 }
 
 AsyncWatcher::~AsyncWatcher() {
-    DASSERT(!io_ && !timer_ && !attached_, "AsyncWatcher memory leak.");
-
     DTRACE("Destroy AsyncWatcher.");
+    FreeEvent();
+    Close();
 }
 
 bool AsyncWatcher::Init() {
     if (!DoInitImpl()) {
-        DoTerminateImpl();
-        DERROR("AsyncWatcher initialize failed.");
-
-        return false;
+        goto failed;
     }
+
+    event_add(io_, nullptr);
 
     return true;
-}
 
-bool AsyncWatcher::Watching() {
-    if (attached_ && io_) {
-        ev_io_stop(event_loop_, io_);
-    }
+failed:
+    Close();
 
-    if (attached_ && timer_) {
-        ev_timer_stop(event_loop_, timer_);
-    }
-
-    attached_ = false;
-
-    if (type_ == AsyncWatcherType::IO) {
-        ev_io_start(event_loop_, io_);
-    } else {
-        ev_timer_start(event_loop_, timer_);
-    }
-
-    attached_ = true;
-
-    return true;
+    return false;
 }
 
 void AsyncWatcher::Cancel() {
-    if (attached_) {
-        if (type_ == AsyncWatcherType::IO) {
-            ev_io_stop(event_loop_, io_);
-        } else {
-            ev_timer_stop(event_loop_, timer_);
-        }
+    DASSERT(io_, "AsyncWatcher error.");
 
-        attached_ = false;
-    }
-
-    OBJECT_SAFE_DESTROY(io_, free);
-    OBJECT_SAFE_DESTROY(timer_, free);
+    FreeEvent();
 
     // After the cancel_handle_ executed, AsyncWatcher will be destroyed.
     if (cancel_handle_) {
@@ -108,24 +74,62 @@ void AsyncWatcher::Cancel() {
     }
 }
 
-void AsyncWatcher::Terminate() {
-    DoTerminateImpl();
+bool AsyncWatcher::Watching(Duration duration) {
+    struct timeval tv;
+    struct timeval* timeoutval = nullptr;
+    if (duration.Nanoseconds() > 0) {
+        duration.To(&tv);
+        timeoutval = &tv;
+    }
+
+    if (attached_) {
+        event_del(io_);
+        attached_ = false;
+    }
+
+    if (event_add(io_, timeoutval) != 0) {
+        DERROR("AsyncWatcher event_add failed, fd={}.", io_->ev_fd);
+        return false;
+    }
+
+    attached_ = true;
+
+    return true;
 }
 
-EventfdWatcher::EventfdWatcher(EventLoop* event_loop,
-                               AsyncWatcherTaskFunctor&& handle)
+void AsyncWatcher::Close() {
+    DoCloseImpl();
+}
+
+void AsyncWatcher::FreeEvent() {
+    if (io_) {
+        if (attached_) {
+            event_del(io_);
+            attached_ = false;
+        }
+
+        delete io_;
+        io_ = nullptr;
+    }
+}
+
+EventfdWatcher::EventfdWatcher(EventLoop* event_loop, AsyncWatcherFunctor&& handle)
     : AsyncWatcher(event_loop->event_loop(), std::move(handle)) {
 
 }
 
 EventfdWatcher::~EventfdWatcher() {
-    DoTerminateImpl();
+    Close();
+}
+
+bool EventfdWatcher::AsyncWait() {
+    return Watching(Duration());
 }
 
 void EventfdWatcher::Notify() {
     uint64_t data = 3399;
     if (write(event_fd_, &data, sizeof(data)) != sizeof(uint64_t)) {
-        DERROR("EventfdWatcher notify failed.");
+        DERROR("EventfdWatcher notify failed, error={}.", std::strerror(errno));
         return;
     }
 }
@@ -133,32 +137,36 @@ void EventfdWatcher::Notify() {
 bool EventfdWatcher::DoInitImpl() {
     event_fd_ = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
     if (event_fd_ < 0) {
-        DoTerminateImpl();
         DERROR("EventfdWatcher initialize error: {}.", std::strerror(errno));
-        return false;
+        goto failed;
     }
 
-    io_->data = static_cast<void*>(this);
-    ev_io_init(io_, EventfdWatcher::NotifyHandle, event_fd_, EV_READ);
+    event_assign(this->io_, event_loop_, event_fd_,
+                 EV_READ | EV_PERSIST,
+                 &EventfdWatcher::NotifyHandle, this);
 
     return true;
+
+failed:
+    Close();
+
+    return false;
 }
 
-void EventfdWatcher::DoTerminateImpl() {
-    DTRACE("EventfdWatcher closed event fd.");
+void EventfdWatcher::DoCloseImpl() {
     close(event_fd_);
     event_fd_ = -1;
 }
 
-void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, int events) {
+void EventfdWatcher::NotifyHandle(int fd, short events, void* args) {
     uint64_t data = 0;
 
-    if (events & EV_ERROR) {
+    if (events & EV_CLOSED) {
         DERROR("EventfdWatcher receive error: {}.", events);
         return;
     }
 
-    EventfdWatcher* fd_watcher = static_cast<EventfdWatcher*>(io->data);
+    EventfdWatcher* fd_watcher = static_cast<EventfdWatcher*>(args);
     if (!fd_watcher) {
         DERROR("EventfdWatcher watcher is nil.");
         return;
@@ -169,45 +177,7 @@ void EventfdWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_io* io, 
         return;
     }
 
-    DTRACE("EventfdWatcher receive notify success.");
-
     fd_watcher->task_handle_();
-}
-
-
-TimerEventWatcher::TimerEventWatcher(EventLoop* event_loop,
-                                     AsyncWatcherTaskFunctor&& handle, uint32_t delay_sec, bool persist)
-    : AsyncWatcher(event_loop->event_loop(), std::move(handle), AsyncWatcherType::TIMER),
-      delay_sec_(delay_sec), persist_(persist)  {
-
-}
-
-bool TimerEventWatcher::DoInitImpl() {
-    timer_->data = static_cast<void*>(this);
-    ev_timer_init(timer_, TimerEventWatcher::NotifyHandle, delay_sec_, persist_ ? delay_sec_ : 0);
-
-    return true;
-}
-
-void TimerEventWatcher::DoTerminateImpl() {
-    // TODO:
-}
-
-void TimerEventWatcher::NotifyHandle(struct ev_loop* event_loop, struct ev_timer* timer, int events) {
-    if (events & EV_ERROR) {
-        DERROR("TimerEventWatcher receive error: {}.", events);
-        return;
-    }
-
-    TimerEventWatcher* timer_watcher = static_cast<TimerEventWatcher*>(timer->data);
-    if (!timer_watcher) {
-        DERROR("TimerEventWatcher watcher is nil.");
-        return;
-    }
-
-    if (events & EV_TIMER) {
-        timer_watcher->task_handle_();
-    }
 }
 
 } // namespace drpc

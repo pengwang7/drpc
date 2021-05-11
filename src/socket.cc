@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#include "logger.h"
-#include "socket.h"
+#include "logger.hpp"
+#include "socket.hpp"
 
 namespace drpc {
 
@@ -233,13 +233,13 @@ bool BindSocket(int fd, std::string local_address) {
     return true;
 }
 
-bool BindSocket(int fd, IPAddress ip, uint16_t port) {
+bool BindSocket(int fd, Endpoint* endpoint) {
     struct sockaddr_in baddr;
     memset(&baddr, 0, sizeof(baddr));
 
-    baddr.sin_family = ip.family();
-    baddr.sin_port = htons(port);
-    baddr.sin_addr = ip.ipv4_address();
+    baddr.sin_family = endpoint->family();
+    baddr.sin_port = htons(endpoint->port());
+    baddr.sin_addr = endpoint->ipv4_address();
 
     if (bind(fd, (struct sockaddr*)&baddr, sizeof(baddr)) < 0) {
         DERROR("BindSocket failed: {}.", std::strerror(errno));
@@ -279,6 +279,8 @@ int AcceptSocket(int fd, std::string& peer_addr) {
         DERROR("AcceptSocket failed: {}.", std::strerror(errno));
         return -1;
     }
+
+    SetSocketNonblocking(conn_fd);
 
     inet_ntop(raddr.sin_family, &raddr.sin_addr, buf, sizeof(buf));
 

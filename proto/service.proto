@@ -4,14 +4,14 @@ option java_generic_services = true;
 
 package drpc;
 
-message PublishRequest {
+message SubscribeRequest {
     string message = 1;
 };
 
-message PublishResponse {
+message SubscribeResponse {
     string message = 1;
 };
 
-service PublishService {
-    rpc Publish(PublishRequest) returns (PublishResponse);
-};
+service PubSubService {
+    rpc Request(SubscribeRequest) returns (SubscribeResponse);
+}

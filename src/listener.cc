@@ -22,17 +22,17 @@
  * SOFTWARE.
  */
 
-#include "logger.h"
-#include "socket.h"
-#include "async_socket.h"
-#include "event_loop.h"
-#include "listener.h"
+#include "logger.hpp"
+#include "socket.hpp"
+#include "async_socket.hpp"
+#include "event_loop.hpp"
+#include "listener.hpp"
 
 namespace drpc {
 
 NetworkListener::NetworkListener(
-    EventLoop* event_loop, ServerOptions* options)
-    : event_loop_(event_loop), options_(options) {
+    EventLoop* event_loop, Endpoint* endpoint)
+    : event_loop_(event_loop), endpoint_(endpoint) {
     DTRACE("Construt NetworkListener.");
 }
 
@@ -40,38 +40,37 @@ NetworkListener::~NetworkListener() {
     DTRACE("Destruct NetworkListener.");
 }
 
+void NetworkListener::SetListenerSocketOptions(int fd) {
+    SetSocketOptions(fd, SO_REUSEADDR);
+    SetSocketOptions(fd, TCP_DEFER_ACCEPT);
+    SetSocketOptions(fd, SO_REUSEPORT);
+}
+
 void NetworkListener::AcceptHandle() {
     DASSERT(event_loop_->IsConsistent(), "NetworkListener error.");
 
     std::string peer_addr;
 
-    int sock = AcceptSocket(listen_socket_->fd2(), peer_addr);
-    if (sock < 0) {
+    int fd = AcceptSocket(socket_->fd(), peer_addr);
+    if (fd < 0) {
         if (errno != EAGAIN && errno != EINTR) {
             DERROR("NetworkListener accept failed: {}.", std::strerror(errno));
         }
         return;
     }
 
-    if (SetSocketOptions(sock, O_NONBLOCK) ||
-            SetSocketOptions(sock, TCP_NODELAY) ||
-            SetSocketOptions(sock, TCP_QUICKACK)) {
-        close(sock);
-        return;
-    }
-
     if (!new_conn_cb_) {
-        close(sock);
+        close(fd);
         DERROR("NetworkListener new conn cb is nil.");
         return;
     }
 
-    new_conn_cb_(sock, peer_addr);
+    new_conn_cb_(fd, peer_addr);
 }
 
 BasicNetworkListener::BasicNetworkListener(
-    EventLoop* event_loop, ServerOptions* options)
-    : NetworkListener(event_loop, options) {
+    EventLoop* event_loop, Endpoint* endpoint)
+    : NetworkListener(event_loop, endpoint) {
     DTRACE("Construt BasicNetworkListener.");
 }
 
@@ -82,28 +81,22 @@ BasicNetworkListener::~BasicNetworkListener() {
 bool BasicNetworkListener::Start() {
     int fd = CreateSocket(AF_UNIX, true);
     if (fd < 0) {
-        DERROR("Start failed.");
         return false;
     }
 
-    SetSocketOptions(fd, SO_REUSEADDR);
-    SetSocketOptions(fd, TCP_DEFER_ACCEPT);
+    SetListenerSocketOptions(fd);
 
-    if (options_->server_mode == ServerMode::OLPT_REUSE_PORT) {
-        SetSocketOptions(fd, SO_REUSEPORT);
-    }
+    DASSERT(BindSocket(fd, std::string("/tmp/none")), "");
+    DASSERT(ListenSocket(fd, 128), "");
 
-    DASSERT(BindSocket(fd, options_->address), "Start failed.");
-    DASSERT(ListenSocket(fd, 128), "Start failed.");
-
-    listen_socket_.reset(new AsyncSocket(event_loop_, fd, kReadEvent));
-    if (!listen_socket_) {
+    socket_.reset(new AsyncSocket(event_loop_, fd, kReadEvent));
+    if (!socket_) {
         return false;
     }
 
-    listen_socket_->SetReadCallback(std::bind(&BasicNetworkListener::AcceptHandle, this));
+    socket_->SetReadCallback(std::bind(&BasicNetworkListener::AcceptHandle, this));
 
-    event_loop_->RunInLoop(std::bind(&AsyncSocket::Attach, listen_socket_.get()));
+    event_loop_->RunInLoop(std::bind(&AsyncSocket::Attach, socket_.get()));
 
     return true;
 }
@@ -111,14 +104,15 @@ bool BasicNetworkListener::Start() {
 bool BasicNetworkListener::Stop() {
     DASSERT(event_loop_->IsConsistent(), "Stop error.");
 
-    listen_socket_->Close();
+    socket_->DisableAllIOEvents();
+    socket_->Close();
 
     return true;
 }
 
 TcpNetworkListener::TcpNetworkListener(
-    EventLoop* event_loop, ServerOptions* options)
-    : NetworkListener(event_loop, options) {
+    EventLoop* event_loop, Endpoint* endpoint)
+    : NetworkListener(event_loop, endpoint) {
     DTRACE("Construt TcpNetworkListener.");
 }
 
@@ -127,47 +121,35 @@ TcpNetworkListener::~TcpNetworkListener() {
 }
 
 bool TcpNetworkListener::Start() {
-    IPAddress ip;
-    DASSERT(IPFromString(options_->address, &ip), "Start failed.");
-    DASSERT(ip.family() == AF_INET, "TcpNetworkListener not support IPV6 address.");
+    DASSERT(endpoint_->family() == AF_INET, "TcpNetworkListener not support IPV6 address.");
 
-    int fd = CreateSocket(ip.family(), true);
+    int fd = CreateSocket(endpoint_->family(), true);
     if (fd < 0) {
-        DERROR("Start failed.");
         return false;
     }
 
-    if (SetSocketOptions(fd, SO_REUSEADDR) ||
-            SetSocketOptions(fd, TCP_DEFER_ACCEPT)) {
-        DERROR("Start failed.");
+    SetListenerSocketOptions(fd);
+
+    DASSERT(BindSocket(fd, endpoint_), "");
+    DASSERT(ListenSocket(fd, 128), "");
+
+    socket_.reset(new AsyncSocket(event_loop_, fd, kReadEvent));
+    if (!socket_) {
         return false;
     }
 
-    if (options_->server_mode == ServerMode::OLPT_REUSE_PORT) {
-        SetSocketOptions(fd, SO_REUSEPORT);
-    }
+    socket_->SetReadCallback(std::bind(&TcpNetworkListener::AcceptHandle, this));
 
-    DASSERT(BindSocket(fd, ip, options_->port), "Start failed.");
-    DASSERT(ListenSocket(fd, 128), "Start failed.");
-
-    listen_socket_.reset(new AsyncSocket(event_loop_, fd, kReadEvent));
-    if (!listen_socket_) {
-        return false;
-    }
-
-    listen_socket_->SetReadCallback(std::bind(&TcpNetworkListener::AcceptHandle, this));
-
-    event_loop_->RunInLoop(std::bind(&AsyncSocket::Attach, listen_socket_.get()));
+    event_loop_->RunInLoop(std::bind(&AsyncSocket::Attach, socket_.get()));
 
     return true;
 }
 
 bool TcpNetworkListener::Stop() {
-    //DASSERT(event_loop_->IsConsistent(), "Stop error.");
+    DASSERT(event_loop_->IsConsistent(), "Stop error.");
 
-    event_loop_->RunInLoop(std::bind(&AsyncSocket::Close, listen_socket_.get()));
-
-    //listen_socket_->Close();
+    socket_->DisableAllIOEvents();
+    socket_->Close();
 
     return true;
 }

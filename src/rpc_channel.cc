@@ -28,27 +28,19 @@
 #include "json2pb/pb_to_json.h"
 #include "json2pb/json_to_pb.h"
 #include "json2pb/encode_decode.h"
-#include "logger.h"
-#include "channel.h"
-#include "rpc_packet.h"
-#include "rpc_channel.h"
+#include "logger.hpp"
+#include "channel.hpp"
+#include "rpc_packet.hpp"
+#include "rpc_channel.hpp"
 
 namespace drpc {
 
-RpcChannel::RpcChannel(const channel_ptr& chan, RpcServiceHashTable* services)
-    : msid_(0), chan_(chan), default_(&RpcMessage::default_instance()), service_map_(services) {
-    DASSERT(chan_, "RpcChannel create failed.");
+RpcChannel::RpcChannel(const ChannelPtr& channel) : channel_(channel) {
+    DASSERT(channel_, "RpcChannel create failed.");
 }
 
 RpcChannel::~RpcChannel() {
-    DTRACE("The RpcChannel destroy csid: {}, msid: {}.", chan_->csid(), msid_);
-
-    // When the RpcChannel for rpc client, need to used outstandings_.
-    for (auto it = outstandings_.begin(); it != outstandings_.end(); ++ it) {
-        outstanding_call out_call = it->second;
-        delete out_call.response;
-        delete out_call.done;
-    }
+    DTRACE("RpcChannel destroy.");
 }
 
 void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
@@ -56,28 +48,32 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                             const google::protobuf::Message* request,
                             google::protobuf::Message* response,
                             google::protobuf::Closure* done) {
-    // TODO: this function for rpc client.
+    // TODO:
+}
+
+void RpcChannel::SetServiceMap(ServiceMap* services) {
+    services_ = services;
 }
 
 // NOTE: In here, we can't be sure that there is only one message in the buffer,
 // so we have to process all the complete messages.
-void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
-    std::unique_ptr<ByteBufferReader> io_reader(new ByteBufferReader(buffer));
+void RpcChannel::OnRpcMessage(const ChannelPtr& channel, Buffer* buffer) {
+    std::unique_ptr<ByteBufferReader> io_reader(new ByteBufferReader(*buffer));
     if (!io_reader) {
-        DERROR("MessageTransform new ByteBufferReader failed.");
+        DERROR("OnMessage new ByteBufferReader failed.");
         return;
     }
 
     RpcPacket* packet = nullptr;
 
-    // Process all messages in buffer.
-    while ((packet = RpcPacket::Parse(buffer, io_reader.get()))) {
+    // Process all messages in the buffer.
+    while ((packet = RpcPacket::Parse(*buffer, io_reader.get()))) {
         switch (packet->GetPayloadType()) {
         case PAYLOAD_TYPE_JSON:
-            OnRpcJsonMessage(packet->GetBody());
+			OnRpcJsonMessage(packet->GetBody());
             break;
-        case PAYLOAD_TYPE_PROTOBUF:
-            OnRpcProtobufMessage(packet->GetBody());
+        case PAYLOAD_TYPE_PROTO:
+			OnRpcProtoMessage(packet->GetBody());
             break;
         default:
             DERROR("RpcPacket with invalid payload type({}).", packet->GetPayloadType());
@@ -85,22 +81,6 @@ void RpcChannel::OnRpcMessage(const channel_ptr& chan, Buffer& buffer) {
 
         delete packet;
     }
-}
-
-void RpcChannel::SetRefreshCallback(const RefreshCallback& cb) {
-    refresh_cb_ = cb;
-}
-
-void RpcChannel::SetAnyContext(const any& context) {
-    context_ = context;
-}
-
-any& RpcChannel::GetAnyContext() {
-    return context_;
-}
-
-void RpcChannel::SetMessageId(std::size_t msid) {
-    msid_ = msid;
 }
 
 void RpcChannel::OnRpcJsonMessage(std::string content) {
@@ -134,17 +114,16 @@ void RpcChannel::OnRpcJsonMessage(std::string content) {
     };
 
     if (ret && ec == NO_ERROR) {
-        OnRpcRefresh();
         return;
     }
 
 error:
-    OnRpcError(ec);
+    OnRpcError(ec, rpc_message->id());
 
     DERROR("OnRpcJsonMessage met error: {}.", ec);
 }
 
-void RpcChannel::OnRpcProtobufMessage(std::string content) {
+void RpcChannel::OnRpcProtoMessage(std::string content) {
     bool ret = false;
     ErrorCode ec = INVALID_REQUEST;
     std::shared_ptr<RpcMessage> rpc_message(default_->New());
@@ -180,14 +159,14 @@ void RpcChannel::OnRpcProtobufMessage(std::string content) {
     }
 
 error:
-    OnRpcError(ec);
+    OnRpcError(ec, rpc_message->id());
 
     DERROR("OnRpcProtobufMessage met error: {}.", ec);
 }
 
 bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& ec) {
-    auto it = service_map_->find(rpc_message->service());
-    if (it != service_map_->end()) {
+    auto it = services_->find(rpc_message->service());
+    if (it != services_->end()) {
         google::protobuf::Service* service = it->second;
         if (!service) {
             DERROR("OnRpcRequest the service is nil.");
@@ -195,10 +174,8 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
             return false;
         }
 
-        SetMessageId(rpc_message->id());
-
-        const google::protobuf::ServiceDescriptor* sdes = service->GetDescriptor();
-        const google::protobuf::MethodDescriptor* method = sdes->FindMethodByName(rpc_message->method());
+        auto* sdes = service->GetDescriptor();
+        auto* method = sdes->FindMethodByName(rpc_message->method());
         if (!method) {
             DERROR("OnRpcRequest {} service not found {} method.",
                    rpc_message->service(), rpc_message->method());
@@ -208,9 +185,10 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
 
         std::unique_ptr<google::protobuf::Message> request(service->GetRequestPrototype(method).New());
         if (request->ParseFromString(rpc_message->request())) {
+            // Release response in Done callback.
             google::protobuf::Message* response = service->GetResponsePrototype(method).New();
             service->CallMethod(method, NULL, request.get(), response,
-                                google::protobuf::NewCallback(this, &RpcChannel::Done, response));
+                                google::protobuf::NewCallback(this, &RpcChannel::Done, response, rpc_message->id()));
             ec = NO_ERROR;
             return true;
         }
@@ -222,40 +200,33 @@ bool RpcChannel::OnRpcRequest(const RpcMessagePtr& rpc_message, enum ErrorCode& 
     return false;
 }
 
-bool RpcChannel::OnRpcResponse(/*const RpcMessagePtr& rpc_message*/) {
+bool RpcChannel::OnRpcResponse() {
     // TODO:
     return true;
 }
 
-void RpcChannel::OnRpcRefresh() {
-    if (refresh_cb_) {
-        DDEBUG("OnRpcRefresh the channel csid: {}", chan_->csid());
-        refresh_cb_(chan_);
-    }
-}
-
-void RpcChannel::OnRpcError(enum ErrorCode& ec) {
+void RpcChannel::OnRpcError(enum ErrorCode ec, uint64_t id) {
     RpcMessage rpc_message;
     rpc_message.set_type(RESPONSE);
-    rpc_message.set_id(msid_);
-    rpc_message.set_response(std::string("failed"));
+    rpc_message.set_id(id);
+    rpc_message.set_response(ErrorCode_Name(ec));
     rpc_message.set_error(ec);
 
     std::string data;
     if (!rpc_message.SerializeToString(&data)) {
-        DERROR("Done the rpc_message serialize to string failed.");
+        DERROR("OnRpcError the rpc_message serialize to string failed.");
         return;
     }
 
-    chan_->SendMessage(data);
+    channel_->SendMessage(data);
 }
 
-void RpcChannel::Done(google::protobuf::Message* pro_message) {
-    std::unique_ptr<google::protobuf::Message> message(pro_message);
+void RpcChannel::Done(google::protobuf::Message* raw_message, uint64_t id) {
+    std::unique_ptr<google::protobuf::Message> message(raw_message);
 
     RpcMessage rpc_message;
     rpc_message.set_type(RESPONSE);
-    rpc_message.set_id(msid_);
+    rpc_message.set_id(id);
     rpc_message.set_response(message->SerializeAsString());
 
     std::string data;
@@ -264,7 +235,7 @@ void RpcChannel::Done(google::protobuf::Message* pro_message) {
         return;
     }
 
-    chan_->SendMessage(data);
+    channel_->SendMessage(data);
 }
 
 } // namespace drpc

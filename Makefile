@@ -48,10 +48,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pengwang/workspace/github/drpc
+CMAKE_SOURCE_DIR = /home/pengwang/workspace/github/drpc2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pengwang/workspace/github/drpc
+CMAKE_BINARY_DIR = /home/pengwang/workspace/github/drpc2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc/CMakeFiles /home/pengwang/workspace/github/drpc/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc2/CMakeFiles /home/pengwang/workspace/github/drpc2/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pengwang/workspace/github/drpc2/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -258,6 +258,33 @@ src/channel.cc.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/channel.cc.s
 .PHONY : src/channel.cc.s
 
+src/duration.o: src/duration.cc.o
+
+.PHONY : src/duration.o
+
+# target to build an object file
+src/duration.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/duration.cc.o
+.PHONY : src/duration.cc.o
+
+src/duration.i: src/duration.cc.i
+
+.PHONY : src/duration.i
+
+# target to preprocess a source file
+src/duration.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/duration.cc.i
+.PHONY : src/duration.cc.i
+
+src/duration.s: src/duration.cc.s
+
+.PHONY : src/duration.s
+
+# target to generate assembly for a file
+src/duration.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/duration.cc.s
+.PHONY : src/duration.cc.s
+
 src/event_loop.o: src/event_loop.cc.o
 
 .PHONY : src/event_loop.o
@@ -311,33 +338,6 @@ src/event_loop_group.s: src/event_loop_group.cc.s
 src/event_loop_group.cc.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/event_loop_group.cc.s
 .PHONY : src/event_loop_group.cc.s
-
-src/ip_address.o: src/ip_address.cc.o
-
-.PHONY : src/ip_address.o
-
-# target to build an object file
-src/ip_address.cc.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.o
-.PHONY : src/ip_address.cc.o
-
-src/ip_address.i: src/ip_address.cc.i
-
-.PHONY : src/ip_address.i
-
-# target to preprocess a source file
-src/ip_address.cc.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.i
-.PHONY : src/ip_address.cc.i
-
-src/ip_address.s: src/ip_address.cc.s
-
-.PHONY : src/ip_address.s
-
-# target to generate assembly for a file
-src/ip_address.cc.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/ip_address.cc.s
-.PHONY : src/ip_address.cc.s
 
 src/json2pb/encode_decode.o: src/json2pb/encode_decode.cc.o
 
@@ -555,32 +555,32 @@ src/socket.cc.s:
 	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/src/socket.cc.s
 .PHONY : src/socket.cc.s
 
-test/test_server.o: test/test_server.cc.o
+test/test.o: test/test.cc.o
 
-.PHONY : test/test_server.o
+.PHONY : test/test.o
 
 # target to build an object file
-test/test_server.cc.o:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.o
-.PHONY : test/test_server.cc.o
+test/test.cc.o:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cc.o
+.PHONY : test/test.cc.o
 
-test/test_server.i: test/test_server.cc.i
+test/test.i: test/test.cc.i
 
-.PHONY : test/test_server.i
+.PHONY : test/test.i
 
 # target to preprocess a source file
-test/test_server.cc.i:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.i
-.PHONY : test/test_server.cc.i
+test/test.cc.i:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cc.i
+.PHONY : test/test.cc.i
 
-test/test_server.s: test/test_server.cc.s
+test/test.s: test/test.cc.s
 
-.PHONY : test/test_server.s
+.PHONY : test/test.s
 
 # target to generate assembly for a file
-test/test_server.cc.s:
-	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test_server.cc.s
-.PHONY : test/test_server.cc.s
+test/test.cc.s:
+	$(MAKE) -f CMakeFiles/drpc.dir/build.make CMakeFiles/drpc.dir/test/test.cc.s
+.PHONY : test/test.cc.s
 
 # Help Target
 help:
@@ -606,15 +606,15 @@ help:
 	@echo "... src/channel.o"
 	@echo "... src/channel.i"
 	@echo "... src/channel.s"
+	@echo "... src/duration.o"
+	@echo "... src/duration.i"
+	@echo "... src/duration.s"
 	@echo "... src/event_loop.o"
 	@echo "... src/event_loop.i"
 	@echo "... src/event_loop.s"
 	@echo "... src/event_loop_group.o"
 	@echo "... src/event_loop_group.i"
 	@echo "... src/event_loop_group.s"
-	@echo "... src/ip_address.o"
-	@echo "... src/ip_address.i"
-	@echo "... src/ip_address.s"
 	@echo "... src/json2pb/encode_decode.o"
 	@echo "... src/json2pb/encode_decode.i"
 	@echo "... src/json2pb/encode_decode.s"
@@ -639,9 +639,9 @@ help:
 	@echo "... src/socket.o"
 	@echo "... src/socket.i"
 	@echo "... src/socket.s"
-	@echo "... test/test_server.o"
-	@echo "... test/test_server.i"
-	@echo "... test/test_server.s"
+	@echo "... test/test.o"
+	@echo "... test/test.i"
+	@echo "... test/test.s"
 .PHONY : help
 
 
