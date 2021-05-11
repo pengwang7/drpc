@@ -6,5 +6,5 @@ CXX_FLAGS = -g -pipe -DCHECK_PTHREAD_RETURN_VALUE -D_FILE_OFFSET_BITS=64 -Wall -
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/pengwang/workspace/github/drpc2 -I/home/pengwang/workspace/github/drpc2/src 
+CXX_INCLUDES = -I/home/pengwang/workspace/github/drpc -I/home/pengwang/workspace/github/drpc/src 
 

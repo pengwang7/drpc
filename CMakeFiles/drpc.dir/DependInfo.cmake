@@ -4,23 +4,23 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/pengwang/workspace/github/drpc2/rpc.pb.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/rpc.pb.cc.o"
-  "/home/pengwang/workspace/github/drpc2/service.pb.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/service.pb.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/async_socket.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/async_socket.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/async_watcher.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/async_watcher.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/channel.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/channel.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/duration.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/duration.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/event_loop.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/event_loop.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/event_loop_group.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/event_loop_group.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/json2pb/encode_decode.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/json2pb/encode_decode.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/json2pb/json_to_pb.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/json2pb/json_to_pb.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/json2pb/pb_to_json.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/json2pb/pb_to_json.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/json2pb/protobuf_map.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/json2pb/protobuf_map.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/listener.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/listener.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/rpc_channel.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/rpc_channel.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/server.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/server.cc.o"
-  "/home/pengwang/workspace/github/drpc2/src/socket.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/src/socket.cc.o"
-  "/home/pengwang/workspace/github/drpc2/test/test.cc" "/home/pengwang/workspace/github/drpc2/CMakeFiles/drpc.dir/test/test.cc.o"
+  "/home/pengwang/workspace/github/drpc/rpc.pb.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/rpc.pb.cc.o"
+  "/home/pengwang/workspace/github/drpc/service.pb.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/service.pb.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/async_socket.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/async_socket.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/async_watcher.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/async_watcher.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/channel.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/channel.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/duration.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/duration.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/event_loop.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/event_loop.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/event_loop_group.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/event_loop_group.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/json2pb/encode_decode.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/json2pb/encode_decode.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/json2pb/json_to_pb.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/json2pb/json_to_pb.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/json2pb/pb_to_json.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/json2pb/pb_to_json.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/json2pb/protobuf_map.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/json2pb/protobuf_map.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/listener.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/listener.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/rpc_channel.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/rpc_channel.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/server.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/server.cc.o"
+  "/home/pengwang/workspace/github/drpc/src/socket.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/src/socket.cc.o"
+  "/home/pengwang/workspace/github/drpc/test/test.cc" "/home/pengwang/workspace/github/drpc/CMakeFiles/drpc.dir/test/test.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -32,8 +32,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Pairs of files generated by the same build rule.
 set(CMAKE_MULTIPLE_OUTPUT_PAIRS
-  "/home/pengwang/workspace/github/drpc2/rpc.pb.cc" "/home/pengwang/workspace/github/drpc2/rpc.pb.h"
-  "/home/pengwang/workspace/github/drpc2/service.pb.cc" "/home/pengwang/workspace/github/drpc2/service.pb.h"
+  "/home/pengwang/workspace/github/drpc/rpc.pb.cc" "/home/pengwang/workspace/github/drpc/rpc.pb.h"
+  "/home/pengwang/workspace/github/drpc/service.pb.cc" "/home/pengwang/workspace/github/drpc/service.pb.h"
   )
 
 

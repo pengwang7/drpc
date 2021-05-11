@@ -70,10 +70,10 @@ void RpcChannel::OnRpcMessage(const ChannelPtr& channel, Buffer* buffer) {
     while ((packet = RpcPacket::Parse(*buffer, io_reader.get()))) {
         switch (packet->GetPayloadType()) {
         case PAYLOAD_TYPE_JSON:
-			OnRpcJsonMessage(packet->GetBody());
+            OnRpcJsonMessage(packet->GetBody());
             break;
         case PAYLOAD_TYPE_PROTO:
-			OnRpcProtoMessage(packet->GetBody());
+            OnRpcProtoMessage(packet->GetBody());
             break;
         default:
             DERROR("RpcPacket with invalid payload type({}).", packet->GetPayloadType());
