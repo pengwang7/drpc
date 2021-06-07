@@ -23,6 +23,7 @@
  */
 
 #include "logger.hpp"
+#include "event.hpp"
 #include "utility.hpp"
 #include "event_loop.hpp"
 

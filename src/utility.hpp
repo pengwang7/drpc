@@ -33,19 +33,6 @@
 #include <memory>
 #include <functional>
 
-#include <event2/event.h>
-#include <event2/event_struct.h>
-//#include <event2/buffer.h>
-//#include <event2/bufferevent.h>
-//#include <event2/http.h>
-//#include <event2/http_compat.h>
-//#include <event2/http_struct.h>
-#include <event2/event_compat.h>
-#include <event2/dns.h>
-#include <event2/dns_compat.h>
-#include <event2/dns_struct.h>
-#include <event2/listener.h>
-
 namespace drpc {
 
 #define RETRIABLE_ERROR (-1000)
@@ -93,6 +80,11 @@ namespace drpc {
                 | (((x) & 0x00000000000000ffull) << 56))
 
 #define ntohll(x) htonll(x)
+
+template <typename T, typename F>
+inline T implicit_cast(F const& val) {
+	return val;
+}
 
 } // namespace drpc
 

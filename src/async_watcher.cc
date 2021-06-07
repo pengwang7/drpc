@@ -23,8 +23,8 @@
  */
 
 #include "logger.hpp"
-#include "utility.hpp"
 #include "event.hpp"
+#include "utility.hpp"
 #include "event_loop.hpp"
 #include "async_watcher.hpp"
 
@@ -36,7 +36,7 @@ AsyncWatcher::AsyncWatcher(struct event_base* event_loop, AsyncWatcherFunctor&& 
 
     DTRACE("Create AsyncWatcher.");
 
-    io_ = new ::event;
+    io_ = new event;
     DASSERT(io_, "Create AsyncWatcher error.");
 
     memset(io_, 0, sizeof(struct event));

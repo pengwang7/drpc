@@ -100,7 +100,7 @@ public:
 
     BufferT& operator=(const BufferT&) = delete;
 
-    ~BufferT() {
+    virtual ~BufferT() {
         MaybeZeroCompleteBuffer();
     }
 
