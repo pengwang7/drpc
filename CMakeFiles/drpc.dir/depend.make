@@ -62,6 +62,7 @@ CMakeFiles/drpc.dir/src/event_loop.cc.o: src/concurrentqueue.hpp
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/constructor_magic.hpp
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/duration.hpp
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/duration.inl.h
+CMakeFiles/drpc.dir/src/event_loop.cc.o: src/event.hpp
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/event_loop.cc
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/event_loop.hpp
 CMakeFiles/drpc.dir/src/event_loop.cc.o: src/logger.hpp
@@ -239,5 +240,6 @@ CMakeFiles/drpc.dir/test/test.cc.o: src/rpc_channel.hpp
 CMakeFiles/drpc.dir/test/test.cc.o: src/rpc_packet.hpp
 CMakeFiles/drpc.dir/test/test.cc.o: src/server.hpp
 CMakeFiles/drpc.dir/test/test.cc.o: src/status_manager.hpp
+CMakeFiles/drpc.dir/test/test.cc.o: src/udp/udp_message.hpp
 CMakeFiles/drpc.dir/test/test.cc.o: src/utility.hpp
 

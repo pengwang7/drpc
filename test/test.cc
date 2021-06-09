@@ -13,6 +13,7 @@
 #include "server.hpp"
 #include "rpc.pb.h"
 #include "service.pb.h"
+#include "udp/udp_message.hpp"
 
 using namespace drpc;
 
@@ -114,6 +115,10 @@ void test_server() {
 	delete server;
 }
 
+void test_udp_message() {
+	udp::Message* message = new udp::Message(12, 1024);
+	DASSERT(message, "The udp message is nil.");
+}
 
 int main() {
     Logger::Instance().Init();
