@@ -100,18 +100,18 @@ public:
 
 private:
     class DynamicThread {
-        public:
-            DynamicThread(DynamicThreadPool* pool);
+    public:
+        DynamicThread(DynamicThreadPool* pool);
 
-            ~DynamicThread();
+        ~DynamicThread();
 
-        private:
-            void Worker();
+    private:
+        void Worker();
 
-        private:
-            DynamicThreadPool* thread_pool_;
+    private:
+        DynamicThreadPool* thread_pool_;
 
-            std::unique_ptr<std::thread> thd_;
+        std::unique_ptr<std::thread> thd_;
     };
 
     void Worker();

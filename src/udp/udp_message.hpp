@@ -6,8 +6,6 @@
 
 namespace drpc {
 
-namespace udp {
-
 // 1472 = 1500(LINK) - 20(IP) - 8(UDP).
 const int kUdpMtuMaxSize = 1472;
 
@@ -60,8 +58,6 @@ inline bool SendMessage(int fd, const struct sockaddr* addr, const char* data, s
 //inline bool SendMessage(const MessagePtr& msg) {
 //    return SendMessage(msg->sockfd(), msg->remote_addr(), msg->data(), msg->size());
 //}
-
-} // namespace udp
 
 } // namespace drpc
 

@@ -33,6 +33,7 @@ namespace drpc {
 
 class AsyncSocket;
 
+// UdpServer class own the file descriptor.
 class UdpServer {
 public:
     using UdpSocketReadCallback = std::function<void()>;
@@ -49,7 +50,7 @@ public:
 
 public:
     void SetReadCallback(const UdpSocketReadCallback& cb) {
-        async_socket_->SetReadCallback(cb);
+        //async_socket_->SetReadCallback(cb);
     }
 
     std::string unique_id() const {
@@ -57,7 +58,12 @@ public:
     }
 
 private:
+    void ReadMessageCallback();
+
+private:
     EventLoop* event_loop_;
+
+    int fd_;
 
     std::string unique_id_;
 
@@ -76,6 +82,8 @@ public:
     void Start();
 
     void Stop();
+
+    void Wait();
 
     void AddUdpServer(UdpServer* udp_server);
 
@@ -96,6 +104,8 @@ private:
     std::unique_ptr<std::thread> loop_thread_;
 
     std::vector<UdpServer*> udp_servers_;
+
+    std::mutex mutex_;
 };
 
 } // namespace drpc

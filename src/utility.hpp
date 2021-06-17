@@ -83,7 +83,7 @@ namespace drpc {
 
 template <typename T, typename F>
 inline T implicit_cast(F const& val) {
-	return val;
+    return val;
 }
 
 } // namespace drpc

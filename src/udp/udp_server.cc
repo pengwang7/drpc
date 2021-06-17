@@ -30,15 +30,18 @@ namespace drpc {
 
 UdpServer::UdpServer(EventLoop* event_loop, Endpoint* endpoint, std::string id)
     : event_loop_(event_loop), unique_id_(id) {
-    int fd = CreateUDPServer(endpoint);
-    DASSERT(fd != -1, "UdpServer create socket failed.");
+    fd_ = CreateUDPServer(endpoint);
+    DASSERT(fd_ != -1, "UdpServer create socket failed.");
 
-    async_socket_.reset(new AsyncSocket(event_loop_, fd, kNoneEvent));
+    async_socket_.reset(new AsyncSocket(event_loop_, fd_, kNoneEvent));
+    async_socket_->SetReadCallback(std::bind(&UdpServer::ReadMessageCallback, this));
     DASSERT(async_socket_ != nullptr, "UdpServer async_socket_ is nil.");
 }
 
 UdpServer::~UdpServer() {
     DDEBUG("UdpServer destroy.");
+    close(fd_);
+    fd_ = -1;
 }
 
 void UdpServer::Start() {
@@ -52,13 +55,23 @@ void UdpServer::Start() {
 }
 
 void UdpServer::Stop() {
-    auto fn = [&]() {
-        async_socket_->DisableAllIOEvents();
-        async_socket_->Close();
-        DDEBUG("Stop UdpServer id={}.", unique_id_.c_str());
-    };
+    async_socket_->DisableAllIOEvents();
+    async_socket_->Close();
+}
 
-    event_loop_->QueueInLoop(fn);
+void UdpServer::ReadMessageCallback() {
+    MessagePtr message(new Message(fd_));
+
+    socklen_t addrlen = sizeof(struct sockaddr);
+    ssize_t bytes_transferred = -1;
+
+    bytes_transferred = recvfrom(fd_, message->end(), message->WritableByteSize(), 0,
+        message->GetRemoteAddress(), &addrlen);
+    if (bytes_transferred > 0) {
+
+    } else {
+        DERROR("ReadMessageCallback failed:{}.", std::strerror(errno));
+    }
 }
 
 UdpServerManager::UdpServerManager()
@@ -83,6 +96,13 @@ void UdpServerManager::Stop() {
     event_loop_->Stop();
 }
 
+void UdpServerManager::Wait() {
+    std::lock_guard<std::mutex> scoped_lock(mutex_);
+    if (loop_thread_ && loop_thread_->joinable()) {
+        loop_thread_->join();
+    }
+}
+
 void UdpServerManager::AddUdpServer(UdpServer* udp_server) {
     if (!udp_server) {
         DERROR("AddUdpServer udp_server is nil.");
@@ -90,7 +110,7 @@ void UdpServerManager::AddUdpServer(UdpServer* udp_server) {
     }
 
     auto fn = [&, udp_server]() {
-        DDEBUG("Add it={}.", udp_server->unique_id());
+        DTRACE("AddUdpServer udp_server unique id={}.", udp_server->unique_id());
         udp_server->Start();
         udp_servers_.push_back(udp_server);
     };
@@ -103,12 +123,10 @@ void UdpServerManager::DelUdpServer(UdpServer* udp_server) {
         return;
     }
 
-    DDEBUG("Call DelUdpServer.");
+    auto fn = [&, udp_server]() {
+        DTRACE("DelUdpServer udp_server unique id={}.", udp_server->unique_id());
 
-    auto fn = [&]() {
         udp_server->Stop();
-
-        DDEBUG("Del id={}.", udp_server->unique_id());
 
         auto iter = std::find(udp_servers_.begin(), udp_servers_.end(), udp_server);
         if (iter == udp_servers_.end()) {
@@ -135,9 +153,7 @@ UdpServer* UdpServerManager::FindUdpServerById(std::string id) {
 }
 
 void UdpServerManager::Cycle() {
-    DDEBUG("before runing");
     event_loop_->Run();
-    DDEBUG("after running");
 }
 
 } // namespace drpc
