@@ -323,6 +323,11 @@ public:
         return crlf == end() ? nullptr : crlf;
     }
 
+    size_t Find2CRLFSize() const {
+        const char* crlf = std::search(begin(), end(), k2CRLF, k2CRLF + 4);
+        return (crlf == end() ? 0 : (crlf - begin()));
+    }
+
 private:
     void EnsureCapacityWithHeadroom(size_t capacity, bool extra_headroom) {
         DASSERT(IsConsistent(), "BufferT error.");

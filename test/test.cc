@@ -116,7 +116,7 @@ void test_server() {
 }
 
 void test_udp_message() {
-	udp::Message* message = new udp::Message(12, 1024);
+	Message* message = new Message(12, 1024);
 	DASSERT(message, "The udp message is nil.");
 }
 
@@ -133,7 +133,7 @@ int main() {
 
     //test_listener();
 
-	test_server();
+    test_server();
 
     Logger::Instance().Destroy();
 
